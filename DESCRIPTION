@@ -8,10 +8,12 @@ Description: Collection of functions to support
   SOILWAT2/STEPWAT2 simulation experiments.
 Depends:
     R (>= 3.5.0)
+Imports:
+    circular (>= 0.4.93)
 Suggests:
-    circular (>= 0.4.93),
+    statip,
     testthat,
-    spelling
+    spelling,
 License: GPL-3
 URL: https://github.com/DrylandEcology/rSW2utils
 BugReports: https://github.com/DrylandEcology/rSW2utils/issues

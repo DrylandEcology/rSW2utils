@@ -24,6 +24,17 @@ replace_NAs_with_val <- function(x, val_replace) {
   x
 }
 
+
+#' @export
+handle_NAs <- function(x, na.index, na.act) {
+  if (length(na.index) > 0) {
+    stats::napredict(na.act, x)
+  } else {
+    x
+  }
+}
+
+
 #' @export
 squash_into_low_high <- function(x, val_low = 0, val_low_replace = val_low,
   val_high = 1, val_high_replace = val_high) {

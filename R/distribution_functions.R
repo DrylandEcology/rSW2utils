@@ -18,6 +18,54 @@
 ################################################################################
 
 
+#' Error function
+#' @seealso Code is from examples of \code{\link[stats]{pnorm}}.
+#' @param x A numeric vector.
+#' @return A numeric vector of the size of \code{x}.
+erf <- function(x) 2 * stats::pnorm(x * sqrt(2)) - 1
+
+
+#' Check that data are within range of normal distribution
+#'
+#' @param data A numeric vector. Daily values of temperature.
+#' @param sigmaN An integer value. A multiplier of \code{stats::sd}.
+#' @export
+test_sigmaNormal <- function(data, sigmaN = 6) {
+  md <- mean(data)
+  sdd <- stats::sd(data) * sigmaN
+  stopifnot(data < md + sdd, data > md - sdd)
+}
+
+
+#' Check that data are within range of an approximated gamma distribution
+#'
+#' @section Note: Approximate shape and scale instead of very slow call:
+#'   \code{g <- MASS::fitdistr(data, "gamma")}
+#' @param data A numeric vector. Daily values of precipitation.
+#' @param sigmaN An integer value. A multiplier of \code{stats::sd}.
+#' @references Choi, S. C., and R. Wette. 1969. Maximum Likelihood Estimation of
+#'   the Parameters of the Gamma Distribution and Their Bias. Technometrics
+#'   11:683-690.
+# nolint start
+#' @references
+#'   \url{http://en.wikipedia.org/wiki/Gamma_distribution#Maximum_likelihood_estimation}
+# nolint end
+#' @export
+test_sigmaGamma <- function(data, sigmaN = 6) {
+  tempD <- data[data > 0]
+
+  if (length(tempD) >= 2 && stats::sd(tempD) > 0) {
+    tempM <- mean(tempD)
+    temp <- log(tempM) - mean(log(tempD))
+    gshape <- (3 - temp + sqrt((temp - 3) ^ 2 + 24 * temp)) / (12 * temp)
+    gscale <- tempM / gshape
+    stopifnot(data < stats::qgamma(erf(sigmaN / sqrt(2)), shape = gshape,
+      scale = gscale))
+  }
+}
+
+
+
 #' Find the most common element of x
 #' @export
 majority <- function(x, na.rm = FALSE) {

@@ -58,8 +58,11 @@ days_in_years <- function(start_year, end_year) {
 #' \dontrun{
 #'  month1 <- function() as.POSIXlt(seq(from = ISOdate(1980, 1, 1, tz = "UTC"),
 #'     to = ISOdate(2010, 12, 31, tz = "UTC"), by = "1 day"))$mon + 1
-#'  month2 <- function() seq_month_ofeach_day(list(1980, 1, 1),
-#'    list(2010, 12, 31), tz = "UTC")
+#'  month2 <- function() seq_month_ofeach_day(
+#'    from = list(1980, 1, 1),
+#'    to = list(2010, 12, 31),
+#'    tz = "UTC"
+#'  )
 #'
 #'    if (requireNamespace("microbenchmark", quietly = TRUE))
 #'      # barely any difference
@@ -78,5 +81,3 @@ seq_month_ofeach_day <- function(from = list(year = 1900, month = 1, day = 1),
   res <- seq.int(0, to0 - from0, by = 86400) + from0
   as.POSIXlt.POSIXct(.POSIXct(res, tz = tz))$mon + 1
 }
-
-

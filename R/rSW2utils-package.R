@@ -34,4 +34,3 @@ rSW2_glovars <- new.env()
 #' @importFrom stats aggregate coef complete.cases cor cov fitted median
 #'   na.exclude na.omit predict quantile sd weighted.mean
 NULL
-

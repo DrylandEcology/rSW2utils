@@ -7,7 +7,7 @@
 test_sigmaGamma(data, sigmaN = 6)
 }
 \arguments{
-\item{data}{A numeric vector. Daily values of precipitation.}
+\item{data}{A numeric vector.}
 
 \item{sigmaN}{An integer value. A multiplier of \code{stats::sd}.}
 }
@@ -23,6 +23,4 @@ Check that data are within range of an approximated gamma distribution
 Choi, S. C., and R. Wette. 1969. Maximum Likelihood Estimation of
   the Parameters of the Gamma Distribution and Their Bias. Technometrics
   11:683-690.
-
-\url{http://en.wikipedia.org/wiki/Gamma_distribution#Maximum_likelihood_estimation}
 }

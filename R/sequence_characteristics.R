@@ -23,8 +23,8 @@
 #' @export
 calc_starts <- function(x) {
   temp1 <- rle(as.logical(x))
-  temp2 <- cumsum(c(0, temp1$lengths)) + 1
-  temp2[-length(temp2)][temp1$values]
+  temp2 <- cumsum(c(0, temp1[["lengths"]])) + 1
+  temp2[-length(temp2)][temp1[["values"]]]
 }
 
 
@@ -49,16 +49,16 @@ window <- function(x, n = 3, win_fun = sum) {
 #' @export
 max_duration <- function(x, target_val = 1L, return_doys = FALSE) {
   r <- rle(x)
-  rgood <- r$values == target_val
+  rgood <- r[["values"]] == target_val
   igood <- which(rgood)
 
   if (length(igood) > 0) {
-    len <- max(r$lengths[igood])
+    len <- max(r[["lengths"]][igood])
 
     if (return_doys) {
-      imax <- which(rgood & r$lengths == len)[1]
+      imax <- which(rgood & r[["lengths"]] == len)[1]
 
-      rdoys <- cumsum(r$lengths)
+      rdoys <- cumsum(r[["lengths"]])
       doys <- if (imax == 1L) {
         c(start = 1L, end = rdoys[1])
       } else {

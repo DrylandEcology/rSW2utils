@@ -41,15 +41,11 @@ test_sigmaNormal <- function(data, sigmaN = 6) {
 #'
 #' @section Note: Approximate shape and scale instead of very slow call:
 #'   \code{g <- MASS::fitdistr(data, "gamma")}
-#' @param data A numeric vector. Daily values of precipitation.
+#' @param data A numeric vector.
 #' @param sigmaN An integer value. A multiplier of \code{stats::sd}.
 #' @references Choi, S. C., and R. Wette. 1969. Maximum Likelihood Estimation of
 #'   the Parameters of the Gamma Distribution and Their Bias. Technometrics
 #'   11:683-690.
-# nolint start
-#' @references
-#'   \url{http://en.wikipedia.org/wiki/Gamma_distribution#Maximum_likelihood_estimation}
-# nolint end
 #' @export
 test_sigmaGamma <- function(data, sigmaN = 6) {
   tempD <- data[data > 0]

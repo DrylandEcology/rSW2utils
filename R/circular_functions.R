@@ -319,12 +319,12 @@ circ_seq <- function(from, to, int, by, length.out = NULL) {
     stop("wrong sign in 'by' argument")
   }
 
-  if (n > .Machine$integer.max) {
+  if (n > .Machine[["integer.max"]]) {
     stop("'by' argument is much too small")
   }
 
   dd <- abs(del) / max(abs(to), abs(from))
-  if (dd < 100 * .Machine$double.eps) {
+  if (dd < 100 * .Machine[["double.eps"]]) {
     return(from)
   }
   # Code from `seq.default`: end

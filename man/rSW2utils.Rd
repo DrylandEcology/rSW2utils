@@ -6,7 +6,7 @@
 \alias{rSW2utils-package}
 \title{Package \pkg{rSW2wutils}: summary information}
 \description{
-Collection of functions to support
+Collection of general purpose functions to support
   SOILWAT2/STEPWAT2 simulation experiments.
 }
 \seealso{

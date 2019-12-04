@@ -56,7 +56,7 @@ NSE <- function(obs, sim, na.rm = FALSE) {
   # NSE
   res <- rep(-Inf, ncol(obs))
 
-  is_denom_nonzero <- abs(d) > sqrt(.Machine$double.eps)
+  is_denom_nonzero <- abs(d) > rSW2_glovars[["tol"]]
   res[is_denom_nonzero] <- 1 - n[is_denom_nonzero] / d[is_denom_nonzero]
 
   res

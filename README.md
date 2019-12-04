@@ -20,6 +20,14 @@
 
 # rSW2utils
 
+Collection of general purpose functions (utility tools) to support SOILWAT2
+and STEPWAT2 simulation experiments.
+
+Downstream R packages for SOILWAT2 and STEPWAT2 simulation experiments depend
+on this package; thus, code of `rSW2utils` is independent of any
+specific structures defined by those packages.
+
+<br>
 
 Please cite the package if you publish results based on code carried
 out with our package, see `citation("rSW2utils")`, and we would like to hear

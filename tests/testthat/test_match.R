@@ -12,33 +12,33 @@ test_that("Match", {
   #--- Correct use of match to append data
   ref <- ref_template
   expect_equal({
-      id_x <- match(ref$a, xs$a, nomatch = 0)
+      id_x <- match(ref[["a"]], xs[["a"]], nomatch = 0)
       use_r <- id_x > 0
-      ref$c[use_r] <- xs$b[id_x]
-      ref$c[use_r]
-    }, ref$b[use_r])
+      ref[["c"]][use_r] <- xs[["b"]][id_x]
+      ref[["c"]][use_r]
+    }, ref[["b"]][use_r])
 
   ref <- ref_template
   expect_equal({
-      id_x <- match(ref$a, xl$a, nomatch = 0)
+      id_x <- match(ref[["a"]], xl[["a"]], nomatch = 0)
       use_r <- id_x > 0
-      ref$c[use_r] <- xl$b[id_x]
-      ref$c[use_r]
-    }, ref$b[use_r])
+      ref[["c"]][use_r] <- xl[["b"]][id_x]
+      ref[["c"]][use_r]
+    }, ref[["b"]][use_r])
 
   #--- Incorrect use of match (first test works because nrow(xs) <= nrow(ref);
   # second test fails)
   ref <- ref_template
   expect_equal({
-      id_r <- match(xs$a, ref$a, nomatch = 0)
-      ref$c[id_r] <- xs$b
-      ref$c[id_r]
-    }, ref$b[id_r])
+      id_r <- match(xs[["a"]], ref[["a"]], nomatch = 0)
+      ref[["c"]][id_r] <- xs[["b"]]
+      ref[["c"]][id_r]
+    }, ref[["b"]][id_r])
 
   ref <- ref_template
   expect_warning({
-      id_r <- match(xl$a, ref$a, nomatch = 0)
+      id_r <- match(xl[["a"]], ref[["a"]], nomatch = 0)
       # number of items to replace is not a multiple of replacement length
-      ref$c[id_r] <- xl$b
+      ref[["c"]][id_r] <- xl[["b"]]
     })
 })

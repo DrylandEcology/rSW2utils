@@ -8,7 +8,7 @@
 # git and continuous integration stuff
 \.git*
 ^\.travis\.yml$
-^appveyor\.yml$
+^\.appveyor\.yml$
 ^\.appveyor_clear_cache\.txt$
 ^codecov\.yml$
 ^\.lintr$

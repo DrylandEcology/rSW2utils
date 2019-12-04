@@ -6,6 +6,13 @@
 \usage{
 extend_range(x, fact = 1, na.rm = FALSE)
 }
+\arguments{
+\item{x}{A numeric vector}
+
+\item{fact}{A numeric value}
+
+\item{na.rm}{A logical value}
+}
 \description{
 Extend range by factor
 }

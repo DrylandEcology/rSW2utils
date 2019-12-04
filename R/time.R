@@ -54,6 +54,14 @@ days_in_years <- function(start_year, end_year) {
 
 #' The sequence of month numbers for each day in the period from - to
 #'
+#' @param from A list with three elements \code{year}, \code{month},
+#'   and \code{day}.
+#' @param to A list with three elements \code{year}, \code{month},
+#'   and \code{day}.
+#' @inheritParams base::as.POSIXlt
+#'
+#' @seealso \code{\link[base]{as.POSIXlt}}, \code{\link[base]{seq.POSIXt}}
+#'
 #' @examples
 #' \dontrun{
 #'  month1 <- function() as.POSIXlt(seq(from = ISOdate(1980, 1, 1, tz = "UTC"),
@@ -64,9 +72,9 @@ days_in_years <- function(start_year, end_year) {
 #'    tz = "UTC"
 #'  )
 #'
-#'    if (requireNamespace("microbenchmark", quietly = TRUE))
-#'      # barely any difference
-#'      microbenchmark::microbenchmark(month1(), month2())
+#'  if (requireNamespace("microbenchmark", quietly = TRUE))
+#'    # barely any difference
+#'    microbenchmark::microbenchmark(month1(), month2())
 #'  }
 #' @export
 seq_month_ofeach_day <- function(from = list(year = 1900, month = 1, day = 1),

@@ -2,10 +2,16 @@
 % Please edit documentation in R/distribution_functions.R
 \name{majority}
 \alias{majority}
-\title{Find the most common element of x}
+\title{Find the most common element of a vector}
 \usage{
 majority(x, na.rm = FALSE)
 }
+\arguments{
+\item{x}{A vector of numeric, logical, or character mode and it may be a
+factor as well.}
+
+\item{na.rm}{A logical value}
+}
 \description{
-Find the most common element of x
+Find the most common element of a vector
 }

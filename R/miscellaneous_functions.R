@@ -19,6 +19,11 @@
 
 
 #' Extend range by factor
+#'
+#' @param x A numeric vector
+#' @param fact A numeric value
+#' @param na.rm A logical value
+#'
 #' @export
 extend_range <- function(x, fact = 1, na.rm = FALSE) {
   x + (fact - 1) * (x - mean(x, na.rm = na.rm))

@@ -102,6 +102,9 @@ intersect2 <- function(...) {
 
 
 #' Scale values of a vector so that the result sums to 1
+#'
+#' @param x A numeric vector
+#'
 #' @export
 scale_by_sum <- function(x) {
   temp <- sum(x, na.rm = TRUE)

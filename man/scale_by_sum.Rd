@@ -6,6 +6,9 @@
 \usage{
 scale_by_sum(x)
 }
+\arguments{
+\item{x}{A numeric vector}
+}
 \description{
 Scale values of a vector so that the result sums to 1
 }

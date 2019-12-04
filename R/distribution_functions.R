@@ -62,7 +62,12 @@ test_sigmaGamma <- function(data, sigmaN = 6) {
 
 
 
-#' Find the most common element of x
+#' Find the most common element of a vector
+#'
+#' @param x A vector of numeric, logical, or character mode and it may be a
+#'   factor as well.
+#' @param na.rm A logical value
+#'
 #' @export
 majority <- function(x, na.rm = FALSE) {
   ina <- is.na(x)

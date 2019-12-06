@@ -6,8 +6,8 @@
 #' @param na.rm A logical value. Should (pairwise) missing values be removed?
 #'
 #' @section Details: \code{obs} and \code{sim} must have the same dimensions.
-#'   If they are two-dimensional objects, then the GOFs are calculated for
-#'   each column separately.
+#'   If they are two-dimensional objects, then the \var{GOFs} are calculated
+#'   for each column separately.
 #'
 #' @return A numeric vector of length corresponding to the number of columns
 #'   (which is one in case of one-dimensional inputs.)

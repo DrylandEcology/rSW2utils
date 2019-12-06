@@ -38,8 +38,8 @@ Goodness of fit measures between observations and simulated values
 
 \section{Details}{
  \code{obs} and \code{sim} must have the same dimensions.
-  If they are two-dimensional objects, then the GOFs are calculated for
-  each column separately.
+  If they are two-dimensional objects, then the \var{GOFs} are calculated
+  for each column separately.
 }
 
 \references{

@@ -109,8 +109,8 @@ project you agree to abide by its terms.
 
 <a name="code_documentation"></a>
 #### Code documentation
-  * This is based on the
-    [section 'Object documentation' in Wickham's book 'R packages'][r-pkgs man]
+  * This is based on the section
+    ['Object documentation' of the book 'R packages' by Wickham][r-pkgs man]
   * Use [roxygen2 formatting][] to write inline code documentation of functions
   * Use regular R-style comments to additionally document code
   * Update help pages and the `NAMESPACE` file with the command
@@ -122,15 +122,16 @@ project you agree to abide by its terms.
 
 <a name="code_tests"></a>
 #### Code tests and package checks
-  * This is based on the
-    [section 'Testing' in Wickham's book 'R packages'][r-pkgs tests]
+  * This is based on the section
+    ['Testing' of the book 'R packages' by Wickham][r-pkgs tests]
 
   * Unit tests
     * Use [testthat][] to add unit tests to the existing framework
     * Run unit tests with the command `devtools::test()`
 
   * Package checks
-    * Package checks are run with `devtools::check()` or
+    * Package checks are run with
+      `devtools::check(cran = TRUE, env_vars = c(NOT_CRAN = "true"))` or
       `R CMD build . && R CMD check *.tar.gz`
       which will also run the unit tests
     * Package checks additionally include code style and spelling

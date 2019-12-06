@@ -30,7 +30,7 @@
 #' @param dpm A numeric object. Number of days per month in the time series
 #'   \code{x}. Only used if one of the units is on a monthly time scale.
 #'
-#' @return A numeric objecct of the same size as \code{x} in units of
+#' @return A numeric object of the same size as \code{x} in units of
 #'   \code{unit_to}.
 #'
 #' @export

@@ -26,7 +26,7 @@ respectively "cm/day", "cm/month".}
 \code{x}. Only used if one of the units is on a monthly time scale.}
 }
 \value{
-A numeric objecct of the same size as \code{x} in units of
+A numeric object of the same size as \code{x} in units of
   \code{unit_to}.
 }
 \description{

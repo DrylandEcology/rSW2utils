@@ -14,7 +14,8 @@ Suggests:
     statip,
     testthat,
     spelling,
-    lintr
+    lintr,
+    covr
 License: GPL-3
 URL: https://github.com/DrylandEcology/rSW2utils
 BugReports: https://github.com/DrylandEcology/rSW2utils/issues

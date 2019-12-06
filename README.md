@@ -6,7 +6,7 @@
 [1]: https://travis-ci.org/DrylandEcology/rSW2utils.svg?branch=master
 [2]: https://travis-ci.org/DrylandEcology/rSW2utils
 [3]: https://ci.appveyor.com/api/projects/status/8flt0gx8q1uupdqb/branch/master?svg=true
-[4]: https://ci.appveyor.com/project/dschlaep/rSW2utils/branch/master
+[4]: https://ci.appveyor.com/project/DrylandEcologyGit/rsw2utils
 [5]: https://img.shields.io/github/release/DrylandEcology/rSW2utils.svg?label=current+release
 [6]: https://github.com/DrylandEcology/rSW2utils/releases
 [7]: https://img.shields.io/github/license/DrylandEcology/rSW2utils.svg

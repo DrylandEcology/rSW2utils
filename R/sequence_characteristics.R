@@ -29,21 +29,54 @@ calc_starts <- function(x) {
 
 
 
-#' @seealso \code{\link[raster]{movingFun}}
+#' Apply function to (centered) moving window
+#'
+#' @param x A numeric vector.
+#' @param k An integer value. The width of the moving window.
+#' @param win_fun A function. The function must return an object of length one
+#'   and accept \code{na.rm} as argument.
+#' @param na.rm A logical value. Used as argument to \code{win_fun}.
+#' @param circular A logical value. If \code{TRUE}, then window wraps around
+#'   both ends of \code{x},
+#'   e.g., \code{x} represents mean values for day of year.
+#'
+#' @return A numeric vector of the length of \code{x}.
+#'
+#' @references  \code{\link[raster]{movingFun}}
+#'
+#' @seealso The package \code{caTools} provides fast versions.
+#'
 #' @export
-window <- function(x, n = 3, win_fun = sum) {
-  ids <- seq_len(n)
-  lng <- length(x)
-  x <- c(x, x[ids])
+moving_function <- function(x, k = 3, win_fun = sum, na.rm = FALSE,
+  circular = FALSE) {
 
-  m <- matrix(ncol = 3, nrow = lng)
-  for (i in ids) {
-    m[, i] <- x[i:(lng + i - 1)]
+  k <- round(abs(k))
+  stopifnot(
+    length(
+      win_fun(x[seq_len(min(k, length(x)))], na.rm = na.rm)
+    ) == 1
+  )
+
+  n <- length(x)
+  k2 <- floor(k / 2)
+
+  if (k2 > 0) {
+    x <- if (circular) {
+      c(x[(n - k2 + 1):n], x, x[seq_len(k2)])
+    } else {
+      tmp <- rep(NA, k2)
+      c(tmp, x, tmp)
+    }
   }
 
-  apply(m, MARGIN = 1, FUN = win_fun)
-}
+  tmp <- matrix(NA, ncol = k, nrow = n)
+  for (i in seq_len(k)) {
+    tmp[, i] <- x[i:(n + i - 1)]
+  }
 
+
+  apply(tmp, MARGIN = 1, FUN = win_fun, na.rm = na.rm)
+}
 
 
 #' @export

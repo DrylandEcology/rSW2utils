@@ -110,3 +110,43 @@ max_duration <- function(x, target_val = 1L, return_doys = FALSE) {
 
   len
 }
+
+
+#' Count the number of peaks in a series of values
+#'
+#' Peaks are identified as patterns of increase, possibly followed by a
+#' constant stretch, which ends in a decrease.
+#'
+#' @param x A numeric vector
+#' @param min_change A numeric value. The size of a minimal change between
+#'   two consecutive values of \code{x} to count as increase/decrease.
+#'
+#' @return An integer value representing the number of peaks
+#'
+#' @examples
+#' count_peaks(c(0, 1, 0, 1, 0)) ## expect 2 peaks
+#' count_peaks(c(0, 1, 0, 1)) ## expect 1 peak
+#' count_peaks(c(1, 0, 1)) ## expect 0 peak
+#' count_peaks(c(0, 1, 1, 2.5, 5.1, 4.9)) ## expect 1 peak
+#' count_peaks(c(0, 1, 1, 2.5, 5.1, 4.9), min_change = 0.5) ## expect 0 peak
+#' count_peaks(c(0, 1, 1, 0.8, 5.1, 4)) ## expect 2 peak
+#' count_peaks(c(0, 1, 1, 0.8, 5.1, 4), min_change = 0.1) ## expect 2 peak
+#' count_peaks(c(0, 1, 1, 0.8, 5.1, 4), min_change = 0.5) ## expect 1 peak
+#'
+#' @export
+count_peaks <- function(x, min_change = 0) {
+  min_change <- abs(min_change)
+
+  dtmp <- diff(x)
+  stmp <- sign(dtmp)
+
+  if (min_change > 0) {
+    stmp[abs(dtmp) < min_change] <- 0
+  }
+
+  rtmp <- rle(stmp)
+  tmp <- rtmp[["values"]]
+  tmp <- tmp[tmp != 0]
+  tmp <- diff(tmp)
+  as.integer(sum(tmp == -2))
+}

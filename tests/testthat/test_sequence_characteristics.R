@@ -52,3 +52,15 @@ test_that("Moving window", {
     }
   }
 })
+
+
+test_that("Counting peaks", {
+  expect_equal(count_peaks(c(0, 1, 0, 1, 0)), 2)
+  expect_equal(count_peaks(c(0, 1, 0, 1)), 1)
+  expect_equal(count_peaks(c(1, 0, 1)), 0)
+  expect_equal(count_peaks(c(0, 1, 1, 2.5, 5.1, 4.9)), 1)
+  expect_equal(count_peaks(c(0, 1, 1, 2.5, 5.1, 4.9), min_change = 0.5), 0)
+  expect_equal(count_peaks(c(0, 1, 1, 0.8, 5.1, 4)), 2)
+  expect_equal(count_peaks(c(0, 1, 1, 0.8, 5.1, 4), min_change = 0.1), 2)
+  expect_equal(count_peaks(c(0, 1, 1, 0.8, 5.1, 4), min_change = 0.5), 1)
+})

@@ -22,6 +22,8 @@
 #'
 #' @param x A numeric vector or a matrix. If a data.frame is supplied, then
 #'   \code{x} is coerced to a matrix.
+#' @param w A numeric vector. The weights for \code{x}, i.e., their length
+#'   must match the length of \code{x}.
 #' @param int A numeric value. The number of units of \code{x} in a full circle,
 #'   e.g., for unit days: \code{int = 365}; for unit months: \code{int = 12}.
 #' @param na.rm A logical value indicating whether \code{NA} values should be
@@ -65,6 +67,7 @@ get_circular_type <- function(x, circ, int,
 
 #' @rdname circular
 #' @examples
+#' ## Examples with `circ_mean`
 #' x <- 1:3
 #' circ_mean(x, int = 12, type = "minusPiPlusPi") ## expected 2
 #' circ_mean(x, int = 12, type = "ZeroPlus2Pi") ## expected 2
@@ -99,6 +102,42 @@ circ_mean <- function(x, int, type = c("minusPiPlusPi", "ZeroPlus2Pi"),
     NA
   }
 }
+
+
+#' @rdname circular
+#'
+#' @examples
+#' ## Examples with `circ_mean_weighted`
+#' x <- seq_len(12)
+#' w <- c(1, rep(0, 7), 1, 1, 2, 1)
+#' stats::weighted.mean(x, w) ## expected 9
+#' circ_mean_weighted(x, w, int = 12, type = "minusPiPlusPi") ## expected -1
+#' circ_mean_weighted(x, w, int = 12, type = "ZeroPlus2Pi") ## expected 11
+#'
+#' @export
+circ_mean_weighted <- function(x, w, int,
+  type = c("minusPiPlusPi", "ZeroPlus2Pi"),
+  na.rm = FALSE
+) {
+  type <- match.arg(type)
+
+  if (!all(is.na(x)) && requireNamespace("circular", quietly = TRUE)) {
+    circ <- 2 * pi / int
+    x_circ <- circular::circular(x * circ,
+      type = "angles",
+      units = "radians",
+      rotation = "clock",
+      modulo = "2pi")
+
+    res_circ <- weighted.mean(x = x_circ, w = w, na.rm = na.rm)
+
+    get_circular_type(res_circ, circ, int, type)
+
+  } else {
+    NA
+  }
+}
+
 
 #' @rdname circular
 #'

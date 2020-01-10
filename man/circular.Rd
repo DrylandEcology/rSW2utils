@@ -5,9 +5,18 @@
 \alias{circ_mean}
 \alias{circ_range}
 \alias{circ_sd}
+\alias{circ_mean_weighted}
 \title{Functions for circular descriptive statistics}
 \usage{
 circ_mean(x, int, type = c("minusPiPlusPi", "ZeroPlus2Pi"), na.rm = FALSE)
+
+circ_mean_weighted(
+  x,
+  w,
+  int,
+  type = c("minusPiPlusPi", "ZeroPlus2Pi"),
+  na.rm = FALSE
+)
 
 circ_range(x, int, na.rm = FALSE)
 
@@ -27,6 +36,9 @@ then the resulting value lies between \code{0} and \code{int}.}
 
 \item{na.rm}{A logical value indicating whether \code{NA} values should be
 stripped before the computation proceeds.}
+
+\item{w}{A numeric vector. The weights for \code{x}, i.e., their length
+must match the length of \code{x}.}
 }
 \value{
 A numeric value or \code{NA}.
@@ -35,6 +47,7 @@ A numeric value or \code{NA}.
 Functions for circular descriptive statistics
 }
 \examples{
+## Examples with `circ_mean`
 x <- 1:3
 circ_mean(x, int = 12, type = "minusPiPlusPi") ## expected 2
 circ_mean(x, int = 12, type = "ZeroPlus2Pi") ## expected 2
@@ -47,6 +60,13 @@ circ_mean(x, int = 12, type = "ZeroPlus2Pi") ## expected 12
 x <- (-5):8
 circ_mean(x, int = 12, type = "minusPiPlusPi") ## expected -4.5
 circ_mean(x, int = 12, type = "ZeroPlus2Pi") ## expected 7.5
+
+## Examples with `circ_mean_weighted`
+x <- seq_len(12)
+w <- c(1, rep(0, 7), 1, 1, 2, 1)
+stats::weighted.mean(x, w) ## expected 9
+circ_mean_weighted(x, w, int = 12, type = "minusPiPlusPi") ## expected -1
+circ_mean_weighted(x, w, int = 12, type = "ZeroPlus2Pi") ## expected 11
 
 }
 \seealso{

@@ -20,7 +20,7 @@
 [rSW2utils]: https://github.com/DrylandEcology/rSW2utils
 [rSFSTEP2]: https://github.com/DrylandEcology/rSFSTEP2
 [rSOILWAT2]: https://github.com/DrylandEcology/rSOILWAT2
-[rSFSW2]: https://github.com/DrylandEcology/rSW2utils
+[rSFSW2]: https://github.com/DrylandEcology/rSFSW2
 [issues]: https://github.com/DrylandEcology/rSW2utils/issues
 [pull request]: https://github.com/DrylandEcology/rSW2utils/pulls
 [guidelines]: https://github.com/DrylandEcology/workflow_guidelines

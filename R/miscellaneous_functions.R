@@ -157,3 +157,128 @@ all_equal_recursively <- function(x1, x2) {
     }
   }
 }
+
+
+
+#' Compare if two numeric objects are nearly equal
+#'
+#' @inheritParams base::all.equal
+#' @param scaled A logical value. See Details.
+#'
+#' @seealso \code{\link[base]{all.equal}}
+#'
+#' @section Details:
+#' Typically, relative differences are reported if \code{scaled = TRUE}
+#' which is equivalent to argument \code{scale = NULL} of
+#' \code{\link[base]{all.equal}}. In fact, in this case,
+#' \code{\link[base]{all.equal}} is called with \code{countEQ = FALSE}.
+#' However, the mean across absolute differences of those elements that
+#' differ by at least \code{tolerance} is reported if \code{scaled = FALSE}.
+#' This behavior differs from \code{\link[base]{all.equal}} in R \var{v3.6.2}
+#' with \code{countEQ = FALSE} and \code{scale = 1} which reports
+#' the mean absolute difference of those elements that differ at all.
+#' See examples.
+#'
+#' @examples
+#' N <- 50
+#' diff <- 0.1
+#' tiny_diff <- 1e-14 # < sqrt(.Machine$double.eps)
+#' tol <- sqrt(.Machine$double.eps) # default value of `all.equal`
+#'
+#' x <- runif(n = N)
+#'
+#' # Set up y1 as identical to x except for one element
+#' y1 <- x
+#' y1[2] <- y1[2] + diff
+#'
+#' # Set up y2 as almost identical to y1
+#' y2 <- y1
+#' y2[5:10] <- y2[5:10] + tiny_diff
+#'
+#' ## ==> expect that comparisons of `y1` against `x` and `y2` against `x`
+#' ## result in the same mean absolute difference because `y1` and `y2`
+#' ## differ by less than `tolerance`
+#' all.equal(y1, x, tolerance = tol, scale = 1, countEQ = FALSE)
+#' all.equal(y2, x, tolerance = tol, scale = 1, countEQ = FALSE)
+#'
+#' all_equal_numeric2(y1, x, tolerance = tol, scaled = FALSE)
+#' all_equal_numeric2(y2, x, tolerance = tol, scaled = FALSE)
+#'
+#' all_equal_numeric2(list(y2, y1), list(x, x), tolerance = tol, scaled = FALSE)
+#'
+#' @export
+all_equal_numeric2 <- function(target, current,
+  tolerance = sqrt(.Machine$double.eps),
+  scaled = FALSE, ...
+) {
+  if (is.null(scaled) || isTRUE(scaled)) {
+    msg <- all.equal(
+      target = target,
+      current = current,
+      tolerance = tolerance,
+      scale = NULL,
+      countEQ = FALSE
+    )
+
+  } else {
+    # based on `all.equal.numeric` R v3.6.2
+    # with arguments `scale = 1` and `countEQ = FALSE`
+    msg <- attr.all.equal(target, current, tolerance = tolerance)
+
+    if (data.class(target) != data.class(current)) {
+      msg <- c(
+        msg,
+        paste0(
+          "target is ", data.class(target),
+          ", current is ", data.class(current)
+        )
+      )
+
+    } else {
+      has_components <- is.list(target) || is.data.frame(target)
+
+      if (has_components) {
+        n <- min(length(target), length(current))
+        ids <- seq_len(n)
+        nt <- names(target)
+        nt <- if (is.null(nt)) ids else ifelse(nchar(nt) > 0, nt, ids)
+
+        for (k in ids) {
+          mi <- Recall(
+            target = target[[k]],
+            current = current[[k]],
+            tolerance = tolerance,
+            scaled = scaled
+          )
+
+          if (is.character(mi)) {
+            msg <- c(msg, paste0("Component ", dQuote(nt[k]), ": ", mi))
+          }
+        }
+
+      } else {
+        # `all.equal.numeric` uses instead `out | target == current`
+        out <- is.na(target) | abs(target - current) < tolerance
+
+        if (!all(out)) {
+          target <- target[!out]
+          current <- current[!out]
+
+          N <- length(target)
+
+          if (is.integer(target) && is.integer(current)) {
+            target <- as.double(target)
+          }
+
+          xy <- sum(abs(target - current)) / N
+
+          if (is.na(xy) || xy > tolerance) {
+            msg <- c(msg, paste("Mean absolute difference:", format(xy)))
+          }
+        }
+      }
+    }
+  }
+
+  if (is.null(msg)) TRUE else msg
+}

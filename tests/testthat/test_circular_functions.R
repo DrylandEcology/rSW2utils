@@ -76,7 +76,6 @@ test_that("Circular subtraction", {
   expect_equal(circ_minus(x, y, int = 365), tmp)
 
   y[1, 1] <- tmp[1, 1] <- NA
-  circ_minus(y2, x, int = 365)
   expect_equal(circ_minus(x, y, int = 365), tmp)
 })
 

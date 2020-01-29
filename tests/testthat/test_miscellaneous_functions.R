@@ -16,8 +16,17 @@ y2 <- y1
 y2[5:10] <- y2[5:10] + tiny_diff
 
 
+utils::data("iris", package = "datasets")
+iris[, "Species"] <- as.character(iris[, "Species"])
+iris2 <- iris # Column "Species" is a character vector
+iris2[1, "Sepal.Length"] <- 0.1 + iris2[1, "Sepal.Length"]
+iris2[2:7, "Sepal.Length"] <- iris2[2:7, "Sepal.Length"] + tiny_diff
+iris2[10, "Species"] <- "Test"
+
+
 # Unit tests
 test_that("Comparing objects", {
+  # Numeric objects
   expect_true(all_equal_numeric2(x, x, scaled = FALSE))
   expect_true(all_equal_numeric2(x, x, scaled = TRUE))
 
@@ -45,4 +54,21 @@ test_that("Comparing objects", {
     all_equal_numeric2(list(a = y2, y1), list(x, x))[[1]],
     "names for target but not for current"
   )
+
+  # Partially non-numeric objects
+  expect_true(all_equal_numeric2(iris2, iris2))
+
+  expect_match(
+    all_equal_numeric2(iris, iris2, scaled = FALSE)[[1]],
+    "Mean absolute difference"
+  )
+
+  # Non-numeric objects
+  expect_true(all_equal_numeric2(iris2[, "Species"], iris2[, "Species"]))
+
+  expect_match(
+    all_equal_numeric2(iris[, "Species"], iris2[, "Species"]),
+    "string mismatch"
+  )
+
 })

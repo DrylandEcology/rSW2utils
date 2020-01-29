@@ -2,7 +2,7 @@
 % Please edit documentation in R/miscellaneous_functions.R
 \name{all_equal_numeric2}
 \alias{all_equal_numeric2}
-\title{Compare if two numeric objects are nearly equal}
+\title{Compare if two objects are nearly equal}
 \usage{
 all_equal_numeric2(
   target,
@@ -27,16 +27,18 @@ all_equal_numeric2(
     following two, for numerical comparison:}
 }
 \description{
-Compare if two numeric objects are nearly equal
+Compare if two objects are nearly equal
 }
 \section{Details}{
 
-Typically, relative differences are reported if \code{scaled = TRUE}
+Non-numeric objects are passed to \code{\link[base]{all.equal}}.
+Relative differences are typically reported if \code{scaled = TRUE}
 which is equivalent to argument \code{scale = NULL} of
 \code{\link[base]{all.equal}}. In fact, in this case,
 \code{\link[base]{all.equal}} is called with \code{countEQ = FALSE}.
-However, the mean across absolute differences of those elements that
-differ by at least \code{tolerance} is reported if \code{scaled = FALSE}.
+However, the mean across absolute differences of those (numeric)
+elements that differ by at least \code{tolerance} is reported
+if \code{scaled = FALSE}.
 This behavior differs from \code{\link[base]{all.equal}} in R \var{v3.6.2}
 with \code{countEQ = FALSE} and \code{scale = 1} which reports
 the mean absolute difference of those elements that differ at all.
@@ -69,6 +71,18 @@ all_equal_numeric2(y1, x, tolerance = tol, scaled = FALSE)
 all_equal_numeric2(y2, x, tolerance = tol, scaled = FALSE)
 
 all_equal_numeric2(list(y2, y1), list(x, x), tolerance = tol, scaled = FALSE)
+
+
+## Example with non-numeric elements
+data("iris", package = "datasets")
+iris[, "Species"] <- as.character(iris[, "Species"])
+iris2 <- iris # Column "Species" is a character vector
+iris2[1, "Sepal.Length"] <- 0.1 + iris2[1, "Sepal.Length"]
+iris2[2:7, "Sepal.Length"] <- iris2[2:7, "Sepal.Length"] + tiny_diff
+iris2[10, "Species"] <- "Test"
+
+all.equal(iris, iris2, tolerance = tol, scale = 1, countEQ = FALSE)
+all_equal_numeric2(iris, iris2, tolerance = tol, scaled = FALSE)
 
 }
 \seealso{

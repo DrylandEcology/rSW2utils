@@ -160,7 +160,7 @@ all_equal_recursively <- function(x1, x2) {
 
 
 
-#' Compare if two numeric objects are nearly equal
+#' Compare if two objects are nearly equal
 #'
 #' @inheritParams base::all.equal
 #' @param scaled A logical value. See Details.
@@ -168,12 +168,14 @@ all_equal_recursively <- function(x1, x2) {
 #' @seealso \code{\link[base]{all.equal}}
 #'
 #' @section Details:
-#' Typically, relative differences are reported if \code{scaled = TRUE}
+#' Non-numeric objects are passed to \code{\link[base]{all.equal}}.
+#' Relative differences are typically reported if \code{scaled = TRUE}
 #' which is equivalent to argument \code{scale = NULL} of
 #' \code{\link[base]{all.equal}}. In fact, in this case,
 #' \code{\link[base]{all.equal}} is called with \code{countEQ = FALSE}.
-#' However, the mean across absolute differences of those elements that
-#' differ by at least \code{tolerance} is reported if \code{scaled = FALSE}.
+#' However, the mean across absolute differences of those (numeric)
+#' elements that differ by at least \code{tolerance} is reported
+#' if \code{scaled = FALSE}.
 #' This behavior differs from \code{\link[base]{all.equal}} in R \var{v3.6.2}
 #' with \code{countEQ = FALSE} and \code{scale = 1} which reports
 #' the mean absolute difference of those elements that differ at all.
@@ -206,6 +208,18 @@ all_equal_recursively <- function(x1, x2) {
 #'
 #' all_equal_numeric2(list(y2, y1), list(x, x), tolerance = tol, scaled = FALSE)
 #'
+#'
+#' ## Example with non-numeric elements
+#' data("iris", package = "datasets")
+#' iris[, "Species"] <- as.character(iris[, "Species"])
+#' iris2 <- iris # Column "Species" is a character vector
+#' iris2[1, "Sepal.Length"] <- 0.1 + iris2[1, "Sepal.Length"]
+#' iris2[2:7, "Sepal.Length"] <- iris2[2:7, "Sepal.Length"] + tiny_diff
+#' iris2[10, "Species"] <- "Test"
+#'
+#' all.equal(iris, iris2, tolerance = tol, scale = 1, countEQ = FALSE)
+#' all_equal_numeric2(iris, iris2, tolerance = tol, scaled = FALSE)
+#'
 #' @export
 all_equal_numeric2 <- function(target, current,
   tolerance = sqrt(.Machine$double.eps),
@@ -225,7 +239,10 @@ all_equal_numeric2 <- function(target, current,
     # with arguments `scale = 1` and `countEQ = FALSE`
     msg <- attr.all.equal(target, current, tolerance = tolerance)
 
-    if (data.class(target) != data.class(current)) {
+    dct <- data.class(target)
+    dcc <- data.class(current)
+
+    if (dct != dcc) {
       msg <- c(
         msg,
         paste0(
@@ -244,12 +261,26 @@ all_equal_numeric2 <- function(target, current,
         nt <- if (is.null(nt)) ids else ifelse(nchar(nt) > 0, nt, ids)
 
         for (k in ids) {
-          mi <- Recall(
-            target = target[[k]],
-            current = current[[k]],
-            tolerance = tolerance,
-            scaled = scaled
-          )
+          mi <- if (
+            data.class(target[[k]]) == "numeric" &&
+            data.class(current[[k]])== "numeric"
+          ) {
+            Recall(
+              target = target[[k]],
+              current = current[[k]],
+              tolerance = tolerance,
+              scaled = scaled
+            )
+
+          } else {
+            all.equal(
+              target = target[[k]],
+              current = current[[k]],
+              tolerance = tolerance,
+              scale = 1,
+              countEQ = FALSE
+            )
+          }
 
           if (is.character(mi)) {
             msg <- c(msg, paste0("Component ", dQuote(nt[k]), ": ", mi))
@@ -257,23 +288,38 @@ all_equal_numeric2 <- function(target, current,
         }
 
       } else {
-        # `all.equal.numeric` uses instead `out | target == current`
-        out <- is.na(target) | abs(target - current) < tolerance
+        if (dct == "numeric" && dcc == "numeric") {
+          # `all.equal.numeric` uses instead `out | target == current`
+          out <- is.na(target) | abs(target - current) < tolerance
 
-        if (!all(out)) {
-          target <- target[!out]
-          current <- current[!out]
+          if (!all(out)) {
+            target <- target[!out]
+            current <- current[!out]
 
-          N <- length(target)
+            N <- length(target)
 
-          if (is.integer(target) && is.integer(current)) {
-            target <- as.double(target)
+            if (is.integer(target) && is.integer(current)) {
+              target <- as.double(target)
+            }
+
+            xy <- sum(abs(target - current)) / N
+
+            if (is.na(xy) || xy > tolerance) {
+              msg <- c(msg, paste("Mean absolute difference:", format(xy)))
+            }
           }
 
-          xy <- sum(abs(target - current)) / N
+        } else {
+          mi <- all.equal(
+            target = target,
+            current = current,
+            tolerance = tolerance,
+            scale = 1,
+            countEQ = FALSE
+          )
 
-          if (is.na(xy) || xy > tolerance) {
-            msg <- c(msg, paste("Mean absolute difference:", format(xy)))
+          if (is.character(mi)) {
+            msg <- c(msg, mi)
           }
         }
       }

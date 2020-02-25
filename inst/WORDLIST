@@ -13,12 +13,15 @@
 
 #------------------------------------
 #------ Jargon
+et
 merchantability
 monotonicity
+scalable
 technometrics
 
 #------------------------------------
 #------ Abbreviations
+al
 ORCID
 USGS
 
@@ -28,6 +31,7 @@ appveyor
 Choi
 codecov
 github
+Kleiner
 Lauenroth
 Palmquist
 roxygen
@@ -35,10 +39,12 @@ rSFSTEP
 rSFSW
 rSOILWAT
 rSW
+Sarkar
 Schlaepfer
 SOILWAT
 STEPWAT
 Sutcliffe
+Talwalkar
 testthat
 travis
 Wette

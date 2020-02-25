@@ -3,6 +3,7 @@
 export(NSE)
 export(all_equal_numeric2)
 export(all_equal_recursively)
+export(blb)
 export(calc_starts)
 export(check_monotonic_increase)
 export(circ_add)

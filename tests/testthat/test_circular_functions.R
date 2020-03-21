@@ -103,4 +103,15 @@ test_that("Circular sequences", {
   expect_equal(circ_seq(-2, 3, int = 12), c(10, 11, 12, 1, 2, 3))
   expect_equal(circ_seq(-2, 3, int = 12, by = 2), c(10, 12, 2))
   expect_equal(circ_seq(-2, 3, int = 12, length.out = 3), c(10, 0.5, 3))
+
+  expect_equal(circ_seq(-2, -2, int = 12), 10)
+  expect_equal(circ_seq(10, 10, int = 12), 10)
+  expect_equal(circ_seq(-2, -2, int = 12, by = 2), 10)
+  expect_equal(circ_seq(-2, -2, int = 12, by = 0), 10)
+  expect_equal(circ_seq(-2, -2, int = 12, length.out = 3), rep(10, 3))
+
+  expect_error(circ_seq(5, 8, int = 12, by = c(1, 3)))
+  expect_error(circ_seq(5, 8, int = 12, by = 0))
+  expect_error(circ_seq(5, 8, int = 12, by = -3))
+  expect_error(circ_seq(5, 8, int = 12, by = 1e-10))
 })

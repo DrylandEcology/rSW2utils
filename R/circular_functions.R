@@ -318,11 +318,16 @@ circ_seq <- function(from, to, int, by, length.out = NULL) {
 
   del <- circ_minus(to, from, int = p, type = "ZeroPlus2Pi")
 
-  # Code from `seq.default`: start
-  if (del == 0 && to == 0) {
-    return(to)
+  # from/to are identical
+  if (del == 0 || del == p) {
+    res <- ZeroPlus2Pi(to, p)
+
+    if (!is.null(length.out)) {
+      res <- rep.int(res, length.out)
+    }
+
+    return(res)
   }
-  # Code from `seq.default`: end
 
   # Determine `by`
   if (missing(by) || is.null(by)) {
@@ -348,8 +353,8 @@ circ_seq <- function(from, to, int, by, length.out = NULL) {
   n <- del / by
 
   if (!is.finite(n)) {
-    if (!is.na(by) && by == 0 && del == 0) {
-      return(from)
+    if (!is.na(by) && by == 0 && (del == 0 || del == p)) {
+      return(ZeroPlus2Pi(from, p))
     }
     stop("invalid '(to - from)/by'")
   }
@@ -364,7 +369,7 @@ circ_seq <- function(from, to, int, by, length.out = NULL) {
 
   dd <- abs(del) / max(abs(to), abs(from))
   if (dd < 100 * .Machine[["double.eps"]]) {
-    return(from)
+    return(ZeroPlus2Pi(from, p))
   }
   # Code from `seq.default`: end
 

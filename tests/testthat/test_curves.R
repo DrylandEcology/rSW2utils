@@ -34,13 +34,40 @@ test_that("lines", {
 
 test_that("circle", {
   thetas <- seq(0, 2 * pi, length = 200)
+  r <- c(1, 0.5, 2)
 
-  cfun <- f_circle()
+  for (k in seq_along(r)) {
+    cfun <- f_circle(r = r[k])
 
-  cvals <- cfun(thetas)
+    cvals <- cfun(thetas)
 
-  # x ^ 2 + y ^ 2 == 1
-  expect_true(
-    all(abs(apply(cvals ^ 2, 1, sum) - 1) < rSW2_glovars[["tol"]])
+    # (x ^ 2 + y ^ 2) / r ^ 2 == 1
+    cvals <- cvals / r[k]
+    expect_true(
+      all(abs(apply(cvals ^ 2, 1, sum) - 1) < rSW2_glovars[["tol"]])
+    )
+  }
+})
+
+
+
+test_that("ellipse", {
+  thetas <- seq(0, 2 * pi, length = 200)
+  r <- list(
+    a = c(1, 0.5, 2),
+    b = c(1, 2, 0.5)
   )
+
+  for (k in seq_along(r)) {
+    cfun <- f_ellipse(a = r[["a"]][k], b = r[["b"]][k])
+
+    cvals <- cfun(thetas)
+
+    # x ^ 2 / a ^ 2 + y ^ 2 / b ^ 2 == 1
+    cvals[, 1] <- cvals[, 1] / r[["a"]][k]
+    cvals[, 2] <- cvals[, 2] / r[["b"]][k]
+    expect_true(
+      all(abs(apply(cvals ^ 2, 1, sum) - 1) < rSW2_glovars[["tol"]])
+    )
+  }
 })

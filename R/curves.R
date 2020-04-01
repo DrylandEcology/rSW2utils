@@ -102,3 +102,55 @@ f_circle <- function(x0 = 0, y0 = 0, r = 1, theta0 = 0, dir = 1) {
     )
   }
 }
+
+
+#' Ellipse function with angle argument \code{theta}
+#'
+#' @param x0 A numeric value. The x-axis value of the ellipse center.
+#' @param y0 A numeric value. The y-axis value of the ellipse center.
+#' @param a A numeric value. The major radius.
+#' @param b A numeric value. The minor radius.
+#' @param alpha A numeric value. The rotation angle of the ellipse.
+#' @param theta0 A numeric value. The (anti-clockwise) angle/rotation of the
+#'   starting point on the ellipse.
+#' @param dir A numeric value, interpreted as either
+#'  \code{-1}, i.e., clockwise, or as \code{1}, i.e., anti-clockwise
+#'  direction.
+#'
+#' @examples
+#' thetas <- seq(0, 2 * pi, length = 200)
+#' # circle with radius 1 and center at 0/0
+#' ellipse1 <- f_ellipse()
+#' plot(ellipse1(thetas), asp = 1, type = "l")
+#' points(0, 0, pch = 4)
+#' # ellipse with radii 0.2 and 0.1, 1/4-rotation, and center at 0.3/0.3
+#' lines(f_ellipse(0.3, 0.3, 0.2, 0.1, pi / 4)(thetas))
+#' # ellipse with radii 0.2 and 0.1, -1/4-rotation, and center at -0.3/0.3
+#' lines(f_ellipse(-0.3, 0.3, 0.2, 0.1, -pi / 4)(thetas))
+#' # semi-ellipse with radii 0.25 and 0.5 and center at 0/0
+#' lines(f_ellipse(0, 0, 0.25, 0.5, dir = -1)(seq(0, pi, length = 200)))
+#'
+#' @export
+f_ellipse <- function(x0 = 0, y0 = 0, a = 1, b = 1, alpha = 0, theta0 = 0,
+  dir = 1
+) {
+  dir <- as.numeric(dir)
+  dir <- if (isTRUE(dir > 0)) 1 else -1
+
+  function(theta) {
+    tmp <- dir * theta + theta0
+    cost <- cos(tmp)
+    sint <- sin(tmp)
+    cosa <- cos(alpha)
+    sina <- sin(alpha)
+    matrix(
+      c(
+        x = x0 + a * cost * cosa - b * sint * sina,
+        y = y0 + a * cost * sina + b * sint * cosa
+      ),
+      nrow = length(theta),
+      ncol = 2
+    )
+  }
+}
+

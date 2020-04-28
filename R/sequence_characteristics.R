@@ -150,3 +150,103 @@ count_peaks <- function(x, min_change = 0) {
   tmp <- diff(tmp)
   as.integer(sum(tmp == -2))
 }
+
+
+
+#' Scale values so that they retain the value of a function
+#' applied to reference values
+#'
+#' @param x Numeric vector. Values to scale.
+#' @param x_ref Numeric vector.
+#'   Values from which the reference value is calculated.
+#' @param fun A function or character vector identifying a function.
+#' @param na.rm A logical value. Argument is passed to \code{fun}.
+#'
+#' @seealso \code{\link{scale_to_reference_peak_frequency}}
+#' @return A numeric vector of the same length as \code{x}.
+#'
+#' @examples
+#' x <- c(1:6, 8)
+#' x0 <- c(10, -1)
+#' x0NA <- c(x0, NA)
+#'
+#' # Scale to retain value of reference maximum
+#' scale_to_reference_fun(x, x0, fun = max)
+#'
+#' # Scale to retain value of reference sum
+#' scale_to_reference_fun(x, x0, fun = sum)
+#'
+#' # Scale to retain value of reference mean
+#' scale_to_reference_fun(x, x0, fun = mean)
+#'
+#' # Scale to retain value of reference length (mostly nonsensical!)
+#' scale_to_reference_fun(x, x0, fun = length)
+#'
+#' # Scale and handle NAs
+#' scale_to_reference_fun(x, x0NA, fun = mean, na.rm = FALSE)
+#' scale_to_reference_fun(x, x0NA, fun = max, na.rm = TRUE)
+#'
+#' @export
+scale_to_reference_fun <- function(x, x_ref, fun, na.rm = FALSE) {
+  fun <- match.fun(fun)
+
+  # Determine whether function accepts a `na.rm` argument
+  tmp <- try(fun(x, na.rm = na.rm), silent = TRUE)
+  if (inherits(tmp, "try-error")) {
+    fun1 <- function(..., na.rm = na.rm) fun(...)
+  } else {
+    fun1 <- fun
+  }
+
+  # Calculate scaled values
+  x * fun1(x_ref, na.rm = na.rm) / fun1(x, na.rm = na.rm)
+}
+
+#' Scale values so that the frequency of values < max(reference values) is the
+#' same as the frequency of reference values < max(reference values)
+#'
+#' @inheritParams scale_to_reference_fun
+#' @param cap_at_peak A logical value. If \code{TRUE}, then scaled values
+#'   larger than the reference peak value are reset to that peak value.
+#'
+#' @seealso \code{\link{scale_to_reference_fun}}
+#' @return A numeric vector of the same length as \code{x}.
+#'
+#' @examples
+#' x <- c(0.685, 0.698, 0.717, 1.026, 1.216, 1.239, 1.123, 1.104, 0.999,
+#'        0.81, 0.652, 0.633)
+#' x0 <- c(0.5, 0.5, 0.5, 0.7, 0.9, 1, 1, 1, 0.9, 0.7, 0.5, 0.5)
+#' x_scaled1 <- scale_to_reference_peak_frequency(x, x0, cap_at_peak = TRUE)
+#' print(x_scaled1)
+#'
+#' x_scaled2 <- scale_to_reference_peak_frequency(x, x0)
+#' squash_into_low_high(x_scaled2, val_low = -Inf, val_high = max(x0))
+#'
+#' @export
+scale_to_reference_peak_frequency <- function(x, x_ref, cap_at_peak = FALSE,
+  na.rm = FALSE
+) {
+
+  n <- length(x_ref)
+  stopifnot(length(x) == n)
+
+  # Peak reference values
+  rmax <- max(x_ref, na.rm = na.rm)
+
+  # Number of peak reference values
+  nmax <- max(1, n - sum(x_ref < rmax, na.rm = na.rm))
+
+  # Un-scaled minimum value of peak number months
+  ids <- order(x, decreasing = TRUE)[seq_len(nmax)]
+  pmin <- min(x[ids], na.rm = na.rm)
+
+  # Scale values to maintain the number of peak reference values
+  res <- x * rmax / pmin
+
+  # Make sure no values exceed peak
+  if (cap_at_peak) {
+    res <- pmin(res, rmax, na.rm = na.rm)
+  }
+
+  res
+}

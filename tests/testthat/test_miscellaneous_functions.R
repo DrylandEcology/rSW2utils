@@ -15,6 +15,9 @@ y1[2] <- y1[2] + diff
 y2 <- y1
 y2[5:10] <- y2[5:10] + tiny_diff
 
+# Data with lots of NAs
+y3 <- rep(NA, N)
+y3[1] <- x[1]
 
 utils::data("iris", package = "datasets")
 iris[, "Species"] <- as.character(iris[, "Species"])
@@ -71,4 +74,13 @@ test_that("Comparing objects", {
     "string mismatch"
   )
 
+  # Handling NAs
+  expect_true(all_equal_numeric2(y3, y3, scaled = FALSE))
+  # - all non-NA values are equal
+  expect_true(all_equal_numeric2(y3, x, scaled = FALSE))
+  # - current has more NAs than target
+  expect_match(
+    all_equal_numeric2(x, y3, scaled = FALSE),
+    "'is.NA' value mismatch"
+  )
 })

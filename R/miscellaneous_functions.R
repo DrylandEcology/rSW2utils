@@ -288,9 +288,13 @@ all_equal_numeric2 <- function(target, current,
         }
 
       } else {
-        if (dct == "numeric" && dcc == "numeric") {
+        use_numeric <- dct == "numeric" && dcc == "numeric"
+        target_nas <- is.na(target)
+        current_nas_are_subset <- which(is.na(current)) %in% which(target_nas)
+
+        if (use_numeric && isTRUE(all(current_nas_are_subset))) {
           # `all.equal.numeric` uses instead `out | target == current`
-          out <- is.na(target) | abs(target - current) < tolerance
+          out <- target_nas | abs(target - current) < tolerance
 
           if (!all(out)) {
             target <- target[!out]

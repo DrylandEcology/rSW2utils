@@ -191,15 +191,18 @@ scale_to_reference_fun <- function(x, x_ref, fun, na.rm = FALSE) {
   fun <- match.fun(fun)
 
   # Determine whether function accepts a `na.rm` argument
-  tmp <- try(fun(x, na.rm = na.rm), silent = TRUE)
-  if (inherits(tmp, "try-error")) {
-    fun1 <- function(..., na.rm = na.rm) fun(...)
+  fun_x <- try(fun(x, na.rm = na.rm), silent = TRUE)
+
+  if (inherits(fun_x, "try-error")) {
+    fun_x <- fun(x)
+    fun_ref <- fun(x_ref)
+
   } else {
-    fun1 <- fun
+    fun_ref <- fun(x_ref, na.rm = na.rm)
   }
 
   # Calculate scaled values
-  x * fun1(x_ref, na.rm = na.rm) / fun1(x, na.rm = na.rm)
+  x * fun_ref / fun_x
 }
 
 #' Scale values so that the frequency of values < max(reference values) is the

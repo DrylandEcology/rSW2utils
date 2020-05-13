@@ -96,6 +96,7 @@ test_that("Scale to reference", {
   expect_equal(max(x0, na.rm = TRUE), max(x_scaled))
 
 
+  # Scale to reference peak frequency
   x <- c(
     0.685, 0.698, 0.717, 1.026, 1.216, 1.239, 1.123, 1.104, 0.999,
     0.81, 0.652, 0.633
@@ -111,5 +112,34 @@ test_that("Scale to reference", {
     x_scaled1,
     squash_into_low_high(x_scaled2, val_low = -Inf, val_high = max(x0))
   )
+
+  # Scale to sum to 1
+  x_scaled1 <- scale_to_reference_fun(x, 1, fun = sum)
+  expect_equal(1, sum(x_scaled1))
+
+  x_scaled2 <- scale_by_sum(x)
+  expect_equal(1, sum(x_scaled2))
+  expect_equal(x_scaled1, x_scaled2)
+
+
+  # Scale rounded values to sum to 1
+  expect_warning(
+    x_scaled1 <- scale_rounded_by_sum(x, digits = 1, icolumn_adjust = 7)
+  )
+
+  x_scaled1 <- scale_rounded_by_sum(x, digits = 2, icolumn_adjust = 7)
+  expect_equal(1, sum(x_scaled1))
+
+  x_scaled1 <- scale_rounded_by_sum(x, digits = 4, icolumn_adjust = 7)
+  expect_equal(1, sum(x_scaled1))
+
+  xm <- rbind(x, x + 1, x ^ 2)
+
+  expect_error(
+    x_scaled1 <- scale_rounded_by_sum(xm, digits = 1, icolumn_adjust = 7)
+  )
+
+  x_scaled1 <- scale_rounded_by_sum(xm, digits = 4, icolumn_adjust = 7)
+  expect_equal(rep(1, nrow(xm)), apply(x_scaled1, 1, sum))
 })
 

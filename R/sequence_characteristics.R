@@ -253,3 +253,131 @@ scale_to_reference_peak_frequency <- function(x, x_ref, cap_at_peak = FALSE,
 
   res
 }
+
+
+#' Scale values of a vector so that the result sums to 1
+#'
+#' @param x A numeric vector
+#'
+#' @seealso \code{\link{scale_to_reference_fun}}
+#'
+#' @examples
+#' x <- c(1:6, 8)
+#'
+#' # Equivalent but more efficient than `scale_to_reference_fun`
+#' scale_by_sum(x)
+#' scale_to_reference_fun(x, 1, fun = sum)
+#'
+#' @export
+scale_by_sum <- function(x) {
+  temp <- sum(x, na.rm = TRUE)
+  if (temp > 0 && is.finite(temp)) {
+    x / temp
+  } else {
+    x
+  }
+}
+
+
+
+
+#' Scale values so that the rounded values sum to 1
+#'
+#' @param x A one or two-dimensional numeric object with positive values:
+#'   a vector, data frame, matrix, or array.
+#'   A vector is treated as a 1-row matrix.
+#' @param digits A integer value. The number of decimal places to round;
+#'   a number between one and four.
+#' @param icolumn_adjust An integer value. The column number of
+#'   \code{x} that will be adjusted if rounded values have not converged
+#'   to sum to 1 after \code{max_iter}.
+#' @param max_iter An integer value. The maximum number of iterations.
+#' @param verbose A logical value. Reports a warning if \code{TRUE} and
+#'   \code{max_iter} is exceeded.
+#'
+#' @section Notes:
+#' This function may fail due to integer division by zero.
+#'
+#' @section Notes:
+#' This function may also not converge to round values so that they sum to 1,
+#' particularly if too few \code{digits} are available to round. In that case,
+#' attempt to increase \code{digits}. However, the return values should sum
+#' to within \code{digits} of 1.
+#'
+#' @seealso \code{\link{scale_by_sum}}, \code{\link[base]{round}}
+#'
+#' @examples
+#' x <- c(1:6, 8) / 10
+#' scale_rounded_by_sum(x, digits = 1, icolumn_adjust = 7)
+#' scale_rounded_by_sum(x, digits = 2, icolumn_adjust = 7)
+#' scale_rounded_by_sum(x, digits = 4, icolumn_adjust = 7)
+#'
+#' x <- matrix(1:12, nrow = 4, ncol = 3)
+#' scale_rounded_by_sum(x, digits = 1)
+#' scale_rounded_by_sum(x, digits = 2)
+#' scale_rounded_by_sum(x, digits = 4)
+#'
+#' @export
+scale_rounded_by_sum <- function(x, digits, icolumn_adjust = 1L,
+  max_iter = max(4L, digits + 1L), verbose = FALSE
+) {
+
+  if (is.vector(x)) {
+    x <- matrix(x, nrow = 1L)
+  }
+
+  stopifnot(
+    is.array(x) || is.matrix(x) || is.data.frame(x),
+    length(dim(x)) == 2L,
+    digits > 0 && digits <= 4L,
+    all(apply(x, 1L, sum) > 0)
+  )
+
+  # Scale to sum to 1 with `digits` precision
+  scale_sum <- as.integer(10 ^ digits)
+  sum1 <- scale_sum ^ 2
+
+  # Repeat scaling until sum is stable
+  k <- 1
+
+  repeat {
+    tmpk <- array(as.integer(round(scale_sum * x)), dim = dim(x))
+
+    sum_x <- apply(tmpk, 1L, sum)
+
+    if (k >= max_iter && any(sum_x != sum1, na.rm = TRUE)) {
+      if (verbose) {
+        warning(
+          "Rounded sum(s) not converged to 1 after ", k, " iterations: ",
+          "column ", icolumn_adjust, " adjusted to fix sum to 1."
+        )
+      }
+      tmpk[, icolumn_adjust] <- tmpk[, icolumn_adjust] + sum1 - sum_x
+    }
+
+    if (any(sum_x == 0)) {
+      stop("Rounded sum(s) failed due to division by 0.")
+    }
+
+    x <- sweep(
+      x = scale_sum * array(as.numeric(tmpk), dim = dim(tmpk)),
+      MARGIN = 1L,
+      STATS = sum_x,
+      FUN = "%/%"
+    )
+
+    ok <- all(apply(x, 1L, sum) == scale_sum)
+
+    if (k >= max_iter || ok) {
+      break
+    } else {
+      k <- k + 1
+    }
+  }
+
+  if (!ok) {
+    warning("Rounded sum(s) not converged to 1.")
+  }
+
+  x / scale_sum
+}

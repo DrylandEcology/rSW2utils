@@ -141,5 +141,9 @@ test_that("Scale to reference", {
 
   x_scaled1 <- scale_rounded_by_sum(xm, digits = 4, icolumn_adjust = 7)
   expect_equal(rep(1, nrow(xm)), apply(x_scaled1, 1, sum))
+
+  xdf <- as.data.frame(xm)
+  x_scaled1 <- scale_rounded_by_sum(xdf, digits = 4, icolumn_adjust = 7)
+  expect_equal(rep(1, nrow(xm)), apply(x_scaled1, 1, sum))
 })
 

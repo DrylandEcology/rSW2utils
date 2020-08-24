@@ -54,6 +54,9 @@ scale_rounded_by_sum(x, digits = 1)
 scale_rounded_by_sum(x, digits = 2)
 scale_rounded_by_sum(x, digits = 4)
 
+x <- as.data.frame(x)
+scale_rounded_by_sum(x, digits = 1)
+
 }
 \seealso{
 \code{\link{scale_by_sum}}, \code{\link[base]{round}}

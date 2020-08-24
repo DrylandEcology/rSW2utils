@@ -317,6 +317,9 @@ scale_by_sum <- function(x) {
 #' scale_rounded_by_sum(x, digits = 2)
 #' scale_rounded_by_sum(x, digits = 4)
 #'
+#' x <- as.data.frame(x)
+#' scale_rounded_by_sum(x, digits = 1)
+#'
 #' @export
 scale_rounded_by_sum <- function(x, digits, icolumn_adjust = 1L,
   max_iter = max(4L, digits + 1L), verbose = FALSE
@@ -326,8 +329,12 @@ scale_rounded_by_sum <- function(x, digits, icolumn_adjust = 1L,
     x <- matrix(x, nrow = 1L)
   }
 
+  if (is.data.frame(x)) {
+    x <- as.matrix(x)
+  }
+
   stopifnot(
-    is.array(x) || is.matrix(x) || is.data.frame(x),
+    is.array(x) || is.matrix(x),
     length(dim(x)) == 2L,
     digits > 0 && digits <= 4L,
     all(apply(x, 1L, sum) > 0)

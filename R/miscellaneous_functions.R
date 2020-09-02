@@ -332,3 +332,54 @@ all_equal_numeric2 <- function(target, current,
 
   if (is.null(msg)) TRUE else msg
 }
+
+
+
+
+#' Divide number of tasks into chunks
+#'
+#' Create a list that contains chunks of indices
+#' (that reference tasks by position) of either \itemize{
+#'   \item a specified number of chunks \code{n_chunks},
+#'     useful, e.g., if we have a fixed number of processing units, or
+#'   \item a specified number of tasks per chunk \code{chunk_size},
+#'     useful, e.g., if we have a (upper) fixed number of elements than can be
+#'     processed at a time.
+#' }
+#' The
+#'
+#' @param nx An integer value. Number of tasks.
+#' @param n_chunks An integer value or missing. The number of chunks.
+#' @param chunk_size An integer value or missing. The number of tasks per chunk.
+#'
+#' @return A list of integer vectors (chunks) that contain indices of
+#'   all \code{nx} tasks; either, the number of chunks is \code{<= n_chunks},
+#'   or the number of tasks/indices per chunk is \code{<= chunk_size}.
+#'
+#' @seealso \code{\link[parallel]{splitIndices}}
+#'
+#' @examples
+#' nx <- 16
+#'
+#' ## Create list of indices by number of chunks,
+#' (ids <- make_chunks(nx, n_chunks = 3))
+#' print(length(ids))
+#'
+#' ## Create list of indices by size per chunk,
+#' (ids <- make_chunks(nx, chunk_size = 5))
+#' print(lengths(ids))
+#'
+#' @export
+make_chunks <- function(nx, n_chunks, chunk_size = 1000L) {
+  if (nx <= 0 || (!missing(n_chunks) && n_chunks <= 0) || chunk_size <= 0) {
+    list()
+
+  } else if (requireNamespace("parallel")) {
+    if (missing(n_chunks)) {
+      parallel::splitIndices(nx = nx, ncl = ceiling(nx / chunk_size))
+
+    } else {
+      parallel::splitIndices(nx = nx, ncl = n_chunks)
+    }
+  }
+}

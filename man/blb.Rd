@@ -101,5 +101,6 @@ Kleiner, A., A. Talwalkar, P. Sarkar, and M. I. Jordan. 2014.
   Society: Series B (Statistical Methodology) 76:795–816.
 }
 \seealso{
-\code{\link[datadr]{drBLB}}
+Function \code{drBLB} of package
+  \url{https://github.com/delta-rho/datadr}.
 }

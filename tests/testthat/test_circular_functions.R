@@ -50,7 +50,7 @@ test_that("Circular weighted mean", {
   x <- seq_len(12)
   w <- c(1, rep(0, 7), 1, 1, 2, 1)
 
-  # stats::weighted.mean(x, w) ## expected 9
+  # stats::weighted.mean(x, w) ## expected 9 #nolint
   expect_equal(circ_mean_weighted(x, w, int = 12, type = "minusPiPlusPi"), -1)
   expect_equal(circ_mean_weighted(x, w, int = 12, type = "ZeroPlus2Pi"), 11)
 })

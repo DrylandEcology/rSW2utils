@@ -226,8 +226,8 @@ scale_to_reference_fun <- function(x, x_ref, fun, na.rm = FALSE) {
 #' squash_into_low_high(x_scaled2, val_low = -Inf, val_high = max(x0))
 #'
 #' @export
-scale_to_reference_peak_frequency <- function(x, x_ref, cap_at_peak = FALSE,
-  na.rm = FALSE
+scale_to_reference_peak_frequency <- function(x, x_ref, #nolint
+  cap_at_peak = FALSE, na.rm = FALSE
 ) {
 
   n <- length(x_ref)

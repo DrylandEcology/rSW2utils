@@ -153,4 +153,3 @@ f_ellipse <- function(x0 = 0, y0 = 0, a = 1, b = 1, alpha = 0, theta0 = 0,
     )
   }
 }
-

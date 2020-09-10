@@ -18,7 +18,7 @@ test_that("Unit conversion", {
   expect_error(convert_temperature(temp_F, unit_from = "degree F"))
   expect_error(convert_temperature(temp_K, unit_from = "K", unit_to = "F"))
 
-  # unit_to = "cm/month"
+  # unit_to is "cm/month"
   expect_equal(convert_precipitation(temp_ppt, dpm = NA,
     unit_from = "cm/month", unit_to = "cm/month"),
     temp_ppt
@@ -40,7 +40,7 @@ test_that("Unit conversion", {
     temp_ppt * dpm * 8640
   )
 
-  # unit_to = "cm/day"
+  # unit_to is "cm/day"
   expect_equal(convert_precipitation(temp_ppt, dpm = dpm,
     unit_from = "cm/month", unit_to = "cm/day"),
     temp_ppt / dpm

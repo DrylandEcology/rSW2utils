@@ -263,7 +263,7 @@ all_equal_numeric2 <- function(target, current,
         for (k in ids) {
           mi <- if (
             data.class(target[[k]]) == "numeric" &&
-            data.class(current[[k]])== "numeric"
+            data.class(current[[k]]) == "numeric"
           ) {
             Recall(
               target = target[[k]],

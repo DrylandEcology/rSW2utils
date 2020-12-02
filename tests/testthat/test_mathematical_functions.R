@@ -25,10 +25,10 @@ test_that("Monotonicity:", {
   # Expected outputs
   good_nonstrict_matrices <- test_matrices
   good_nonstrict_matrices[["x6"]] <- {
-      x <- test_matrices[["x6"]]
-      x[2, 3] <- replacement
-      x
-    }
+    x <- test_matrices[["x6"]]
+    x[2, 3] <- replacement
+    x
+  }
 
   good_strict_matrices <- test_matrices
   good_strict_matrices[["x1"]] <- {
@@ -71,18 +71,30 @@ test_that("Monotonicity:", {
         res_s <- t(res_s)
       }
 
-      expect_equal(res_ns,
-        check_monotonic_increase(x, MARGIN = it, increase = TRUE,
-          strictly = FALSE, fail = FALSE, replacement = replacement,
+      expect_equal(
+        check_monotonic_increase(
+          x,
+          MARGIN = it,
+          increase = TRUE,
+          strictly = FALSE,
+          fail = FALSE,
+          replacement = replacement,
           na.rm = FALSE
-        )
+        ),
+        res_ns
       )
 
-      expect_equal(res_s,
-        check_monotonic_increase(x, MARGIN = it, increase = TRUE,
-          strictly = TRUE, fail = FALSE, replacement = replacement,
+      expect_equal(
+        check_monotonic_increase(
+          x,
+          MARGIN = it,
+          increase = TRUE,
+          strictly = TRUE,
+          fail = FALSE,
+          replacement = replacement,
           na.rm = FALSE
-        )
+        ),
+        res_s
       )
     }
   }

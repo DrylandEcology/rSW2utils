@@ -121,11 +121,13 @@ intersect2 <- function(...) {
 #' @return The updated \code{x}.
 #' @export
 check_monotonic_increase <- function(x, MARGIN = 1, increase = TRUE,
-  strictly = FALSE, fail = FALSE, replacement = NA, na.rm = FALSE) {
+  strictly = FALSE, fail = FALSE, replacement = NA, na.rm = FALSE
+) {
+
+  x <- as.matrix(x)
 
   stopifnot(MARGIN %in% c(1, 2), length(dim(x)) == 2)
 
-  x <- as.matrix(x)
   if (MARGIN == 2) {
     x <- t(x)
   }
@@ -133,17 +135,21 @@ check_monotonic_increase <- function(x, MARGIN = 1, increase = TRUE,
   mfun <- if (increase) {
     if (strictly) ">" else ">="
   } else {
-    if (strictly) "<" else "=<"
+    if (strictly) "<" else "<="
   }
 
   ord <- !match.fun(mfun)(x[, -1, drop = FALSE], x[, -ncol(x), drop = FALSE])
 
   if ((!na.rm && strictly && anyNA(x)) || any(ord, na.rm = TRUE)) {
     if (fail) {
-      stop(paste0("'check_monotonic_increase': data are not ",
-        if (strictly) "strictly ", "monotonically ",
-        if (increase) "increasing " else "decreasing ",
-        if (MARGIN == 1) "in rows." else "in columns."))
+      stop(
+        paste0(
+          "'check_monotonic_increase': data are not ",
+          if (strictly) "strictly ", "monotonically ",
+          if (increase) "increasing " else "decreasing ",
+          if (MARGIN == 1) "in rows." else "in columns."
+        )
+      )
 
     } else {
       x[, -1][is.na(ord) | ord] <- replacement

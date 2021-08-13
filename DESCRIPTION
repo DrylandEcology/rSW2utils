@@ -1,6 +1,6 @@
 Package: rSW2utils
 Title: Utility tools for SOILWAT2 and STEPWAT2 simulation experiments
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: c(
   person("Daniel", "Schlaepfer", email = "danielrschlaepfer@gmail.com",
     comment = c(ORCID = "0000-0001-9973-2065"), role = c("aut", "cre")))
@@ -12,7 +12,7 @@ Imports:
     circular (>= 0.4.93)
 Suggests:
     parallel,
-    statip,
+    statip (>= 0.1.5),
     testthat,
     spelling,
     lintr,

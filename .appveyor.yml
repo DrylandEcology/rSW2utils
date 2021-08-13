@@ -1,7 +1,7 @@
 environment:
   USE_RTOOLS: true
   global:
-    WARNINGS_ARE_ERRORS:
+    WARNINGS_ARE_ERRORS: true
   matrix:
     - R_VERSION: release
       R_ARCH: i386

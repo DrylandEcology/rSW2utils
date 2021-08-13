@@ -19,7 +19,18 @@
 
 
 
-
+#' Calculate positions of the start of \code{TRUE}-runs
+#'
+#' @param x A vector. Values are coerced to logical values.
+#' @return The start position(s) (base-1) of \code{TRUE}-runs in \code{x}.
+#'
+#' @examples
+#' calc_starts(c(0, 1, 1, 0, 0)) ## expected: 2
+#' calc_starts(c(1, 1, 0, 0)) ## expected: 1
+#' calc_starts(c(1, 1, 0, 0, 1, 1)) ## expected: 1 5
+#' calc_starts(c(1.5, 2, 0, 0, 15, 3.5)) ## expected: 1 5
+#' calc_starts(c(0, 0)) ## expected: numeric(0)
+#'
 #' @export
 calc_starts <- function(x) {
   tmp1 <- rle(as.logical(x))
@@ -84,6 +95,24 @@ moving_function <- function(
 }
 
 
+#' Determine the length of the (first) longest run
+#'
+#' @param x A vector.
+#' @param target_val A value. Runs of \code{target_val} in \code{x} are used.
+#' @param return_doys A logical value.
+#'
+#' @return A numeric vector with one or three elements including
+#'   the length of the longest run of value \code{target_val}
+#'   (the first if multiple runs are of equally the longest) and,
+#'   if \code{return_doys == TRUE}, then the start and end
+#'   position of that longest run.
+#'
+#' @examples
+#' max_duration(0, target_val = 1)
+#' x <- c(rep(3, 3), rep(10, 10), 4, rep(10, 20), rep(3, 6))
+#' max_duration(x, 10, FALSE)
+#' max_duration(x, 10, TRUE)
+#'
 #' @export
 max_duration <- function(x, target_val = 1L, return_doys = FALSE) {
   r <- rle(x)

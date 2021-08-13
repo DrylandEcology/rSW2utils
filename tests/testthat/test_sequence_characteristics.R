@@ -1,6 +1,22 @@
 context("Sequence characteristics")
 
 #--- TESTS
+test_that("Sequence positions", {
+  expect_equal(calc_starts(c(0, 1, 1, 0, 0)), 2)
+  expect_equal(calc_starts(c(1, 1, 0, 0)), 1)
+  expect_equal(calc_starts(c(1, 1, 0, 0, 1, 1)), c(1, 5))
+  expect_equal(calc_starts(c(1.5, 2, 0, 0, 15, 3.5)), c(1, 5))
+  expect_length(calc_starts(c(0, 0)), 0)
+
+  expect_equal(max_duration(0, target_val = 1), 0)
+  x1 <- c(rep(3, 3), rep(10, 10), 4, rep(10, 20), rep(3, 6))
+  expect_equal(max_duration(x1, 10, FALSE), 20)
+  expect_equal(unname(max_duration(x1, 10, TRUE)), c(20, 15, 34))
+  x2 <- c(x1, rep(3, 3), rep(10, 20))
+  expect_equal(max_duration(x2, 10, FALSE), 20)
+  expect_equal(unname(max_duration(x2, 10, TRUE)), c(20, 15, 34))
+})
+
 test_that("Moving window", {
   x <- list(
     rep(1, 365),

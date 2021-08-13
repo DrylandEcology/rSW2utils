@@ -73,8 +73,7 @@ stretch_values <- function(x, lambda = 0) {
 #'
 #' @export
 fun_kLargest <- function(x, largest = TRUE, fun = NULL, k = 10L,
-  na.rm = FALSE, ...) {
-
+                         na.rm = FALSE, ...) {
   res <- if (na.rm) {
     stats::na.exclude(x)
   } else {
@@ -82,8 +81,10 @@ fun_kLargest <- function(x, largest = TRUE, fun = NULL, k = 10L,
   }
 
   # Determine k-largest/smallest values
-  res <- sort.int(res, decreasing = largest, na.last = !na.rm,
-    method = if (getRversion() >= "3.3.0") "radix" else "quick")
+  res <- sort.int(res,
+    decreasing = largest, na.last = !na.rm,
+    method = if (getRversion() >= "3.3.0") "radix" else "quick"
+  )
   res <- res[seq_len(max(1L, min(length(res), as.integer(k))))]
 
   # Calculate return values
@@ -120,17 +121,17 @@ fun_kLargest <- function(x, largest = TRUE, fun = NULL, k = 10L,
 #'  }}
 #'
 #' @examples
-#'  ## expected result: NA
-#'  all_equal_recursively(1L, 1L)
+#' ## expected result: NA
+#' all_equal_recursively(1L, 1L)
 #'
-#'  ## expected result: list(eq = "Mean relative difference: 1", x1 = 1, x2 = 2)
-#'  all_equal_recursively(1, 2)
+#' ## expected result: list(eq = "Mean relative difference: 1", x1 = 1, x2 = 2)
+#' all_equal_recursively(1, 2)
 #'
-#   ## expected result: first comparison returns NA; second shows a difference
-#'  all_equal_recursively(list(1, 2), list(1, 3))
-#'  ## expected result: comparison for elements a and b return NA; comparison
-#'  ## for element c shows a difference
-#'  all_equal_recursively(list(a = 1, b = 2), list(b = 2, c = 0, a = 1))
+#' ## expected result: first comparison returns NA; second shows a difference
+#' all_equal_recursively(list(1, 2), list(1, 3))
+#' ## expected result: comparison for elements a and b return NA; comparison
+#' ## for element c shows a difference
+#' all_equal_recursively(list(a = 1, b = 2), list(b = 2, c = 0, a = 1))
 #' @export
 all_equal_recursively <- function(x1, x2) {
   if (is.list(x1) && is.list(x2)) {
@@ -141,12 +142,12 @@ all_equal_recursively <- function(x1, x2) {
     }
 
     # as of R v3.4.1 'Recall' doesn't work as argument to apply-type calls
-    res <- lapply(dims,
+    res <- lapply(
+      dims,
       function(k) all_equal_recursively(x1 = x1[[k]], x2 = x2[[k]])
     )
     names(res) <- dims
     res
-
   } else {
     eq <- all.equal(x1, x2)
 
@@ -219,12 +220,10 @@ all_equal_recursively <- function(x1, x2) {
 #'
 #' all.equal(iris, iris2, tolerance = tol, scale = 1, countEQ = FALSE)
 #' all_equal_numeric2(iris, iris2, tolerance = tol, scaled = FALSE)
-#'
 #' @export
 all_equal_numeric2 <- function(target, current,
-  tolerance = sqrt(.Machine$double.eps),
-  scaled = FALSE, ...
-) {
+                               tolerance = sqrt(.Machine$double.eps),
+                               scaled = FALSE, ...) {
   if (is.null(scaled) || isTRUE(scaled)) {
     msg <- all.equal(
       target = target,
@@ -233,7 +232,6 @@ all_equal_numeric2 <- function(target, current,
       scale = NULL,
       countEQ = FALSE
     )
-
   } else {
     # based on `all.equal.numeric` R v3.6.2
     # with arguments `scale = 1` and `countEQ = FALSE`
@@ -250,7 +248,6 @@ all_equal_numeric2 <- function(target, current,
           ", current is ", data.class(current)
         )
       )
-
     } else {
       has_components <- is.list(target) || is.data.frame(target)
 
@@ -263,7 +260,7 @@ all_equal_numeric2 <- function(target, current,
         for (k in ids) {
           mi <- if (
             data.class(target[[k]]) == "numeric" &&
-            data.class(current[[k]]) == "numeric"
+              data.class(current[[k]]) == "numeric"
           ) {
             Recall(
               target = target[[k]],
@@ -271,7 +268,6 @@ all_equal_numeric2 <- function(target, current,
               tolerance = tolerance,
               scaled = scaled
             )
-
           } else {
             all.equal(
               target = target[[k]],
@@ -286,7 +282,6 @@ all_equal_numeric2 <- function(target, current,
             msg <- c(msg, paste0("Component ", dQuote(nt[k]), ": ", mi))
           }
         }
-
       } else {
         use_numeric <- dct == "numeric" && dcc == "numeric"
         target_nas <- is.na(target)
@@ -312,7 +307,6 @@ all_equal_numeric2 <- function(target, current,
               msg <- c(msg, paste("Mean absolute difference:", format(xy)))
             }
           }
-
         } else {
           mi <- all.equal(
             target = target,
@@ -368,16 +362,13 @@ all_equal_numeric2 <- function(target, current,
 #' ## Create list of indices by size per chunk,
 #' (ids <- make_chunks(nx, chunk_size = 5))
 #' print(lengths(ids))
-#'
 #' @export
 make_chunks <- function(nx, n_chunks, chunk_size = 1000L) {
   if (nx <= 0 || (!missing(n_chunks) && n_chunks <= 0) || chunk_size <= 0) {
     list()
-
   } else if (requireNamespace("parallel")) {
     if (missing(n_chunks)) {
       parallel::splitIndices(nx = nx, ncl = ceiling(nx / chunk_size))
-
     } else {
       parallel::splitIndices(nx = nx, ncl = n_chunks)
     }

@@ -22,9 +22,9 @@
 
 #' @export
 calc_starts <- function(x) {
-  temp1 <- rle(as.logical(x))
-  temp2 <- cumsum(c(0, temp1[["lengths"]])) + 1
-  temp2[-length(temp2)][temp1[["values"]]]
+  tmp1 <- rle(as.logical(x))
+  tmp2 <- cumsum(c(0, tmp1[["lengths"]])) + 1
+  tmp2[-length(tmp2)][tmp1[["values"]]]
 }
 
 
@@ -47,8 +47,13 @@ calc_starts <- function(x) {
 #' @seealso The package \code{caTools} provides fast versions.
 #'
 #' @export
-moving_function <- function(x, k = 3, win_fun = sum, na.rm = FALSE,
-  circular = FALSE) {
+moving_function <- function(
+  x,
+  k = 3,
+  win_fun = sum,
+  na.rm = FALSE,
+  circular = FALSE
+) {
 
   k <- round(abs(k))
   stopifnot(
@@ -95,8 +100,10 @@ max_duration <- function(x, target_val = 1L, return_doys = FALSE) {
       doys <- if (imax == 1L) {
         c(start = 1L, end = rdoys[1])
       } else {
-        c(start = rdoys[imax - 1] + 1,
-          end = rdoys[imax])
+        c(
+          start = rdoys[imax - 1] + 1,
+          end = rdoys[imax]
+        )
       }
     }
 
@@ -105,8 +112,9 @@ max_duration <- function(x, target_val = 1L, return_doys = FALSE) {
     doys <- c(start = NA, end = NA)
   }
 
-  if (return_doys)
+  if (return_doys) {
     return(c(len, doys))
+  }
 
   len
 }
@@ -216,8 +224,10 @@ scale_to_reference_fun <- function(x, x_ref, fun, na.rm = FALSE) {
 #' @return A numeric vector of the same length as \code{x}.
 #'
 #' @examples
-#' x <- c(0.685, 0.698, 0.717, 1.026, 1.216, 1.239, 1.123, 1.104, 0.999,
-#'        0.81, 0.652, 0.633)
+#' x <- c(
+#'   0.685, 0.698, 0.717, 1.026, 1.216, 1.239, 1.123, 1.104, 0.999,
+#'   0.81, 0.652, 0.633
+#' )
 #' x0 <- c(0.5, 0.5, 0.5, 0.7, 0.9, 1, 1, 1, 0.9, 0.7, 0.5, 0.5)
 #' x_scaled1 <- scale_to_reference_peak_frequency(x, x0, cap_at_peak = TRUE)
 #' print(x_scaled1)
@@ -226,10 +236,12 @@ scale_to_reference_fun <- function(x, x_ref, fun, na.rm = FALSE) {
 #' squash_into_low_high(x_scaled2, val_low = -Inf, val_high = max(x0))
 #'
 #' @export
-scale_to_reference_peak_frequency <- function(x, x_ref, #nolint
-  cap_at_peak = FALSE, na.rm = FALSE
+scale_to_reference_peak_frequency <- function( # nolint
+  x,
+  x_ref,
+  cap_at_peak = FALSE,
+  na.rm = FALSE
 ) {
-
   n <- length(x_ref)
   stopifnot(length(x) == n)
 
@@ -270,9 +282,9 @@ scale_to_reference_peak_frequency <- function(x, x_ref, #nolint
 #'
 #' @export
 scale_by_sum <- function(x) {
-  temp <- sum(x, na.rm = TRUE)
-  if (temp > 0 && is.finite(temp)) {
-    x / temp
+  tmp <- sum(x, na.rm = TRUE)
+  if (tmp > 0 && is.finite(tmp)) {
+    x / tmp
   } else {
     x
   }
@@ -321,10 +333,13 @@ scale_by_sum <- function(x) {
 #' scale_rounded_by_sum(x, digits = 1)
 #'
 #' @export
-scale_rounded_by_sum <- function(x, digits, icolumn_adjust = 1L,
-  max_iter = max(4L, digits + 1L), verbose = FALSE
+scale_rounded_by_sum <- function(
+  x,
+  digits,
+  icolumn_adjust = 1L,
+  max_iter = max(4L, digits + 1L),
+  verbose = FALSE
 ) {
-
   if (is.vector(x)) {
     x <- matrix(x, nrow = 1L)
   }
@@ -341,8 +356,8 @@ scale_rounded_by_sum <- function(x, digits, icolumn_adjust = 1L,
   )
 
   # Scale to sum to 1 with `digits` precision
-  scale_sum <- as.integer(10 ^ digits)
-  sum1 <- scale_sum ^ 2
+  scale_sum <- as.integer(10^digits)
+  sum1 <- scale_sum^2
 
   # Repeat scaling until sum is stable
   k <- 1

@@ -60,14 +60,12 @@ circ_mean(x, int = 12, type = "ZeroPlus2Pi") ## expected 12
 x <- (-5):8
 circ_mean(x, int = 12, type = "minusPiPlusPi") ## expected -4.5
 circ_mean(x, int = 12, type = "ZeroPlus2Pi") ## expected 7.5
-
 ## Examples with `circ_mean_weighted`
 x <- seq_len(12)
 w <- c(1, rep(0, 7), 1, 1, 2, 1)
 stats::weighted.mean(x, w) ## expected 9
 circ_mean_weighted(x, w, int = 12, type = "minusPiPlusPi") ## expected -1
 circ_mean_weighted(x, w, int = 12, type = "ZeroPlus2Pi") ## expected 11
-
 }
 \seealso{
 \code{\link[circular]{mean.circular}},

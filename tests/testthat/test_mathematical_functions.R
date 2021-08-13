@@ -8,15 +8,35 @@ test_that("Monotonicity:", {
   #--- INPUTS
   margins <- c("byrow", "bycolumn")
 
-  temp <- matrix(NA, nrow = 5, ncol = 3)
+  tmp <- matrix(NA, nrow = 5, ncol = 3)
   # nolint start
   test_matrices <- list(
-    x1 = temp,
-    x2 = {x <- temp; x[] <- 0; x},
-    x3 = x3 <- {x <- temp; x[] <- 1:15; x},
-    x4 = {x <- x3; x[2, 3] <- x[2, 2]; x},
-    x5 = {x <- x3; x[2, 2:3] <- NA; x},
-    x6 = {x <- x3; x[2, 3] <- 0; x}
+    x1 = tmp,
+    x2 = {
+      x <- tmp
+      x[] <- 0
+      x
+    },
+    x3 = x3 <- {
+      x <- tmp
+      x[] <- 1:15
+      x
+    },
+    x4 = {
+      x <- x3
+      x[2, 3] <- x[2, 2]
+      x
+    },
+    x5 = {
+      x <- x3
+      x[2, 2:3] <- NA
+      x
+    },
+    x6 = {
+      x <- x3
+      x[2, 3] <- 0
+      x
+    }
   )
   # nolint end
 
@@ -32,15 +52,15 @@ test_that("Monotonicity:", {
 
   good_strict_matrices <- test_matrices
   good_strict_matrices[["x1"]] <- {
-      x <- test_matrices[["x1"]]
-      x[] <- replacement
-      x
-    }
+    x <- test_matrices[["x1"]]
+    x[] <- replacement
+    x
+  }
   good_strict_matrices[["x2"]] <- {
-      x <- test_matrices[["x2"]]
-      x[, -1] <- replacement
-      x
-    }
+    x <- test_matrices[["x2"]]
+    x[, -1] <- replacement
+    x
+  }
   good_strict_matrices[["x4"]] <- {
     x <- test_matrices[["x4"]]
     x[2, 3] <- replacement
@@ -52,10 +72,10 @@ test_that("Monotonicity:", {
     x
   }
   good_strict_matrices[["x6"]] <- {
-      x <- test_matrices[["x6"]]
-      x[2, 3] <- replacement
-      x
-    }
+    x <- test_matrices[["x6"]]
+    x[2, 3] <- replacement
+    x
+  }
 
 
   #--- TESTS

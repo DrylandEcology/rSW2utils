@@ -39,7 +39,6 @@ print(length(ids))
 ## Create list of indices by size per chunk,
 (ids <- make_chunks(nx, chunk_size = 5))
 print(lengths(ids))
-
 }
 \seealso{
 \code{\link[parallel]{splitIndices}}

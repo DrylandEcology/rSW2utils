@@ -34,49 +34,41 @@
 #'   \code{unit_to}.
 #'
 #' @export
-convert_precipitation <- function(x, unit_from,
-  unit_to = c("cm day-1", "cm month-1", "cm/day", "cm/month"), dpm = NA) {
+convert_precipitation <- function(
+  x,
+  unit_from,
+  unit_to = c("cm day-1", "cm month-1", "cm/day", "cm/month"),
+  dpm = NA
+) {
 
   unit_to <- match.arg(unit_to)
 
   if (unit_to %in% c("cm month-1", "cm/month")) {
-
     if (unit_from %in% c("mm/month", "mm month-1")) {
       x / 10
-
     } else if (unit_from %in% c("mm/d", "mm d-1", "mm/day", "mm day-1")) {
       x * dpm / 10
-
     } else if (unit_from %in% c("cm/d", "cm d-1", "cm/day", "cm day-1")) {
       x * dpm
-
     } else if (unit_from %in% c("kg/m2/s", "kg m-2 s-1", "mm/s", "mm s-1")) {
       x * dpm * 8640
-
     } else if (unit_from %in% c("cm/month", "cm month-1")) {
       x
-
     } else {
       stop("Unknown precipitation unit: ", unit_from)
     }
 
   } else if (unit_to %in% c("cm day-1", "cm/day")) {
-
     if (unit_from %in% c("mm/month", "mm month-1")) {
       x / (dpm * 10)
-
     } else if (unit_from %in% c("mm/d", "mm d-1", "mm/day", "mm day-1")) {
       x / 10
-
     } else if (unit_from %in% c("cm/d", "cm d-1", "cm/day", "cm day-1")) {
       x
-
     } else if (unit_from %in% c("kg/m2/s", "kg m-2 s-1", "mm/s", "mm s-1")) {
       x * 8640
-
     } else if (unit_from %in% c("cm/month", "cm month-1")) {
       x / dpm
-
     } else {
       stop("Unknown precipitation unit: ", unit_from)
     }
@@ -102,13 +94,10 @@ convert_temperature <- function(x, unit_from, unit_to = "C") {
 
   if (identical(unit_from, "K")) {
     x - 273.15
-
   } else if (identical(unit_from, "F")) {
     (x - 32) * 0.5555556
-
   } else if (identical(unit_from, "C")) {
     x
-
   } else {
     stop("Unknown temperature unit: ", unit_from)
   }

@@ -83,7 +83,6 @@ iris2[10, "Species"] <- "Test"
 
 all.equal(iris, iris2, tolerance = tol, scale = 1, countEQ = FALSE)
 all_equal_numeric2(iris, iris2, tolerance = tol, scaled = FALSE)
-
 }
 \seealso{
 \code{\link[base]{all.equal}}

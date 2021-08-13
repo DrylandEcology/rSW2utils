@@ -28,18 +28,25 @@ The sequence of month numbers for each day in the period from - to
 }
 \examples{
 \dontrun{
- month1 <- function() as.POSIXlt(seq(from = ISOdate(1980, 1, 1, tz = "UTC"),
-    to = ISOdate(2010, 12, 31, tz = "UTC"), by = "1 day"))$mon + 1
- month2 <- function() seq_month_ofeach_day(
-   from = list(1980, 1, 1),
-   to = list(2010, 12, 31),
-   tz = "UTC"
- )
+month1 <- function() {
+  as.POSIXlt(seq(
+    from = ISOdate(1980, 1, 1, tz = "UTC"),
+    to = ISOdate(2010, 12, 31, tz = "UTC"), by = "1 day"
+  ))$mon + 1
+}
+month2 <- function() {
+  seq_month_ofeach_day(
+    from = list(1980, 1, 1),
+    to = list(2010, 12, 31),
+    tz = "UTC"
+  )
+}
 
- if (requireNamespace("microbenchmark", quietly = TRUE))
-   # barely any difference
-   microbenchmark::microbenchmark(month1(), month2())
- }
+if (requireNamespace("microbenchmark", quietly = TRUE)) {
+  # barely any difference
+  microbenchmark::microbenchmark(month1(), month2())
+}
+}
 }
 \seealso{
 \code{\link[base]{as.POSIXlt}}, \code{\link[base]{seq.POSIXt}}

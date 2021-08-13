@@ -41,5 +41,4 @@ circ_minus(x, y, int = 365)
 y2 <- y
 y2[1, 1] <- NA
 circ_minus(y2, x, int = 365)
-
 }

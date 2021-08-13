@@ -29,16 +29,17 @@ all_equal_recursively(x1, x2)
 Recursive comparisons for equality which also works for nested lists
 }
 \examples{
- ## expected result: NA
- all_equal_recursively(1L, 1L)
+## expected result: NA
+all_equal_recursively(1L, 1L)
 
- ## expected result: list(eq = "Mean relative difference: 1", x1 = 1, x2 = 2)
- all_equal_recursively(1, 2)
+## expected result: list(eq = "Mean relative difference: 1", x1 = 1, x2 = 2)
+all_equal_recursively(1, 2)
 
- all_equal_recursively(list(1, 2), list(1, 3))
- ## expected result: comparison for elements a and b return NA; comparison
- ## for element c shows a difference
- all_equal_recursively(list(a = 1, b = 2), list(b = 2, c = 0, a = 1))
+## expected result: first comparison returns NA; second shows a difference
+all_equal_recursively(list(1, 2), list(1, 3))
+## expected result: comparison for elements a and b return NA; comparison
+## for element c shows a difference
+all_equal_recursively(list(a = 1, b = 2), list(b = 2, c = 0, a = 1))
 }
 \seealso{
 \code{\link{all.equal}}

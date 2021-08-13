@@ -36,8 +36,13 @@ handle_NAs <- function(x, na.index, na.act) {
 
 
 #' @export
-squash_into_low_high <- function(x, val_low = 0, val_low_replace = val_low,
-  val_high = 1, val_high_replace = val_high) {
+squash_into_low_high <- function(
+  x,
+  val_low = 0,
+  val_low_replace = val_low,
+  val_high = 1,
+  val_high_replace = val_high
+) {
   if (!is.null(val_low)) x[x < val_low] <- val_low_replace
   if (!is.null(val_high)) x[x > val_high] <- val_high_replace
   x
@@ -45,13 +50,19 @@ squash_into_low_high <- function(x, val_low = 0, val_low_replace = val_low,
 
 #' @export
 cut0Inf <- function(x, val = NA) {
-  squash_into_low_high(x, val_low = 0, val_low_replace = val,
-    val_high = NULL)
+  squash_into_low_high(
+    x,
+    val_low = 0, val_low_replace = val,
+    val_high = NULL
+  )
 }
 
 #' @export
 finite01 <- function(x, val_low_replace = 0, val_high_replace = 1) {
   x <- replace_NAs_with_val(x, val_replace = val_low_replace)
-  squash_into_low_high(x, val_low = 0, val_low_replace = val_low_replace,
-    val_high = 1, val_high_replace = val_high_replace)
+  squash_into_low_high(
+    x,
+    val_low = 0, val_low_replace = val_low_replace,
+    val_high = 1, val_high_replace = val_high_replace
+  )
 }

@@ -131,7 +131,13 @@ f_circle <- function(x0 = 0, y0 = 0, r = 1, theta0 = 0, dir = 1) {
 #' lines(f_ellipse(0, 0, 0.25, 0.5, dir = -1)(seq(0, pi, length = 200)))
 #'
 #' @export
-f_ellipse <- function(x0 = 0, y0 = 0, a = 1, b = 1, alpha = 0, theta0 = 0,
+f_ellipse <- function(
+  x0 = 0,
+  y0 = 0,
+  a = 1,
+  b = 1,
+  alpha = 0,
+  theta0 = 0,
   dir = 1
 ) {
   dir <- as.numeric(dir)

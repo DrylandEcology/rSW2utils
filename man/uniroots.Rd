@@ -29,7 +29,7 @@ see examples.
 }
 \examples{
 # Locate roots of a function
-f <- function(x) -1 + x ^ 2
+f <- function(x) -1 + x^2
 xt <- seq(-1.5, 1.5, by = 0.1)
 plot(xt, f(xt), type = "l")
 abline(h = 0, col = "gray")
@@ -45,7 +45,7 @@ for (i in seq_along(r)) {
 }
 
 # Locate intersections between two functions
-a2 = 4
+a2 <- 4
 f1 <- function(x) sin(2 * x)
 f2 <- function(x, a) cos(1 - a * x)
 

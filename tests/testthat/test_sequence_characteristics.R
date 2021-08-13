@@ -41,7 +41,11 @@ test_that("Moving window", {
         expect_equal(mf[isnotna], mf2[isnotna])
 
         # Check circular
-        mf3 <- moving_function(x = tmp, k = k, win_fun = f, na.rm = FALSE,
+        mf3 <- moving_function(
+          x = tmp,
+          k = k,
+          win_fun = f,
+          na.rm = FALSE,
           circular = TRUE
         )
         if (!(fun == "sd" && k == 1)) {
@@ -133,7 +137,7 @@ test_that("Scale to reference", {
   x_scaled1 <- scale_rounded_by_sum(x, digits = 4, icolumn_adjust = 7)
   expect_equal(1, sum(x_scaled1))
 
-  xm <- rbind(x, x + 1, x ^ 2)
+  xm <- rbind(x, x + 1, x^2)
 
   expect_error(
     x_scaled1 <- scale_rounded_by_sum(xm, digits = 1, icolumn_adjust = 7)

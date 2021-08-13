@@ -33,5 +33,4 @@ circ_add(x, y, int = 365, type = "ZeroPlus2Pi")
 r1 <- circ_add(circ_minus(x, y, int = 365), y, int = 365)
 r2 <- circ_minus(circ_add(x, y, int = 365), y, int = 365)
 all.equal(r1, r2)
-
 }

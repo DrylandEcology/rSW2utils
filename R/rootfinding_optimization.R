@@ -41,7 +41,7 @@
 #'
 #' @examples
 #' # Locate roots of a function
-#' f <- function(x) -1 + x ^ 2
+#' f <- function(x) -1 + x^2
 #' xt <- seq(-1.5, 1.5, by = 0.1)
 #' plot(xt, f(xt), type = "l")
 #' abline(h = 0, col = "gray")
@@ -57,7 +57,7 @@
 #' }
 #'
 #' # Locate intersections between two functions
-#' a2 = 4
+#' a2 <- 4
 #' f1 <- function(x) sin(2 * x)
 #' f2 <- function(x, a) cos(1 - a * x)
 #'
@@ -76,9 +76,13 @@
 #' }
 #'
 #' @export
-uniroots <- function(f, xlim, tol = .Machine$double.eps ^ 0.25,
+uniroots <- function(
+  f,
+  xlim,
+  tol = .Machine$double.eps^0.25,
   expected_nroots = 1
 ) {
+
   if (expected_nroots <= 1) {
     list(
       try(
@@ -91,7 +95,6 @@ uniroots <- function(f, xlim, tol = .Machine$double.eps ^ 0.25,
         silent = TRUE
       )
     )
-
   } else {
     # based on `rootSolve::uniroot.all` but with convergence checks and
     # identical output structure as `stats::uniroot`
@@ -141,21 +144,20 @@ uniroots <- function(f, xlim, tol = .Machine$double.eps ^ 0.25,
 #'
 #' @examples
 #' r1 <- uniroots(
-#'   f = function(x) -1 + x ^ 2,
+#'   f = function(x) -1 + x^2,
 #'   xlim = c(-10, 10),
 #'   expected_nroots = 2
 #' )
 #'
 #' has_uniroots(r1)
 #'
-#' r2 <- uniroots(f = function(x) -1 + x ^ 2, xlim = c(-10, -5))
+#' r2 <- uniroots(f = function(x) -1 + x^2, xlim = c(-10, -5))
 #' has_uniroots(r2)
 #'
 #' r3 <- uniroots(f = function(x) Inf, xlim = c(-10, -5))
 #' has_uniroots(r3)
-#'
 #' @export
-has_uniroots <- function(x, tol = .Machine$double.eps ^ 0.25) {
+has_uniroots <- function(x, tol = .Machine$double.eps^0.25) {
   res <- !is.null(x) && !inherits(x, "try-error")
 
   if (res) {

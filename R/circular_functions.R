@@ -48,8 +48,12 @@ ZeroPlus2Pi <- function(x, int) {
   rSW2_glovars[["tol"]] + (x - rSW2_glovars[["tol"]]) %% int
 }
 
-get_circular_type <- function(x, circ, int,
-  type = c("minusPiPlusPi", "ZeroPlus2Pi")) {
+get_circular_type <- function(
+  x,
+  circ,
+  int,
+  type = c("minusPiPlusPi", "ZeroPlus2Pi")
+) {
   type <- match.arg(type)
 
   if (type == "minusPiPlusPi") {
@@ -80,19 +84,24 @@ get_circular_type <- function(x, circ, int,
 #' x <- (-5):8
 #' circ_mean(x, int = 12, type = "minusPiPlusPi") ## expected -4.5
 #' circ_mean(x, int = 12, type = "ZeroPlus2Pi") ## expected 7.5
-#'
 #' @export
-circ_mean <- function(x, int, type = c("minusPiPlusPi", "ZeroPlus2Pi"),
-  na.rm = FALSE) {
+circ_mean <- function(
+  x,
+  int,
+  type = c("minusPiPlusPi", "ZeroPlus2Pi"),
+  na.rm = FALSE
+) {
   type <- match.arg(type)
 
   if (!all(is.na(x)) && requireNamespace("circular", quietly = TRUE)) {
     circ <- 2 * pi / int
-    x_circ <- circular::circular(x * circ,
+    x_circ <- circular::circular(
+      x * circ,
       type = "angles",
       units = "radians",
       rotation = "clock",
-      modulo = "2pi")
+      modulo = "2pi"
+    )
 
     res_circ <- circular::mean.circular(x_circ, na.rm = na.rm)
 
@@ -113,9 +122,11 @@ circ_mean <- function(x, int, type = c("minusPiPlusPi", "ZeroPlus2Pi"),
 #' stats::weighted.mean(x, w) ## expected 9
 #' circ_mean_weighted(x, w, int = 12, type = "minusPiPlusPi") ## expected -1
 #' circ_mean_weighted(x, w, int = 12, type = "ZeroPlus2Pi") ## expected 11
-#'
 #' @export
-circ_mean_weighted <- function(x, w, int,
+circ_mean_weighted <- function(
+  x,
+  w,
+  int,
   type = c("minusPiPlusPi", "ZeroPlus2Pi"),
   na.rm = FALSE
 ) {
@@ -123,16 +134,17 @@ circ_mean_weighted <- function(x, w, int,
 
   if (!all(is.na(x)) && requireNamespace("circular", quietly = TRUE)) {
     circ <- 2 * pi / int
-    x_circ <- circular::circular(x * circ,
+    x_circ <- circular::circular(
+      x * circ,
       type = "angles",
       units = "radians",
       rotation = "clock",
-      modulo = "2pi")
+      modulo = "2pi"
+    )
 
     res_circ <- weighted.mean(x = x_circ, w = w, na.rm = na.rm)
 
     get_circular_type(res_circ, circ, int, type)
-
   } else {
     NA
   }
@@ -145,15 +157,16 @@ circ_mean_weighted <- function(x, w, int,
 circ_range <- function(x, int, na.rm = FALSE) {
   if (!all(is.na(x)) && requireNamespace("circular", quietly = TRUE)) {
     circ <- 2 * pi / int
-    x_circ <- circular::circular(x * circ,
+    x_circ <- circular::circular(
+      x * circ,
       type = "angles",
       units = "radians",
       rotation = "clock",
-      modulo = "2pi")
+      modulo = "2pi"
+    )
 
     x_int <- range(x_circ, na.rm = na.rm) / circ
     as.numeric(x_int)
-
   } else {
     NA
   }
@@ -164,19 +177,20 @@ circ_range <- function(x, int, na.rm = FALSE) {
 #' @export
 circ_sd <- function(x, int, na.rm = FALSE) {
   if (length(x) - sum(is.na(x)) > 1 && requireNamespace("circular",
-    quietly = TRUE)) {
-
+    quietly = TRUE
+  )) {
     if (sd(x, na.rm = TRUE) > 0) {
       circ <- 2 * pi / int
-      x_circ <- circular::circular(x * circ,
+      x_circ <- circular::circular(
+        x * circ,
         type = "angles",
         units = "radians",
         rotation = "clock",
-        modulo = "2pi")
+        modulo = "2pi"
+      )
 
       x_int <- circular::sd.circular(x_circ, na.rm = na.rm) / circ
       as.numeric(x_int)
-
     } else {
       0
     }
@@ -211,7 +225,6 @@ circ_sd <- function(x, int, na.rm = FALSE) {
 #' y2 <- y
 #' y2[1, 1] <- NA
 #' circ_minus(y2, x, int = 365)
-#'
 #' @export
 circ_minus <- function(x, y, int, type = c("minusPiPlusPi", "ZeroPlus2Pi")) {
   stopifnot(all(dim(x) == dim(y)))
@@ -221,14 +234,15 @@ circ_minus <- function(x, y, int, type = c("minusPiPlusPi", "ZeroPlus2Pi")) {
   if (requireNamespace("circular", quietly = TRUE)) {
     circ <- 2 * pi / int
 
-    d_circ <- circular::circular((x - y) * circ,
+    d_circ <- circular::circular(
+      (x - y) * circ,
       type = "angles",
       units = "radians",
       rotation = "clock",
-      modulo = "asis")
+      modulo = "asis"
+    )
 
     res <- get_circular_type(d_circ, circ, int, type)
-
   } else {
     res <- rep(NA, length(x))
   }
@@ -257,7 +271,6 @@ circ_minus <- function(x, y, int, type = c("minusPiPlusPi", "ZeroPlus2Pi")) {
 #' r1 <- circ_add(circ_minus(x, y, int = 365), y, int = 365)
 #' r2 <- circ_minus(circ_add(x, y, int = 365), y, int = 365)
 #' all.equal(r1, r2)
-#'
 #' @export
 circ_add <- function(x, y, int, type = c("minusPiPlusPi", "ZeroPlus2Pi")) {
   stopifnot(all(dim(x) == dim(y)))
@@ -267,14 +280,15 @@ circ_add <- function(x, y, int, type = c("minusPiPlusPi", "ZeroPlus2Pi")) {
   if (requireNamespace("circular", quietly = TRUE)) {
     circ <- 2 * pi / int
 
-    d_circ <- circular::circular((x + y) * circ,
+    d_circ <- circular::circular(
+      (x + y) * circ,
       type = "angles",
       units = "radians",
       rotation = "clock",
-      modulo = "asis")
+      modulo = "asis"
+    )
 
     res <- get_circular_type(d_circ, circ, int, type)
-
   } else {
     res <- rep(NA, length(x))
   }
@@ -297,12 +311,11 @@ circ_add <- function(x, y, int, type = c("minusPiPlusPi", "ZeroPlus2Pi")) {
 #' @seealso \code{\link{seq}}
 #'
 #' @examples
-#' circ_seq(5, 8, int = 12)          ## expected c(5, 6, 7, 8)
-#' circ_seq(-7, 8, int = 12)         ## expected c(5, 6, 7, 8)
-#' circ_seq(-2, 3, int = 12)         ## expected c(10, 11, 12, 1, 2, 3)
+#' circ_seq(5, 8, int = 12) ## expected c(5, 6, 7, 8)
+#' circ_seq(-7, 8, int = 12) ## expected c(5, 6, 7, 8)
+#' circ_seq(-2, 3, int = 12) ## expected c(10, 11, 12, 1, 2, 3)
 #' circ_seq(-2, 3, int = 12, by = 2) ## expected c(10, 12, 2)
 #' circ_seq(-2, 3, int = 12, length.out = 3) ## expected c(10, 0.5, 3)
-#'
 #' @export
 circ_seq <- function(from, to, int, by, length.out = NULL) {
 
@@ -345,7 +358,6 @@ circ_seq <- function(from, to, int, by, length.out = NULL) {
 
   if (!is.logint(by)) {
     int <- FALSE
-
   } else if (!int) {
     storage.mode(by) <- "double"
   }

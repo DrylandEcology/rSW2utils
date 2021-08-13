@@ -91,13 +91,15 @@ test_that("Chunking", {
   n_chunks <- as.integer(c(0, 1, 3))
   chunk_size <- as.integer(c(0, 1, 5))
 
-  for (nx in vals_nx) for (k in seq_along(n_chunks)) {
-    tmp1 <- make_chunks(nx = nx, n_chunks = n_chunks[k])
-    expect_equal(length(unlist(tmp1)), if (n_chunks[k] == 0) 0 else nx)
-    expect_equal(length(tmp1), min(nx, n_chunks[k]))
+  for (nx in vals_nx) {
+    for (k in seq_along(n_chunks)) {
+      tmp1 <- make_chunks(nx = nx, n_chunks = n_chunks[k])
+      expect_equal(length(unlist(tmp1)), if (n_chunks[k] == 0) 0 else nx)
+      expect_equal(length(tmp1), min(nx, n_chunks[k]))
 
-    tmp2 <- make_chunks(nx, chunk_size = chunk_size[k])
-    expect_equal(length(unlist(tmp2)), if (chunk_size[k] == 0) 0 else nx)
-    expect_true(all(lengths(tmp2) <= chunk_size[k]))
+      tmp2 <- make_chunks(nx, chunk_size = chunk_size[k])
+      expect_equal(length(unlist(tmp2)), if (chunk_size[k] == 0) 0 else nx)
+      expect_true(all(lengths(tmp2) <= chunk_size[k]))
+    }
   }
 })

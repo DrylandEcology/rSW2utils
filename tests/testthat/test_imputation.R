@@ -57,35 +57,35 @@ test_that("Impute missing values", {
   idsNA <- 1:Nmiss
   df3[idsNA, ] <- NA
 
-  for (type in types) for (cyclic in cyclicity) {
-    if (type == "locf" && !cyclic) {
-      res3 <- expect_warning(impute_df(
-        x = df3,
-        imputation_type = type,
-        cyclic = cyclic
-      ))
-    } else {
-      res3 <- expect_silent(impute_df(
-        x = df3,
-        imputation_type = type,
-        cyclic = cyclic
-      ))
-    }
+  for (type in types) {
+    for (cyclic in cyclicity) {
+      if (type == "locf" && !cyclic) {
+        res3 <- expect_warning(impute_df(
+          x = df3,
+          imputation_type = type,
+          cyclic = cyclic
+        ))
+      } else {
+        res3 <- expect_silent(impute_df(
+          x = df3,
+          imputation_type = type,
+          cyclic = cyclic
+        ))
+      }
 
-    for (v in vars_with_values) {
-      if (type == "locf") {
-        if (cyclic) {
-          # last value is imputed
-          expect_true(all(res3[idsNA, v] == df3[Nrows, v]))
-        } else {
-          # no value to can be imputed --> NAs
-          expect_true(all(is.na(res3[idsNA, v])))
+      for (v in vars_with_values) {
+        if (type == "locf") {
+          if (cyclic) {
+            # last value is imputed
+            expect_true(all(res3[idsNA, v] == df3[Nrows, v]))
+          } else {
+            # no value to can be imputed --> NAs
+            expect_true(all(is.na(res3[idsNA, v])))
+          }
+        } else if (type == "mean") {
+          expect_true(!anyNA(res3[, v]))
         }
-
-      } else if (type == "mean") {
-        expect_true(!anyNA(res3[, v]))
       }
     }
   }
-
 })

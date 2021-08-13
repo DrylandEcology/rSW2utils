@@ -26,8 +26,10 @@ Scale values so that the frequency of values < max(reference values) is the
 same as the frequency of reference values < max(reference values)
 }
 \examples{
-x <- c(0.685, 0.698, 0.717, 1.026, 1.216, 1.239, 1.123, 1.104, 0.999,
-       0.81, 0.652, 0.633)
+x <- c(
+  0.685, 0.698, 0.717, 1.026, 1.216, 1.239, 1.123, 1.104, 0.999,
+  0.81, 0.652, 0.633
+)
 x0 <- c(0.5, 0.5, 0.5, 0.7, 0.9, 1, 1, 1, 0.9, 0.7, 0.5, 0.5)
 x_scaled1 <- scale_to_reference_peak_frequency(x, x0, cap_at_peak = TRUE)
 print(x_scaled1)

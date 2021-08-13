@@ -48,15 +48,17 @@ test_sigmaNormal <- function(data, sigmaN = 6) {
 #'   11:683-690.
 #' @export
 test_sigmaGamma <- function(data, sigmaN = 6) {
-  tempD <- data[data > 0]
+  tmpD <- data[data > 0]
 
-  if (length(tempD) >= 2 && stats::sd(tempD) > 0) {
-    tempM <- mean(tempD)
-    temp <- log(tempM) - mean(log(tempD))
-    gshape <- (3 - temp + sqrt((temp - 3) ^ 2 + 24 * temp)) / (12 * temp)
-    gscale <- tempM / gshape
-    stopifnot(data < stats::qgamma(erf(sigmaN / sqrt(2)), shape = gshape,
-      scale = gscale))
+  if (length(tmpD) >= 2 && stats::sd(tmpD) > 0) {
+    tmpM <- mean(tmpD)
+    tmp <- log(tmpM) - mean(log(tmpD))
+    gshape <- (3 - tmp + sqrt((tmp - 3)^2 + 24 * tmp)) / (12 * tmp)
+    gscale <- tmpM / gshape
+    stopifnot(
+      data < stats::qgamma(
+        erf(sigmaN / sqrt(2)), shape = gshape, scale = gscale)
+    )
   }
 }
 
@@ -88,8 +90,8 @@ majority <- function(x, na.rm = FALSE) {
     if (useMode && requireNamespace("statip")) {
       res <- statip::mfv(x)
     } else {
-      temp <- table(x, useNA = if (na.rm) "no" else "always")
-      res <- names(temp)[which(c(temp) == max(c(temp)))]
+      tmp <- table(x, useNA = if (na.rm) "no" else "always")
+      res <- names(tmp)[which(c(tmp) == max(c(tmp)))]
     }
 
     if (length(res) > 1) res <- res[sample(x = length(res), size = 1)]

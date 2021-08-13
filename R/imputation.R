@@ -43,8 +43,11 @@
 #' @return An updated version of \code{x}.
 #'
 #' @export
-impute_df <- function(x, imputation_type = c("none", "mean", "locf"),
-  imputation_span = 5L, cyclic = FALSE
+impute_df <- function(
+  x,
+  imputation_type = c("none", "mean", "locf"),
+  imputation_span = 5L,
+  cyclic = FALSE
 ) {
 
   imputation_type <- match.arg(imputation_type)
@@ -72,13 +75,13 @@ impute_df <- function(x, imputation_type = c("none", "mean", "locf"),
 
         # locate a sufficient number of non-missing neighbors
         repeat {
-          temp <- seq(k2 - spank, k2 + spank)
+          tmp <- seq(k2 - spank, k2 + spank)
           if (cyclic) {
-            temp <- 1 + (temp - 1) %% cycle
+            tmp <- 1 + (tmp - 1) %% cycle
           } else {
-            temp <- temp[temp %in% irows]
+            tmp <- tmp[tmp %in% irows]
           }
-          ids_source <- temp[!(temp %in% irows_withNA)]
+          ids_source <- tmp[!(tmp %in% irows_withNA)]
 
           if (length(ids_source) < 2 * imputation_span && spank < cycle) {
             spank <- spank + 1
@@ -98,13 +101,13 @@ impute_df <- function(x, imputation_type = c("none", "mean", "locf"),
 
         # locate last non-missing value
         repeat {
-          temp <- k2 - dlast
+          tmp <- k2 - dlast
           if (cyclic) {
-            temp <- 1 + (temp - 1) %% cycle
+            tmp <- 1 + (tmp - 1) %% cycle
           } else {
-            temp <- temp[temp %in% irows]
+            tmp <- tmp[tmp %in% irows]
           }
-          ids_source <- temp[!(temp %in% irows_withNA)]
+          ids_source <- tmp[!(tmp %in% irows_withNA)]
 
           if (length(ids_source) == 1 || dlast >= cycle) {
             break

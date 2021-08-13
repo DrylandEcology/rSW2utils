@@ -21,7 +21,7 @@ rmse <- function(obs, sim, na.rm = FALSE) {
   obs <- as.matrix(obs)
   sim <- as.matrix(sim)
 
-  sqrt(colMeans((sim - obs) ^ 2, na.rm = na.rm))
+  sqrt(colMeans((sim - obs)^2, na.rm = na.rm))
 }
 
 #' @describeIn gof Mean Absolute Error
@@ -46,12 +46,12 @@ NSE <- function(obs, sim, na.rm = FALSE) {
   sim <- as.matrix(sim)
 
   # Nominator
-  n <- colSums((obs - sim) ^ 2, na.rm = na.rm)
+  n <- colSums((obs - sim)^2, na.rm = na.rm)
 
   # Denominator
-  temp <- colMeans(obs, na.rm = na.rm)
-  temp <- sweep(obs, MARGIN = 2, STATS = temp, FUN = "-")
-  d <- colSums(temp ^ 2, na.rm = na.rm)
+  tmp <- colMeans(obs, na.rm = na.rm)
+  tmp <- sweep(obs, MARGIN = 2, STATS = tmp, FUN = "-")
+  d <- colSums(tmp^2, na.rm = na.rm)
 
   # NSE
   res <- rep(-Inf, ncol(obs))

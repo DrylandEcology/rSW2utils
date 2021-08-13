@@ -28,12 +28,11 @@ e.g., for unit days: \code{int = 365}; for unit months: \code{int = 12}.}
 Sequence generation for circular data
 }
 \examples{
-circ_seq(5, 8, int = 12)          ## expected c(5, 6, 7, 8)
-circ_seq(-7, 8, int = 12)         ## expected c(5, 6, 7, 8)
-circ_seq(-2, 3, int = 12)         ## expected c(10, 11, 12, 1, 2, 3)
+circ_seq(5, 8, int = 12) ## expected c(5, 6, 7, 8)
+circ_seq(-7, 8, int = 12) ## expected c(5, 6, 7, 8)
+circ_seq(-2, 3, int = 12) ## expected c(10, 11, 12, 1, 2, 3)
 circ_seq(-2, 3, int = 12, by = 2) ## expected c(10, 12, 2)
 circ_seq(-2, 3, int = 12, length.out = 3) ## expected c(10, 0.5, 3)
-
 }
 \seealso{
 \code{\link{seq}}

@@ -50,8 +50,12 @@ is.natural <- function(x) {
 #' cor2(x)
 #'
 #' @export
-cor2 <- function(x, y = NULL, use = "everything",
-  method = c("pearson", "kendall", "spearman")) {
+cor2 <- function(
+  x,
+  y = NULL,
+  use = "everything",
+  method = c("pearson", "kendall", "spearman")
+) {
 
   if (is.null(y)) {
     y <- x[, 2]
@@ -120,8 +124,14 @@ intersect2 <- function(...) {
 #'   \code{replacement}.
 #' @return The updated \code{x}.
 #' @export
-check_monotonic_increase <- function(x, MARGIN = 1, increase = TRUE,
-  strictly = FALSE, fail = FALSE, replacement = NA, na.rm = FALSE
+check_monotonic_increase <- function(
+  x,
+  MARGIN = 1,
+  increase = TRUE,
+  strictly = FALSE,
+  fail = FALSE,
+  replacement = NA,
+  na.rm = FALSE
 ) {
 
   x <- as.matrix(x)

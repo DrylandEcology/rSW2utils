@@ -44,7 +44,7 @@ test_that("circle", {
     # (x ^ 2 + y ^ 2) / r ^ 2 == 1 #nolint
     cvals <- cvals / r[k]
     expect_true(
-      all(abs(apply(cvals ^ 2, 1, sum) - 1) < rSW2_glovars[["tol"]])
+      all(abs(apply(cvals^2, 1, sum) - 1) < rSW2_glovars[["tol"]])
     )
   }
 })
@@ -67,7 +67,7 @@ test_that("ellipse", {
     cvals[, 1] <- cvals[, 1] / r[["a"]][k]
     cvals[, 2] <- cvals[, 2] / r[["b"]][k]
     expect_true(
-      all(abs(apply(cvals ^ 2, 1, sum) - 1) < rSW2_glovars[["tol"]])
+      all(abs(apply(cvals^2, 1, sum) - 1) < rSW2_glovars[["tol"]])
     )
   }
 })

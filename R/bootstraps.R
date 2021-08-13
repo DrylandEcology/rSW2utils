@@ -96,9 +96,17 @@
 #' )
 #'
 #' @export
-blb <- function(data, subset_size_b = nrow(data) ^ 0.7, n_subsets = NA,
-  n_resamples = 100, window_subsets = 3, window_resamples = 20,
-  epsilon = 0.05, fun_estimator, fun_metric) {
+blb <- function(
+  data,
+  subset_size_b = nrow(data)^0.7,
+  n_subsets = NA,
+  n_resamples = 100,
+  window_subsets = 3,
+  window_resamples = 20,
+  epsilon = 0.05,
+  fun_estimator,
+  fun_metric
+) {
 
   # size of data
   n <- nrow(data)

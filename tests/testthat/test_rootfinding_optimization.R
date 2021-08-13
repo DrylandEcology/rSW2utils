@@ -4,7 +4,7 @@ context("Root-finding and optimizations")
 #--- Tests
 test_that("Roots:", {
   r1 <- uniroots(
-    f = function(x) -1 + x ^ 2,
+    f = function(x) -1 + x^2,
     xlim = c(-10, 10),
     tol = rSW2_glovars[["tol"]],
     expected_nroots = 2
@@ -23,7 +23,7 @@ test_that("Roots:", {
     tol = rSW2_glovars[["tol"]]
   )
 
-  r2 <- uniroots(f = function(x) -1 + x ^ 2, xlim = c(-10, -5))
+  r2 <- uniroots(f = function(x) -1 + x^2, xlim = c(-10, -5))
   expect_type(r2, "list")
   expect_equal(
     has_uniroots(r2),

@@ -19,17 +19,16 @@ Determine whether result(s) of \code{uniroots} was successful
 }
 \examples{
 r1 <- uniroots(
-  f = function(x) -1 + x ^ 2,
+  f = function(x) -1 + x^2,
   xlim = c(-10, 10),
   expected_nroots = 2
 )
 
 has_uniroots(r1)
 
-r2 <- uniroots(f = function(x) -1 + x ^ 2, xlim = c(-10, -5))
+r2 <- uniroots(f = function(x) -1 + x^2, xlim = c(-10, -5))
 has_uniroots(r2)
 
 r3 <- uniroots(f = function(x) Inf, xlim = c(-10, -5))
 has_uniroots(r3)
-
 }

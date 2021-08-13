@@ -1,7 +1,7 @@
 # rSW2utils: Utility Tools for SOILWAT2 and STEPWAT2 Simulation Experiments
 
 <!-- badges: start -->
-[ ![R CMD build status][1]][2] [ ![github release][5]][6] [![license][7]][8] [![codecov status][9]][10]
+[ ![R build status][1]][2] [ ![github release][5]][6] [![license][7]][8] [![codecov status][9]][10]
 <!-- badges: end -->
 
 [1]: https://github.com/DrylandEcology/rSW2utils/actions/workflows/check-standard.yml/badge.svg?branch=main

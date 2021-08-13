@@ -1,5 +1,5 @@
 Package: rSW2utils
-Title: Utility tools for SOILWAT2 and STEPWAT2 simulation experiments
+Title: Utility Tools for SOILWAT2 and STEPWAT2 Simulation Experiments
 Version: 0.1.0
 Authors@R: c(
   person("Daniel", "Schlaepfer", email = "danielrschlaepfer@gmail.com",

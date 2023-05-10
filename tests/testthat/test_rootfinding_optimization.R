@@ -25,15 +25,9 @@ test_that("Roots:", {
 
   r2 <- uniroots(f = function(x) -1 + x^2, xlim = c(-10, -5))
   expect_type(r2, "list")
-  expect_identical(
-    has_uniroots(r2),
-    FALSE
-  )
+  expect_false(has_uniroots(r2))
 
   r3 <- uniroots(f = function(x) Inf, xlim = c(-10, -5), expected_nroots = 2)
   expect_type(r3, "list")
-  expect_identical(
-    has_uniroots(r3),
-    FALSE
-  )
+  expect_false(has_uniroots(r3))
 })

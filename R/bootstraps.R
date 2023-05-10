@@ -104,9 +104,14 @@ blb <- function(
   window_subsets = 3,
   window_resamples = 20,
   epsilon = 0.05,
-  fun_estimator,
-  fun_metric
+  fun_estimator = NULL,
+  fun_metric = NULL
 ) {
+
+  stopifnot(
+    is.function(fun_estimator),
+    is.function(fun_metric)
+  )
 
   # size of data
   n <- nrow(data)

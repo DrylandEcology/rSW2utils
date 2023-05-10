@@ -10,18 +10,18 @@ dpm <- c(31, 28, 31)
 tmp_ppt <- c(1.5, 0.3, 0)
 
 test_that("Unit conversion", {
-  expect_equal(convert_temperature(temp_C, unit_from = "C"), temp_C)
+  expect_identical(convert_temperature(temp_C, unit_from = "C"), temp_C)
   expect_equal(
     convert_temperature(temp_F, unit_from = "F"),
     temp_C,
     tolerance = 1e-6
   )
-  expect_equal(convert_temperature(temp_K, unit_from = "K"), temp_C)
+  expect_identical(convert_temperature(temp_K, unit_from = "K"), temp_C)
   expect_error(convert_temperature(temp_F, unit_from = "degree F"))
   expect_error(convert_temperature(temp_K, unit_from = "K", unit_to = "F"))
 
   # unit_to is "cm/month"
-  expect_equal(
+  expect_identical(
     convert_precipitation(
       tmp_ppt,
       dpm = NA,
@@ -30,7 +30,7 @@ test_that("Unit conversion", {
     ),
     tmp_ppt
   )
-  expect_equal(
+  expect_identical(
     convert_precipitation(
       tmp_ppt,
       dpm = NA,
@@ -39,7 +39,7 @@ test_that("Unit conversion", {
     ),
     tmp_ppt / 10
   )
-  expect_equal(
+  expect_identical(
     convert_precipitation(
       tmp_ppt,
       dpm = dpm,
@@ -48,7 +48,7 @@ test_that("Unit conversion", {
     ),
     tmp_ppt * dpm / 10
   )
-  expect_equal(
+  expect_identical(
     convert_precipitation(
       tmp_ppt,
       dpm = dpm,
@@ -57,7 +57,7 @@ test_that("Unit conversion", {
     ),
     tmp_ppt * dpm
   )
-  expect_equal(
+  expect_identical(
     convert_precipitation(
       tmp_ppt,
       dpm = dpm,
@@ -68,7 +68,7 @@ test_that("Unit conversion", {
   )
 
   # unit_to is "cm/day"
-  expect_equal(
+  expect_identical(
     convert_precipitation(
       tmp_ppt,
       dpm = dpm,
@@ -77,7 +77,7 @@ test_that("Unit conversion", {
     ),
     tmp_ppt / dpm
   )
-  expect_equal(
+  expect_identical(
     convert_precipitation(
       tmp_ppt,
       dpm = dpm,
@@ -86,7 +86,7 @@ test_that("Unit conversion", {
     ),
     tmp_ppt / (dpm * 10)
   )
-  expect_equal(
+  expect_identical(
     convert_precipitation(
       tmp_ppt,
       dpm = NA,
@@ -95,7 +95,7 @@ test_that("Unit conversion", {
     ),
     tmp_ppt / 10
   )
-  expect_equal(
+  expect_identical(
     convert_precipitation(
       tmp_ppt,
       dpm = NA,
@@ -104,7 +104,7 @@ test_that("Unit conversion", {
     ),
     tmp_ppt
   )
-  expect_equal(
+  expect_identical(
     convert_precipitation(
       tmp_ppt,
       dpm = NA,

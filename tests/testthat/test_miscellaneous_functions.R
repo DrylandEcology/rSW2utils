@@ -38,7 +38,7 @@ test_that("Comparing objects", {
       all.equal(y2, x, scale = 1, countEQ = FALSE)
   )
 
-  expect_equal(
+  expect_identical(
     all_equal_numeric2(y1, x),
     all_equal_numeric2(y2, x)
   )
@@ -87,6 +87,8 @@ test_that("Comparing objects", {
 
 
 test_that("Chunking", {
+  tol <- sqrt(.Machine[["double.eps"]])
+
   vals_nx <- as.integer(c(0, 1, 4, 15, 16, 1000))
   n_chunks <- as.integer(c(0, 1, 3))
   chunk_size <- as.integer(c(0, 1, 5))
@@ -94,11 +96,17 @@ test_that("Chunking", {
   for (nx in vals_nx) {
     for (k in seq_along(n_chunks)) {
       tmp1 <- make_chunks(nx = nx, n_chunks = n_chunks[k])
-      expect_equal(length(unlist(tmp1)), if (n_chunks[k] == 0) 0 else nx)
-      expect_equal(length(tmp1), min(nx, n_chunks[k]))
+      expect_identical(
+        length(unlist(tmp1)),
+        if (n_chunks[k] == 0L) 0L else nx
+      )
+      expect_identical(length(tmp1), min(nx, n_chunks[k]))
 
       tmp2 <- make_chunks(nx, chunk_size = chunk_size[k])
-      expect_equal(length(unlist(tmp2)), if (chunk_size[k] == 0) 0 else nx)
+      expect_identical(
+        length(unlist(tmp2)),
+        if (chunk_size[k] == 0L) 0L else nx
+      )
       expect_true(all(lengths(tmp2) <= chunk_size[k]))
     }
   }

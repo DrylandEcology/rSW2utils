@@ -91,7 +91,7 @@ test_that("Monotonicity:", {
         res_s <- t(res_s)
       }
 
-      expect_equal(
+      expect_identical(
         check_monotonic_increase(
           x,
           MARGIN = it,
@@ -104,7 +104,7 @@ test_that("Monotonicity:", {
         res_ns
       )
 
-      expect_equal(
+      expect_identical(
         check_monotonic_increase(
           x,
           MARGIN = it,

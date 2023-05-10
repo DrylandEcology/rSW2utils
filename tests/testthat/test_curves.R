@@ -8,8 +8,8 @@ test_that("lines", {
 
   lfun <- f_2pline(p1[[1L]], p1[[2L]], p2[[1L]], p2[[2L]])
 
-  expect_equal(lfun(p1[[1L]])[[2L]], p1[[2L]])
-  expect_equal(lfun(p2[[1L]])[[2L]], p2[[2L]])
+  expect_identical(lfun(p1[[1L]])[[2L]], p1[[2L]])
+  expect_identical(lfun(p2[[1L]])[[2L]], p2[[2L]])
 
 
   # Horizontal line
@@ -18,8 +18,8 @@ test_that("lines", {
 
   lfun <- f_2pline(p1[[1L]], p1[[2L]], p2[[1L]], p2[[2L]])
 
-  expect_equal(lfun(p1[[1L]])[[2L]], p1[[2L]])
-  expect_equal(lfun(p2[[1L]])[[2L]], p2[[2L]])
+  expect_identical(lfun(p1[[1L]])[[2L]], p1[[2L]])
+  expect_identical(lfun(p2[[1L]])[[2L]], p2[[2L]])
 
   # Vertical line produces NAs
   p1 <- c(1, 1)
@@ -27,8 +27,8 @@ test_that("lines", {
 
   lfun <- f_2pline(p1[[1L]], p1[[2L]], p2[[1L]], p2[[2L]])
 
-  expect_equal(lfun(p1[[1L]])[[2L]], NA_real_)
-  expect_equal(lfun(p2[[1L]])[[2L]], NA_real_)
+  expect_identical(lfun(p1[[1L]])[[2L]], NA_real_)
+  expect_identical(lfun(p2[[1L]])[[2L]], NA_real_)
 })
 
 

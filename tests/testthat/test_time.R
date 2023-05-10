@@ -17,7 +17,7 @@ test_that("Time information", {
   expect_length(days_in_years(2100, 2100), 365)
 
   # Sequence of month numbers for each day in the period
-  expect_equal(
+  expect_identical(
     seq_month_ofeach_day(list(1980, 1, 1), list(2010, 12, 31), tz = "UTC"),
     # nolint start: extraction_operator_linter.
     as.POSIXlt(days_in_years(1980, 2010))$mon + 1

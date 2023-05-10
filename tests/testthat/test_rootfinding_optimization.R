@@ -18,7 +18,7 @@ test_that("Roots:", {
   )
 
   expect_equal(
-    sapply(r1, function(x) x[["root"]]),
+    vapply(r1, function(x) x[["root"]], FUN.VALUE = NA_real_),
     c(-1, 1),
     tol = rSW2_glovars[["tol"]]
   )

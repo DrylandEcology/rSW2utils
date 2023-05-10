@@ -161,13 +161,18 @@ has_uniroots <- function(x, tol = .Machine[["double.eps"]]^0.25) {
   res <- !is.null(x) && !inherits(x, "try-error")
 
   if (res) {
-    res <- sapply(x, function(x) !is.null(x) && !inherits(x, "try-error"))
+    res <- vapply(
+      x,
+      function(x) !is.null(x) && !inherits(x, "try-error"),
+      FUN.VALUE = NA
+    )
     inoerror <- res
 
     if (any(inoerror)) {
-      res[inoerror] <- sapply(
+      res[inoerror] <- vapply(
         x[inoerror],
-        function(xi) xi[["iter"]] < 1000 && abs(xi[["f.root"]]) < tol
+        function(xi) xi[["iter"]] < 1000 && abs(xi[["f.root"]]) < tol,
+        FUN.VALUE = NA
       )
     }
   }

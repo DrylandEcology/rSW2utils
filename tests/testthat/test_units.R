@@ -25,8 +25,8 @@ test_that("Unit conversion", {
     convert_precipitation(
       tmp_ppt,
       dpm = NA,
-      unit_from = "cm/month",
-      unit_to = "cm/month"
+      unit_from = "cm/month", # nolint: nonportable_path_linter.
+      unit_to = "cm/month" # nolint: nonportable_path_linter.
     ),
     tmp_ppt
   )
@@ -34,8 +34,8 @@ test_that("Unit conversion", {
     convert_precipitation(
       tmp_ppt,
       dpm = NA,
-      unit_from = "mm/month",
-      unit_to = "cm/month"
+      unit_from = "mm/month", # nolint: nonportable_path_linter.
+      unit_to = "cm/month" # nolint: nonportable_path_linter.
     ),
     tmp_ppt / 10
   )
@@ -43,8 +43,8 @@ test_that("Unit conversion", {
     convert_precipitation(
       tmp_ppt,
       dpm = dpm,
-      unit_from = "mm/d",
-      unit_to = "cm/month"
+      unit_from = "mm/d", # nolint: nonportable_path_linter.
+      unit_to = "cm/month" # nolint: nonportable_path_linter.
     ),
     tmp_ppt * dpm / 10
   )
@@ -52,8 +52,8 @@ test_that("Unit conversion", {
     convert_precipitation(
       tmp_ppt,
       dpm = dpm,
-      unit_from = "cm/d",
-      unit_to = "cm/month"
+      unit_from = "cm/d", # nolint: nonportable_path_linter.
+      unit_to = "cm/month" # nolint: nonportable_path_linter.
     ),
     tmp_ppt * dpm
   )
@@ -62,16 +62,18 @@ test_that("Unit conversion", {
       tmp_ppt,
       dpm = dpm,
       unit_from = "kg m-2 s-1",
-      unit_to = "cm/month"
+      unit_to = "cm/month" # nolint: nonportable_path_linter.
     ),
     tmp_ppt * dpm * 8640
   )
 
   # unit_to is "cm/day"
   expect_equal(
-    convert_precipitation(tmp_ppt,
+    convert_precipitation(
+      tmp_ppt,
       dpm = dpm,
-      unit_from = "cm/month", unit_to = "cm/day"
+      unit_from = "cm/month",  # nolint: nonportable_path_linter.
+      unit_to = "cm/day" # nolint: nonportable_path_linter.
     ),
     tmp_ppt / dpm
   )
@@ -79,16 +81,17 @@ test_that("Unit conversion", {
     convert_precipitation(
       tmp_ppt,
       dpm = dpm,
-      unit_from = "mm/month",
-      unit_to = "cm/day"
+      unit_from = "mm/month", # nolint: nonportable_path_linter.
+      unit_to = "cm/day" # nolint: nonportable_path_linter.
     ),
     tmp_ppt / (dpm * 10)
   )
   expect_equal(
-    convert_precipitation(tmp_ppt,
+    convert_precipitation(
+      tmp_ppt,
       dpm = NA,
-      unit_from = "mm/d",
-      unit_to = "cm/day"
+      unit_from = "mm/d", # nolint: nonportable_path_linter.
+      unit_to = "cm/day" # nolint: nonportable_path_linter.
     ),
     tmp_ppt / 10
   )
@@ -96,8 +99,8 @@ test_that("Unit conversion", {
     convert_precipitation(
       tmp_ppt,
       dpm = NA,
-      unit_from = "cm/d",
-      unit_to = "cm/day"
+      unit_from = "cm/d", # nolint: nonportable_path_linter.
+      unit_to = "cm/day" # nolint: nonportable_path_linter.
     ),
     tmp_ppt
   )
@@ -106,7 +109,7 @@ test_that("Unit conversion", {
       tmp_ppt,
       dpm = NA,
       unit_from = "kg m-2 s-1",
-      unit_to = "cm/day"
+      unit_to = "cm/day" # nolint: nonportable_path_linter.
     ),
     tmp_ppt * 8640
   )
@@ -116,12 +119,12 @@ test_that("Unit conversion", {
     tmp_ppt,
     dpm = dpm,
     unit_from = "L m-2",
-    unit_to = "cm/month"
+    unit_to = "cm/month" # nolint: nonportable_path_linter.
   ))
   expect_error(convert_precipitation(
     tmp_ppt,
     dpm = dpm,
-    unit_from = "cm/month",
+    unit_from = "cm/month", # nolint: nonportable_path_linter.
     unit_to = "L m-2"
   ))
 })

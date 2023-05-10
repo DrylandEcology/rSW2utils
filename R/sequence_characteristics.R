@@ -123,11 +123,11 @@ max_duration <- function(x, target_val = 1L, return_doys = FALSE) {
     len <- max(r[["lengths"]][igood])
 
     if (return_doys) {
-      imax <- which(rgood & r[["lengths"]] == len)[1]
+      imax <- which(rgood & r[["lengths"]] == len)[[1L]]
 
       rdoys <- cumsum(r[["lengths"]])
       doys <- if (imax == 1L) {
-        c(start = 1L, end = rdoys[1])
+        c(start = 1L, end = rdoys[[1L]])
       } else {
         c(
           start = rdoys[imax - 1] + 1,

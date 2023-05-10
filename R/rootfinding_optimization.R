@@ -79,7 +79,7 @@
 uniroots <- function(
   f,
   xlim,
-  tol = .Machine$double.eps^0.25,
+  tol = .Machine[["double.eps"]]^0.25,
   expected_nroots = 1
 ) {
 
@@ -157,7 +157,7 @@ uniroots <- function(
 #' r3 <- uniroots(f = function(x) Inf, xlim = c(-10, -5))
 #' has_uniroots(r3)
 #' @export
-has_uniroots <- function(x, tol = .Machine$double.eps^0.25) {
+has_uniroots <- function(x, tol = .Machine[["double.eps"]]^0.25) {
   res <- !is.null(x) && !inherits(x, "try-error")
 
   if (res) {

@@ -47,7 +47,7 @@ test_that("Impute missing values", {
     for (v in vars_with_values) {
       expect_true(!anyNA(res2[, v]))
       if (type == "locf") {
-        expect_true(all(res2[idsNA, v] == df2[idsNA[1] - 1, v]))
+        expect_true(all(res2[idsNA, v] == df2[idsNA[[1L]] - 1, v]))
       }
     }
   }

@@ -185,14 +185,14 @@ all_equal_recursively <- function(x1, x2) {
 #' @examples
 #' N <- 50
 #' diff <- 0.1
-#' tiny_diff <- 1e-14 # < sqrt(.Machine$double.eps)
-#' tol <- sqrt(.Machine$double.eps) # default value of `all.equal`
+#' tiny_diff <- 1e-14 # < sqrt(.Machine[["double.eps"]])
+#' tol <- sqrt(.Machine[["double.eps"]]) # default value of `all.equal`
 #'
 #' x <- runif(n = N)
 #'
 #' # Set up y1 as identical to x except for one element
 #' y1 <- x
-#' y1[2] <- y1[2] + diff
+#' y1[[2L]] <- y1[[2L]] + diff
 #'
 #' # Set up y2 as almost identical to y1
 #' y2 <- y1
@@ -222,7 +222,7 @@ all_equal_recursively <- function(x1, x2) {
 #' all_equal_numeric2(iris, iris2, tolerance = tol, scaled = FALSE)
 #' @export
 all_equal_numeric2 <- function(target, current,
-                               tolerance = sqrt(.Machine$double.eps),
+                               tolerance = sqrt(.Machine[["double.eps"]]),
                                scaled = FALSE, ...) {
   if (is.null(scaled) || isTRUE(scaled)) {
     msg <- all.equal(

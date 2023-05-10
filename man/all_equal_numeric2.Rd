@@ -7,7 +7,7 @@
 all_equal_numeric2(
   target,
   current,
-  tolerance = sqrt(.Machine$double.eps),
+  tolerance = sqrt(.Machine[["double.eps"]]),
   scaled = FALSE,
   ...
 )
@@ -48,14 +48,14 @@ See examples.
 \examples{
 N <- 50
 diff <- 0.1
-tiny_diff <- 1e-14 # < sqrt(.Machine$double.eps)
-tol <- sqrt(.Machine$double.eps) # default value of `all.equal`
+tiny_diff <- 1e-14 # < sqrt(.Machine[["double.eps"]])
+tol <- sqrt(.Machine[["double.eps"]]) # default value of `all.equal`
 
 x <- runif(n = N)
 
 # Set up y1 as identical to x except for one element
 y1 <- x
-y1[2] <- y1[2] + diff
+y1[[2L]] <- y1[[2L]] + diff
 
 # Set up y2 as almost identical to y1
 y2 <- y1

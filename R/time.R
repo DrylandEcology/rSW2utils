@@ -90,12 +90,14 @@ seq_month_ofeach_day <- function(
   tz = "UTC"
 ) {
 
-  x <- paste(from[[1]], from[[2]], from[[3]], 12, 0, 0, sep = "-")
+  x <- paste(from[[1L]], from[[2L]], from[[3L]], 12, 0, 0, sep = "-")
   fr0 <- unclass(as.POSIXct.POSIXlt(strptime(x, "%Y-%m-%d-%H-%M-%OS", tz = tz)))
 
-  x <- paste(to[[1]], to[[2]], to[[3]], 12, 0, 0, sep = "-")
+  x <- paste(to[[1L]], to[[2L]], to[[3L]], 12, 0, 0, sep = "-")
   to0 <- unclass(as.POSIXct.POSIXlt(strptime(x, "%Y-%m-%d-%H-%M-%OS", tz = tz)))
 
   res <- seq.int(0, to0 - fr0, by = 86400) + fr0
+  # nolint start: extraction_operator_linter.
   as.POSIXlt.POSIXct(.POSIXct(res, tz = tz))$mon + 1
+  # nolint end: extraction_operator_linter.
 }

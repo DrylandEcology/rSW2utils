@@ -83,22 +83,22 @@ intersect2 <- function(...) {
   x <- list(...)
   n <- length(x)
 
-  if (is.list(x[[1]]) && n == 1) {
-    x <- x[[1]]
+  if (is.list(x[[1L]]) && n == 1) {
+    x <- x[[1L]]
     n <- length(x)
   }
 
   res <- NULL
   if (n > 1) {
-    if (all(lengths(x)) > 0) {
-      res <- x[[1]]
+    if (all(lengths(x) > 0)) {
+      res <- x[[1L]]
       for (k in 2:n) {
         res <- intersect(res, x[[k]])
       }
     }
 
   } else {
-    res <- x[[1]]
+    res <- x[[1L]]
   }
 
   res

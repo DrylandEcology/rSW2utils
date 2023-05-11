@@ -1,7 +1,3 @@
-context("Mathematical functions")
-
-
-
 
 #--- Tests
 test_that("Monotonicity:", {

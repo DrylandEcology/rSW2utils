@@ -1,4 +1,3 @@
-context("Sequence characteristics")
 
 #--- TESTS
 test_that("Sequence positions", {

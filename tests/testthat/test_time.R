@@ -1,4 +1,3 @@
-context("Time")
 
 #--- TESTS
 test_that("Time information", {

@@ -1,4 +1,3 @@
-context("Curve functions")
 
 # Inputs
 

@@ -1,4 +1,3 @@
-context("Goodness of fit")
 
 # Test data
 Ncases <- 100

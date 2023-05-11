@@ -1,5 +1,3 @@
-context("Circular functions")
-
 
 #--- Tests
 test_that("Circular mean", {

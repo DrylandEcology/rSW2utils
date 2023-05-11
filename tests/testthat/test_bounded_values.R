@@ -1,4 +1,3 @@
-context("Bounded values")
 
 #---TESTS
 test_that("replace_NAs_with_val", {

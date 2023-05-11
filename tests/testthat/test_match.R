@@ -1,4 +1,3 @@
-context("Match for appending data")
 
 # Inputs
 xs <- data.frame(a = 4:6, b = letters[4:6], stringsAsFactors = FALSE)

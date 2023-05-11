@@ -1,4 +1,3 @@
-context("Root-finding and optimizations")
 
 
 #--- Tests

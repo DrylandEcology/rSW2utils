@@ -1,4 +1,3 @@
-context("Miscellaneous functions")
 
 # Test data
 N <- 50

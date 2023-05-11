@@ -1,4 +1,3 @@
-context("Unit conversion")
 
 #--- TESTS
 # Test 'convert_temperature'

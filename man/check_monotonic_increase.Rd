@@ -7,7 +7,7 @@ increasing/decreasing}
 \usage{
 check_monotonic_increase(
   x,
-  MARGIN = 1,
+  MARGIN = 1L,
   increase = TRUE,
   strictly = FALSE,
   fail = FALSE,

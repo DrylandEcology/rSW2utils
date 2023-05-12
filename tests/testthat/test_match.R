@@ -1,4 +1,3 @@
-context("Match for appending data")
 
 # Inputs
 xs <- data.frame(a = 4:6, b = letters[4:6], stringsAsFactors = FALSE)
@@ -17,7 +16,7 @@ ref_template <- data.frame(
 test_that("Match", {
   #--- Correct use of match to append data
   ref <- ref_template
-  expect_equal(
+  expect_identical(
     tmp <- {
       id_x <- match(ref[["a"]], xs[["a"]], nomatch = 0)
       use_r <- id_x > 0
@@ -28,7 +27,7 @@ test_that("Match", {
   )
 
   ref <- ref_template
-  expect_equal(
+  expect_identical(
     tmp <- {
       id_x <- match(ref[["a"]], xl[["a"]], nomatch = 0)
       use_r <- id_x > 0
@@ -41,7 +40,7 @@ test_that("Match", {
   #--- Incorrect use of match (first test works because nrow(xs) <= nrow(ref);
   # second test fails)
   ref <- ref_template
-  expect_equal(
+  expect_identical(
     tmp <- {
       id_r <- match(xs[["a"]], ref[["a"]], nomatch = 0)
       ref[["c"]][id_r] <- xs[["b"]]

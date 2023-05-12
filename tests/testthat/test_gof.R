@@ -1,4 +1,3 @@
-context("Goodness of fit")
 
 # Test data
 Ncases <- 100
@@ -29,11 +28,11 @@ test_that("gof", {
     sim <- obs
 
     tmp_rmse <- rmse(obs, sim, na.rm = TRUE)
-    lapply(nids, function(k) expect_equal(tmp_rmse[k], 0))
+    lapply(nids, function(k) expect_identical(tmp_rmse[k], 0))
     tmp_mae <- mae(obs, sim, na.rm = TRUE)
-    lapply(nids, function(k) expect_equal(tmp_mae[k], 0))
+    lapply(nids, function(k) expect_identical(tmp_mae[k], 0))
     tmp_nse <- NSE(obs, sim, na.rm = TRUE)
-    lapply(nids, function(k) expect_equal(tmp_nse[k], 1))
+    lapply(nids, function(k) expect_identical(tmp_nse[k], 1))
 
 
     #--- Average case
@@ -45,7 +44,7 @@ test_that("gof", {
     tmp_mae <- mae(obs, sim, na.rm = TRUE)
     lapply(nids, function(k) expect_gt(tmp_mae[k], 0))
     tmp_nse <- NSE(obs, sim, na.rm = TRUE)
-    lapply(nids, function(k) expect_equal(tmp_nse[k], 0))
+    lapply(nids, function(k) expect_identical(tmp_nse[k], 0))
 
 
     #--- Poor case

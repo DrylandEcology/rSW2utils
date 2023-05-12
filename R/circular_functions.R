@@ -368,7 +368,7 @@ circ_seq <- function(from, to, int, by, length.out = NULL) {
     if (!is.na(by) && by == 0 && (del == 0 || del == p)) {
       return(ZeroPlus2Pi(from, p))
     }
-    stop("invalid '(to - from)/by'")
+    stop("invalid '(to - from)/by'") # nolint: nonportable_path_linter
   }
 
   if (n < 0L) {

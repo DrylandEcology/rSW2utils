@@ -1,20 +1,19 @@
-context("Sequence characteristics")
 
 #--- TESTS
 test_that("Sequence positions", {
-  expect_equal(calc_starts(c(0, 1, 1, 0, 0)), 2)
-  expect_equal(calc_starts(c(1, 1, 0, 0)), 1)
-  expect_equal(calc_starts(c(1, 1, 0, 0, 1, 1)), c(1, 5))
-  expect_equal(calc_starts(c(1.5, 2, 0, 0, 15, 3.5)), c(1, 5))
+  expect_identical(calc_starts(c(0, 1, 1, 0, 0)), 2)
+  expect_identical(calc_starts(c(1, 1, 0, 0)), 1)
+  expect_identical(calc_starts(c(1, 1, 0, 0, 1, 1)), c(1, 5))
+  expect_identical(calc_starts(c(1.5, 2, 0, 0, 15, 3.5)), c(1, 5))
   expect_length(calc_starts(c(0, 0)), 0)
 
-  expect_equal(max_duration(0, target_val = 1), 0)
+  expect_identical(max_duration(0, target_val = 1), 0L)
   x1 <- c(rep(3, 3), rep(10, 10), 4, rep(10, 20), rep(3, 6))
-  expect_equal(max_duration(x1, 10, FALSE), 20)
-  expect_equal(unname(max_duration(x1, 10, TRUE)), c(20, 15, 34))
+  expect_identical(max_duration(x1, 10, FALSE), 20L)
+  expect_identical(unname(max_duration(x1, 10, TRUE)), c(20, 15, 34))
   x2 <- c(x1, rep(3, 3), rep(10, 20))
-  expect_equal(max_duration(x2, 10, FALSE), 20)
-  expect_equal(unname(max_duration(x2, 10, TRUE)), c(20, 15, 34))
+  expect_identical(max_duration(x2, 10, FALSE), 20L)
+  expect_identical(unname(max_duration(x2, 10, TRUE)), c(20, 15, 34))
 })
 
 test_that("Moving window", {
@@ -32,7 +31,7 @@ test_that("Moving window", {
       mf <- moving_function(x = tmp, k = k, win_fun = fun, na.rm = FALSE)
       isnotna <- !is.na(mf)
 
-      expect_equal(
+      expect_identical(
         as.vector(stats::runmed(x = tmp, k = k))[isnotna],
         mf[isnotna]
       )
@@ -44,7 +43,7 @@ test_that("Moving window", {
         mf <- moving_function(x = tmp, k = k, win_fun = f, na.rm = FALSE)
         isnotna <- !is.na(mf)
 
-        expect_equal(
+        expect_identical(
           as.vector(stats::na.omit(apply(stats::embed(tmp, k), 1, f))),
           mf[isnotna]
         )
@@ -52,9 +51,9 @@ test_that("Moving window", {
         # Check na.rm
         mf2 <- moving_function(x = tmp, k = k, win_fun = f, na.rm = TRUE)
         if (!(fun == "sd" && k == 1)) {
-          expect_equal(sum(is.na(mf2)), 0)
+          expect_identical(sum(is.na(mf2)), 0L)
         }
-        expect_equal(mf[isnotna], mf2[isnotna])
+        expect_identical(mf[isnotna], mf2[isnotna])
 
         # Check circular
         mf3 <- moving_function(
@@ -65,9 +64,9 @@ test_that("Moving window", {
           circular = TRUE
         )
         if (!(fun == "sd" && k == 1)) {
-          expect_equal(sum(is.na(mf3)), 0)
+          expect_identical(sum(is.na(mf3)), 0L)
         }
-        expect_equal(mf[isnotna], mf3[isnotna])
+        expect_identical(mf[isnotna], mf3[isnotna])
       }
     }
   }
@@ -75,45 +74,47 @@ test_that("Moving window", {
 
 
 test_that("Counting peaks", {
-  expect_equal(count_peaks(c(0, 1, 0, 1, 0)), 2)
-  expect_equal(count_peaks(c(0, 1, 0, 1)), 1)
-  expect_equal(count_peaks(c(1, 0, 1)), 0)
-  expect_equal(count_peaks(c(0, 1, 1, 2.5, 5.1, 4.9)), 1)
-  expect_equal(count_peaks(c(0, 1, 1, 2.5, 5.1, 4.9), min_change = 0.5), 0)
-  expect_equal(count_peaks(c(0, 1, 1, 0.8, 5.1, 4)), 2)
-  expect_equal(count_peaks(c(0, 1, 1, 0.8, 5.1, 4), min_change = 0.1), 2)
-  expect_equal(count_peaks(c(0, 1, 1, 0.8, 5.1, 4), min_change = 0.5), 1)
+  expect_identical(count_peaks(c(0, 1, 0, 1, 0)), 2L)
+  expect_identical(count_peaks(c(0, 1, 0, 1)), 1L)
+  expect_identical(count_peaks(c(1, 0, 1)), 0L)
+  expect_identical(count_peaks(c(0, 1, 1, 2.5, 5.1, 4.9)), 1L)
+  expect_identical(count_peaks(c(0, 1, 1, 2.5, 5.1, 4.9), min_change = 0.5), 0L)
+  expect_identical(count_peaks(c(0, 1, 1, 0.8, 5.1, 4)), 2L)
+  expect_identical(count_peaks(c(0, 1, 1, 0.8, 5.1, 4), min_change = 0.1), 2L)
+  expect_identical(count_peaks(c(0, 1, 1, 0.8, 5.1, 4), min_change = 0.5), 1L)
 })
 
 
 
 test_that("Scale to reference", {
+  tol <- sqrt(.Machine[["double.eps"]])
+
   x <- c(1:6, 8)
   x0 <- c(10, -1)
   x0NA <- c(x0, NA)
 
   # Scale to retain value of reference maximum
   x_scaled <- scale_to_reference_fun(x, x0, fun = max)
-  expect_equal(max(x0), max(x_scaled))
+  expect_identical(max(x0), max(x_scaled))
 
   # Scale to retain value of reference sum
   x_scaled <- scale_to_reference_fun(x, x0, fun = sum)
-  expect_equal(sum(x0), sum(x_scaled))
+  expect_identical(sum(x0), sum(x_scaled))
 
   # Scale to retain value of reference mean
   x_scaled <- scale_to_reference_fun(x, x0, fun = mean)
-  expect_equal(mean(x0), mean(x_scaled))
+  expect_equal(mean(x0), mean(x_scaled), tolerance = tol)
 
   # Scale to retain value of reference length (Note: somewhat nonsensical!)
   x_scaled <- scale_to_reference_fun(x, x0, fun = length, na.rm = TRUE)
-  expect_equal(x * length(x0) / length(x), x_scaled)
+  expect_identical(x * length(x0) / length(x), x_scaled)
 
   # Scale and handle NAs
   x_scaled <- scale_to_reference_fun(x, x0NA, fun = mean, na.rm = FALSE)
   expect_true(all(is.na(x_scaled)))
 
   x_scaled <- scale_to_reference_fun(x, x0NA, fun = max, na.rm = TRUE)
-  expect_equal(max(x0, na.rm = TRUE), max(x_scaled))
+  expect_identical(max(x0, na.rm = TRUE), max(x_scaled))
 
 
   # Scale to reference peak frequency
@@ -124,22 +125,22 @@ test_that("Scale to reference", {
   x0 <- c(0.5, 0.5, 0.5, 0.7, 0.9, 1, 1, 1, 0.9, 0.7, 0.5, 0.5)
 
   x_scaled1 <- scale_to_reference_peak_frequency(x, x0, cap_at_peak = TRUE)
-  expect_equal(sum(x0 < max(x0)), sum(x_scaled1 < max(x0)))
+  expect_identical(sum(x0 < max(x0)), sum(x_scaled1 < max(x0)))
 
   x_scaled2 <- scale_to_reference_peak_frequency(x, x0, cap_at_peak = FALSE)
-  expect_equal(sum(x0 < max(x0)), sum(x_scaled2 < max(x0)))
-  expect_equal(
+  expect_identical(sum(x0 < max(x0)), sum(x_scaled2 < max(x0)))
+  expect_identical(
     x_scaled1,
     squash_into_low_high(x_scaled2, val_low = -Inf, val_high = max(x0))
   )
 
   # Scale to sum to 1
   x_scaled1 <- scale_to_reference_fun(x, 1, fun = sum)
-  expect_equal(1, sum(x_scaled1))
+  expect_identical(1, sum(x_scaled1))
 
   x_scaled2 <- scale_by_sum(x)
-  expect_equal(1, sum(x_scaled2))
-  expect_equal(x_scaled1, x_scaled2)
+  expect_identical(1, sum(x_scaled2))
+  expect_identical(x_scaled1, x_scaled2)
 
 
   # Scale rounded values to sum to 1
@@ -148,10 +149,10 @@ test_that("Scale to reference", {
   )
 
   x_scaled1 <- scale_rounded_by_sum(x, digits = 2, icolumn_adjust = 7)
-  expect_equal(1, sum(x_scaled1))
+  expect_identical(1, sum(x_scaled1))
 
   x_scaled1 <- scale_rounded_by_sum(x, digits = 4, icolumn_adjust = 7)
-  expect_equal(1, sum(x_scaled1))
+  expect_identical(1, sum(x_scaled1))
 
   xm <- rbind(x, x + 1, x^2)
 
@@ -160,9 +161,9 @@ test_that("Scale to reference", {
   )
 
   x_scaled1 <- scale_rounded_by_sum(xm, digits = 4, icolumn_adjust = 7)
-  expect_equal(rep(1, nrow(xm)), apply(x_scaled1, 1, sum))
+  expect_identical(rep(1, nrow(xm)), apply(x_scaled1, 1, sum))
 
   xdf <- as.data.frame(xm)
   x_scaled1 <- scale_rounded_by_sum(xdf, digits = 4, icolumn_adjust = 7)
-  expect_equal(rep(1, nrow(xm)), apply(x_scaled1, 1, sum))
+  expect_identical(rep(1, nrow(xm)), apply(x_scaled1, 1, sum))
 })

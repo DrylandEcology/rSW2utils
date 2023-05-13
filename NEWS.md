@@ -3,7 +3,7 @@
   lint workflow switched from package tests to Github Action (#3; @dschlaep).
 * Github Actions are triggered for `release/**` branches in addition to `main`.
 * `r-lib` Github Actions updated to `v2` (#5; @dschlaep).
-
+* Unit tests updated to `testthat` edition 3 (#4; @dschlaep)
 
 # rSW2utils v0.1.0
 * Initial release

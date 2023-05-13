@@ -12,8 +12,8 @@ blb(
   window_subsets = 3,
   window_resamples = 20,
   epsilon = 0.05,
-  fun_estimator,
-  fun_metric
+  fun_estimator = NULL,
+  fun_metric = NULL
 )
 }
 \arguments{

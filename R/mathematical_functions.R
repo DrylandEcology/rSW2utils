@@ -83,22 +83,22 @@ intersect2 <- function(...) {
   x <- list(...)
   n <- length(x)
 
-  if (is.list(x[[1]]) && n == 1) {
-    x <- x[[1]]
+  if (is.list(x[[1L]]) && n == 1) {
+    x <- x[[1L]]
     n <- length(x)
   }
 
   res <- NULL
   if (n > 1) {
-    if (all(lengths(x)) > 0) {
-      res <- x[[1]]
+    if (all(lengths(x) > 0)) {
+      res <- x[[1L]]
       for (k in 2:n) {
         res <- intersect(res, x[[k]])
       }
     }
 
   } else {
-    res <- x[[1]]
+    res <- x[[1L]]
   }
 
   res
@@ -126,19 +126,20 @@ intersect2 <- function(...) {
 #' @export
 check_monotonic_increase <- function(
   x,
-  MARGIN = 1,
+  MARGIN = 1L,
   increase = TRUE,
   strictly = FALSE,
   fail = FALSE,
   replacement = NA,
   na.rm = FALSE
 ) {
+  MARGIN <- as.integer(MARGIN)
 
   x <- as.matrix(x)
 
-  stopifnot(MARGIN %in% c(1, 2), length(dim(x)) == 2)
+  stopifnot(MARGIN %in% c(1L, 2L), length(dim(x)) == 2L)
 
-  if (MARGIN == 2) {
+  if (identical(MARGIN, 2L)) {
     x <- t(x)
   }
 
@@ -153,12 +154,10 @@ check_monotonic_increase <- function(
   if ((!na.rm && strictly && anyNA(x)) || any(ord, na.rm = TRUE)) {
     if (fail) {
       stop(
-        paste0(
-          "'check_monotonic_increase': data are not ",
-          if (strictly) "strictly ", "monotonically ",
-          if (increase) "increasing " else "decreasing ",
-          if (MARGIN == 1) "in rows." else "in columns."
-        )
+        "'check_monotonic_increase': data are not ",
+        if (strictly) "strictly ", "monotonically ",
+        if (increase) "increasing " else "decreasing ",
+        if (identical(MARGIN, 1L)) "in rows." else "in columns."
       )
 
     } else {
@@ -167,5 +166,5 @@ check_monotonic_increase <- function(
     }
   }
 
-  if (MARGIN == 1) x else t(x)
+  if (identical(MARGIN, 1L)) x else t(x)
 }

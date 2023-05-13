@@ -1,7 +1,3 @@
-context("Mathematical functions")
-
-
-
 
 #--- Tests
 test_that("Monotonicity:", {
@@ -53,7 +49,7 @@ test_that("Monotonicity:", {
   good_strict_matrices <- test_matrices
   good_strict_matrices[["x1"]] <- {
     x <- test_matrices[["x1"]]
-    x[] <- replacement
+    x[] <- replacement # nolint: extraction_operator_linter.
     x
   }
   good_strict_matrices[["x2"]] <- {
@@ -91,7 +87,7 @@ test_that("Monotonicity:", {
         res_s <- t(res_s)
       }
 
-      expect_equal(
+      expect_identical(
         check_monotonic_increase(
           x,
           MARGIN = it,
@@ -104,7 +100,7 @@ test_that("Monotonicity:", {
         res_ns
       )
 
-      expect_equal(
+      expect_identical(
         check_monotonic_increase(
           x,
           MARGIN = it,

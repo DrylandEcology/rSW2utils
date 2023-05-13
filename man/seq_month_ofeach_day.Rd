@@ -17,11 +17,11 @@ and \code{day}.}
 \item{to}{A list with three elements \code{year}, \code{month},
 and \code{day}.}
 
-\item{tz}{time zone specification to be used for the conversion,
-    \emph{if one is required}.  System-specific (see \link[base]{time zones}),
-    but \code{""} is the current time zone, and \code{"GMT"} is UTC
-    (Universal Time, Coordinated).  Invalid values are most commonly
-    treated as UTC, on some platforms with a warning.}
+\item{tz}{a character string.  The time zone specification to be used
+    for the conversion, \emph{if one is required}.  System-specific (see
+    \link[base]{time zones}), but \code{""} is the current time zone, and
+    \code{"GMT"} is UTC (Universal Time, Coordinated).  Invalid values
+    are most commonly treated as UTC, on some platforms with a warning.}
 }
 \description{
 The sequence of month numbers for each day in the period from - to

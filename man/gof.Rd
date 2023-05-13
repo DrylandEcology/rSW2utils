@@ -29,13 +29,13 @@ Goodness of fit measures between observations and simulated values
 }
 \section{Functions}{
 \itemize{
-\item \code{rmse}: Root Mean Square Error
+\item \code{rmse()}: Root Mean Square Error
 
-\item \code{mae}: Mean Absolute Error
+\item \code{mae()}: Mean Absolute Error
 
-\item \code{NSE}: Nash-Sutcliffe efficiency
+\item \code{NSE()}: Nash-Sutcliffe efficiency
+
 }}
-
 \section{Details}{
  \code{obs} and \code{sim} must have the same dimensions.
   If they are two-dimensional objects, then the \var{GOFs} are calculated

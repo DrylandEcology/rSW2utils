@@ -4,7 +4,7 @@
 \alias{has_uniroots}
 \title{Determine whether result(s) of \code{uniroots} was successful}
 \usage{
-has_uniroots(x, tol = .Machine$double.eps^0.25)
+has_uniroots(x, tol = .Machine[["double.eps"]]^0.25)
 }
 \arguments{
 \item{x}{An object returned from \code{uniroots}}

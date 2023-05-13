@@ -1,4 +1,3 @@
-context("Bounded values")
 
 #---TESTS
 test_that("replace_NAs_with_val", {
@@ -18,9 +17,9 @@ test_that("replace_NAs_with_val", {
   n <- 3
   x0 <- rep(NA, n)
   tmp <- rep(NA, n)
-  expect_identical(replace_NAs_with_val(x0, val_replace = tmp[1]), tmp)
+  expect_identical(replace_NAs_with_val(x0, val_replace = tmp[[1L]]), tmp)
   tmp <- rep(2, n)
-  expect_identical(replace_NAs_with_val(x0, val_replace = tmp[1]), tmp)
+  expect_identical(replace_NAs_with_val(x0, val_replace = tmp[[1L]]), tmp)
 })
 
 
@@ -42,13 +41,13 @@ test_that("cut0Inf", {
   n <- 3
   x0 <- rep(-1, n)
   tmp <- rep(NA_real_, n)
-  expect_identical(cut0Inf(x0, val = tmp[1]), tmp)
+  expect_identical(cut0Inf(x0, val = tmp[[1L]]), tmp)
   tmp <- rep(2, n)
-  expect_identical(cut0Inf(x0, val = tmp[1]), tmp)
+  expect_identical(cut0Inf(x0, val = tmp[[1L]]), tmp)
 
   x0 <- c(1, NA, -1, NA, 1)
   tmp <- c(1, NA, 0, NA, 1)
-  expect_identical(cut0Inf(x0, val = tmp[3]), tmp)
+  expect_identical(cut0Inf(x0, val = tmp[[3L]]), tmp)
 })
 
 

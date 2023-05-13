@@ -1,4 +1,3 @@
-context("Curve functions")
 
 # Inputs
 
@@ -6,29 +5,29 @@ test_that("lines", {
   p1 <- c(1, 1)
   p2 <- c(-1, 5)
 
-  lfun <- f_2pline(p1[1], p1[2], p2[1], p2[2])
+  lfun <- f_2pline(p1[[1L]], p1[[2L]], p2[[1L]], p2[[2L]])
 
-  expect_equal(lfun(p1[1])[2], p1[2])
-  expect_equal(lfun(p2[1])[2], p2[2])
+  expect_identical(lfun(p1[[1L]])[[2L]], p1[[2L]])
+  expect_identical(lfun(p2[[1L]])[[2L]], p2[[2L]])
 
 
   # Horizontal line
   p1 <- c(1, 1)
   p2 <- c(5, 1)
 
-  lfun <- f_2pline(p1[1], p1[2], p2[1], p2[2])
+  lfun <- f_2pline(p1[[1L]], p1[[2L]], p2[[1L]], p2[[2L]])
 
-  expect_equal(lfun(p1[1])[2], p1[2])
-  expect_equal(lfun(p2[1])[2], p2[2])
+  expect_identical(lfun(p1[[1L]])[[2L]], p1[[2L]])
+  expect_identical(lfun(p2[[1L]])[[2L]], p2[[2L]])
 
   # Vertical line produces NAs
   p1 <- c(1, 1)
   p2 <- c(1, 2)
 
-  lfun <- f_2pline(p1[1], p1[2], p2[1], p2[2])
+  lfun <- f_2pline(p1[[1L]], p1[[2L]], p2[[1L]], p2[[2L]])
 
-  expect_equal(lfun(p1[1])[2], NA_real_)
-  expect_equal(lfun(p2[1])[2], NA_real_)
+  expect_identical(lfun(p1[[1L]])[[2L]], NA_real_)
+  expect_identical(lfun(p2[[1L]])[[2L]], NA_real_)
 })
 
 

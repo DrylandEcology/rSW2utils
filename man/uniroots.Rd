@@ -4,7 +4,7 @@
 \alias{uniroots}
 \title{Locate zeros (roots) of a function}
 \usage{
-uniroots(f, xlim, tol = .Machine$double.eps^0.25, expected_nroots = 1)
+uniroots(f, xlim, tol = .Machine[["double.eps"]]^0.25, expected_nroots = 1)
 }
 \arguments{
 \item{f}{Function.}

@@ -34,6 +34,7 @@
 #'   \code{unit_to}.
 #'
 #' @export
+# nolint start: nonportable_path_linter.
 convert_precipitation <- function(
   x,
   unit_from,
@@ -74,6 +75,8 @@ convert_precipitation <- function(
     }
   }
 }
+# nolint end: nonportable_path_linter.
+
 
 #' Converts units of temperature data
 #'

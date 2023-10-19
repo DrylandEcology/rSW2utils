@@ -34,7 +34,7 @@ test_that("Impute missing values", {
 
   for (type in types) {
     expect_warning(
-      res1 <- impute_df(
+      res1 <- impute_df( # nolint: implicit_assignment_linter.
         x = df1,
         imputation_type = type
       )
@@ -49,8 +49,8 @@ test_that("Impute missing values", {
   df2[idsNA, ] <- NA
 
   for (type in types) {
-    expect_silent(
-      res2 <- impute_df(
+    res2 <- expect_silent(
+      impute_df(
         x = df2,
         imputation_type = type,
         cyclic = FALSE
@@ -74,9 +74,10 @@ test_that("Impute missing values", {
 
   for (type in types) {
     for (cyclic in cyclicity) {
+
       if (type == "locf" && !cyclic) {
         expect_warning(
-          res3 <- impute_df(
+          res3 <- impute_df( # nolint: implicit_assignment_linter.
             x = df3,
             imputation_type = type,
             cyclic = cyclic
@@ -85,7 +86,7 @@ test_that("Impute missing values", {
 
       } else {
         expect_silent(
-          res3 <- impute_df(
+          res3 <- impute_df( # nolint: implicit_assignment_linter.
             x = df3,
             imputation_type = type,
             cyclic = cyclic

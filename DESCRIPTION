@@ -19,7 +19,7 @@ Suggests:
     statip (>= 0.1.5),
     testthat (>= 3.0.0),
     spelling (>= 2.1.0),
-    lintr (>= 3.0.0),
+    lintr (>= 3.1.0),
     covr
 License: GPL-3
 URL: https://github.com/DrylandEcology/rSW2utils

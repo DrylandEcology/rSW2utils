@@ -223,9 +223,5 @@ blb <- function(
   }
 
   # Average of quality assessment estimates across the s subsets
-  apply(
-    X = res_qual[seq_len(j), , , drop = FALSE],
-    MARGIN = 2:3,
-    FUN = mean
-  )
+  colMeans(res_qual[seq_len(j), , , drop = FALSE])
 }

@@ -16,6 +16,7 @@ vdata2NAs[sample(Ncases * Ncols, NNAs * Ncols)] <- NA
 
 x <- list(vdata1, vdata1NAs, vdata2, vdata2NAs)
 
+tol <- sqrt(.Machine[["double.eps"]])
 
 # Unit tests
 test_that("gof", {
@@ -44,7 +45,7 @@ test_that("gof", {
     tmp_mae <- mae(obs, sim, na.rm = TRUE)
     lapply(nids, function(k) expect_gt(tmp_mae[k], 0))
     tmp_nse <- NSE(obs, sim, na.rm = TRUE)
-    lapply(nids, function(k) expect_identical(tmp_nse[k], 0))
+    lapply(nids, function(k) expect_equal(tmp_nse[k], 0, tolerance = tol))
 
 
     #--- Poor case

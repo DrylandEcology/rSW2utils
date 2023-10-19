@@ -1,3 +1,4 @@
+tol <- sqrt(.Machine[["double.eps"]])
 
 #--- TESTS
 test_that("Sequence positions", {
@@ -43,9 +44,10 @@ test_that("Moving window", {
         mf <- moving_function(x = tmp, k = k, win_fun = f, na.rm = FALSE)
         isnotna <- !is.na(mf)
 
-        expect_identical(
+        expect_equal(
           as.vector(stats::na.omit(apply(stats::embed(tmp, k), 1, f))),
-          mf[isnotna]
+          mf[isnotna],
+          tolerance = tol
         )
 
         # Check na.rm
@@ -145,7 +147,7 @@ test_that("Scale to reference", {
 
   # Scale rounded values to sum to 1
   expect_warning(
-    x_scaled1 <- scale_rounded_by_sum(x, digits = 1, icolumn_adjust = 7)
+    scale_rounded_by_sum(x, digits = 1, icolumn_adjust = 7)
   )
 
   x_scaled1 <- scale_rounded_by_sum(x, digits = 2, icolumn_adjust = 7)
@@ -157,13 +159,13 @@ test_that("Scale to reference", {
   xm <- rbind(x, x + 1, x^2)
 
   expect_error(
-    x_scaled1 <- scale_rounded_by_sum(xm, digits = 1, icolumn_adjust = 7)
+    scale_rounded_by_sum(xm, digits = 1, icolumn_adjust = 7)
   )
 
   x_scaled1 <- scale_rounded_by_sum(xm, digits = 4, icolumn_adjust = 7)
-  expect_identical(rep(1, nrow(xm)), apply(x_scaled1, 1, sum))
+  expect_identical(rep(1, nrow(xm)), rowSums(x_scaled1))
 
   xdf <- as.data.frame(xm)
   x_scaled1 <- scale_rounded_by_sum(xdf, digits = 4, icolumn_adjust = 7)
-  expect_identical(rep(1, nrow(xm)), apply(x_scaled1, 1, sum))
+  expect_identical(rep(1, nrow(xm)), rowSums(x_scaled1))
 })

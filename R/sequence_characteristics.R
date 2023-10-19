@@ -381,7 +381,7 @@ scale_rounded_by_sum <- function(
     is.array(x) || is.matrix(x),
     length(dim(x)) == 2L,
     digits > 0 && digits <= 4L,
-    all(apply(x, 1L, sum) > 0)
+    all(rowSums(x) > 0)
   )
 
   # Scale to sum to 1 with `digits` precision
@@ -394,7 +394,7 @@ scale_rounded_by_sum <- function(
   repeat {
     tmpk <- array(as.integer(round(scale_sum * x)), dim = dim(x))
 
-    sum_x <- apply(tmpk, 1L, sum)
+    sum_x <- rowSums(tmpk)
 
     if (k >= max_iter && any(sum_x != sum1, na.rm = TRUE)) {
       if (verbose) {
@@ -417,7 +417,7 @@ scale_rounded_by_sum <- function(
       FUN = "%/%"
     )
 
-    ok <- all(apply(x, 1L, sum) == scale_sum)
+    ok <- all(rowSums(x) == scale_sum)
 
     if (k >= max_iter || ok) {
       break

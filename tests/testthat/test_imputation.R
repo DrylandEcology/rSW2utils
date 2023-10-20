@@ -15,7 +15,7 @@ test_that("Impute missing values", {
   vars <- colnames(df_template)
   vars_with_values <- vars[!apply(df_template, 2, anyNA)]
 
-  types <- c("mean", "locf")
+  types <- c("mean", "locf", "interp")
   cyclicity <- c(FALSE, TRUE)
 
 

@@ -19,23 +19,54 @@
 
 
 
-#' Calculate positions of the start of \code{TRUE}-runs
+#' Calculate positional information about `TRUE`-runs
 #'
 #' @param x A vector. Values are coerced to logical values.
-#' @return The start position(s) (base-1) of \code{TRUE}-runs in \code{x}.
 #'
 #' @examples
 #' calc_starts(c(0, 1, 1, 0, 0)) ## expected: 2
+#' calc_runs(c(0, 1, 1, 0, 0)) ## expected: list(2:3)
 #' calc_starts(c(1, 1, 0, 0)) ## expected: 1
+#' calc_runs(c(1, 1, 0, 0)) ## expected: list(1:2)
 #' calc_starts(c(1, 1, 0, 0, 1, 1)) ## expected: 1 5
+#' calc_runs(c(1, 1, 0, 0, 1, 1)) ## expected: list(1:2, 5:6)
 #' calc_starts(c(1.5, 2, 0, 0, 15, 3.5)) ## expected: 1 5
-#' calc_starts(c(0, 0)) ## expected: numeric(0)
+#' calc_runs(c(1.5, 2, 0, 0, 15, 3.5)) ## expected: list(1:2, 5:6)
+#' calc_starts(c(0, 0)) ## expected: integer(0)
+#' calc_runs(c(0, 0)) ## expected: list()
+#'
+#' @name runs
+NULL
+
+#' @rdname runs
+#'
+#' @return For [calc_starts()]:
+#' an integer vector with start position(s) of `TRUE`-runs.
 #'
 #' @export
 calc_starts <- function(x) {
   tmp1 <- rle(as.logical(x))
-  tmp2 <- cumsum(c(0, tmp1[["lengths"]])) + 1
+  tmp2 <- cumsum(c(0L, tmp1[["lengths"]])) + 1L
   tmp2[-length(tmp2)][tmp1[["values"]]]
+}
+
+#' @rdname runs
+#'
+#' @return For [calc_runs()]:
+#' a list with integer sequences of the position(s) of `TRUE`-runs.
+#'
+#' @export
+calc_runs <- function(x) {
+  tmp1 <- rle(as.logical(x))
+  tmp2 <- cumsum(c(0L, tmp1[["lengths"]]))
+  tmp3 <- cbind(
+    start = (1L + tmp2[-length(tmp2)])[tmp1[["values"]]],
+    end = tmp2[-1L][tmp1[["values"]]]
+  )
+  lapply(
+    seq_len(nrow(tmp3)),
+    function(k) tmp3[k, 1L]:tmp3[k, 2L]
+  )
 }
 
 

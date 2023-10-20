@@ -1,3 +1,7 @@
+# rSW2utils v0.2.1-9000
+* New `calc_runs()` returns a list with integer sequences of the position(s) of
+  runs (sequences) of `TRUE` values.
+
 # rSW2utils v0.2.0
 * This version only includes package maintenance:
 * Linting updated to `lintr` >= 3 and

@@ -2,12 +2,25 @@ tol <- sqrt(.Machine[["double.eps"]])
 
 #--- TESTS
 test_that("Sequence positions", {
-  expect_identical(calc_starts(c(0, 1, 1, 0, 0)), 2)
-  expect_identical(calc_starts(c(1, 1, 0, 0)), 1)
-  expect_identical(calc_starts(c(1, 1, 0, 0, 1, 1)), c(1, 5))
-  expect_identical(calc_starts(c(1.5, 2, 0, 0, 15, 3.5)), c(1, 5))
-  expect_length(calc_starts(c(0, 0)), 0)
+  #--- Run sequences ------
+  # Test data
+  td <- list(
+    list(x = c(0, 1, 0, 0, 0), start = 2L, seq = list(2L)),
+    list(x = c(0, 1, 1, 0, 0), start = 2L, seq = list(2L:3L)),
+    list(x = c(1, 1, 0, 0), start = 1L, seq = list(1L:2L)),
+    list(x = c(1, 1, 1, 1), start = 1L, seq = list(1L:4L)),
+    list(x = c(1, 0, 1, 1), start = c(1L, 3L), seq = list(1L, 3L:4L)),
+    list(x = c(1, 0, 0, 1), start = c(1L, 4L), seq = list(1L, 4L)),
+    list(x = c(1.5, 0, 15, 3.5), start = c(1L, 3L), seq = list(1L, 3L:4L)),
+    list(x = c(0, 0), start = integer(), seq = list())
+  )
 
+  for (k in seq_along(td)) {
+    expect_identical(calc_runs(td[[k]][["x"]]), td[[k]][["seq"]])
+    expect_identical(calc_starts(td[[k]][["x"]]), td[[k]][["start"]])
+  }
+
+  #--- Run maximum durations ------
   expect_identical(max_duration(0, target_val = 1), 0L)
   x1 <- c(rep(3, 3), rep(10, 10), 4, rep(10, 20), rep(3, 6))
   expect_identical(max_duration(x1, 10, FALSE), 20L)
@@ -16,6 +29,7 @@ test_that("Sequence positions", {
   expect_identical(max_duration(x2, 10, FALSE), 20L)
   expect_identical(unname(max_duration(x2, 10, TRUE)), c(20, 15, 34))
 })
+
 
 test_that("Moving window", {
   x <- list(

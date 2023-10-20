@@ -31,16 +31,16 @@ cor2(
 }
 \value{
 The value of \code{\link[stats]{cor}} if successful,
-  otherwise \code{NA}.
+otherwise \code{NA}.
 }
 \description{
 Correlation function with safe-guards against errors
 }
 \section{Note}{
  If \code{x} is a two-dimensional object and \code{y} is
-  \code{NULL} (or missing), then the correlation between the first and second
-  column of \code{x} is calculated -- unlike \code{\link[stats]{cor}} which
-  calculates all pairwise correlations among all columns of \code{x}.
+\code{NULL} (or missing), then the correlation between the first and second
+column of \code{x} is calculated -- unlike \code{\link[stats]{cor}} which
+calculates all pairwise correlations among all columns of \code{x}.
 }
 
 \examples{

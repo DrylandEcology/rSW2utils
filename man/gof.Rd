@@ -22,7 +22,7 @@ NSE(obs, sim, na.rm = FALSE)
 }
 \value{
 A numeric vector of length corresponding to the number of columns
-  (which is one in case of one-dimensional inputs.)
+(which is one in case of one-dimensional inputs.)
 }
 \description{
 Goodness of fit measures between observations and simulated values
@@ -38,12 +38,12 @@ Goodness of fit measures between observations and simulated values
 }}
 \section{Details}{
  \code{obs} and \code{sim} must have the same dimensions.
-  If they are two-dimensional objects, then the \var{GOFs} are calculated
-  for each column separately.
+If they are two-dimensional objects, then the \var{GOFs} are calculated
+for each column separately.
 }
 
 \references{
 Nash, J. E. and Sutcliffe, J. V. (1970). River flow forecasting
-  through conceptual models part I: A discussion of principles.
-  Journal of Hydrology, 10:3, 282-290.
+through conceptual models part I: A discussion of principles.
+Journal of Hydrology, 10:3, 282-290.
 }

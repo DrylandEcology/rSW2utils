@@ -16,11 +16,11 @@ Check that data are within range of an approximated gamma distribution
 }
 \section{Note}{
  Approximate shape and scale instead of very slow call:
-  \code{g <- MASS::fitdistr(data, "gamma")}
+\code{g <- MASS::fitdistr(data, "gamma")}
 }
 
 \references{
 Choi, S. C., and R. Wette. 1969. Maximum Likelihood Estimation of
-  the Parameters of the Gamma Distribution and Their Bias. Technometrics
-  11:683-690.
+the Parameters of the Gamma Distribution and Their Bias. Technometrics
+11:683-690.
 }

@@ -16,15 +16,15 @@ impute_df(
 works on each column separately.}
 
 \item{imputation_type}{A character string describing the imputation method;
- currently, one of three values: \describe{
-   \item{\var{"none"}}{no imputation is carried out;}
-   \item{\var{"mean"}}{missing values will be replaced by the average
-     of \code{imputation_span} non-missing values before and
-     \code{imputation_span} non-missing values after; note:
-     this may fail if there are less than \code{2 * imputation_span}
-     non-missing values;}
-   \item{\var{"locf"}}{missing values will be replaced by the
-     \var{"last-observation-carried-forward"} imputation method.}
+currently, one of three values: \describe{
+\item{\var{"none"}}{no imputation is carried out;}
+\item{\var{"mean"}}{missing values will be replaced by the average
+of \code{imputation_span} non-missing values before and
+\code{imputation_span} non-missing values after; note:
+this may fail if there are less than \code{2 * imputation_span}
+non-missing values;}
+\item{\var{"locf"}}{missing values will be replaced by the
+\var{"last-observation-carried-forward"} imputation method.}
 }}
 
 \item{imputation_span}{An integer value. The number of non-missing values

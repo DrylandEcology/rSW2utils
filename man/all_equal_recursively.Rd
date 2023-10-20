@@ -13,17 +13,17 @@ all_equal_recursively(x1, x2)
 }
 \value{
 \itemize{
- \item If both \code{x1} and \code{x2} are lists, then
-   \code{all_equal_recursively} is called recursively on mutually shared
-   names if names exists and on each element otherwise, and the output
-   is a list from the return value of each recursive call.
- \item Otherwise, the function \code{\link{all.equal}} is called. If the
-   result is \code{TRUE}, then \code{NA} is returned. If the result is
-   \code{FALSE}, then a list with three elements is returned with \describe{
-   \item{eq}{the result of the call to \code{\link{all.equal}}}
-   \item{x1}{The object \code{x1}}
-   \item{x2}{The object \code{x2}}
- }}
+\item If both \code{x1} and \code{x2} are lists, then
+\code{all_equal_recursively} is called recursively on mutually shared
+names if names exists and on each element otherwise, and the output
+is a list from the return value of each recursive call.
+\item Otherwise, the function \code{\link{all.equal}} is called. If the
+result is \code{TRUE}, then \code{NA} is returned. If the result is
+\code{FALSE}, then a list with three elements is returned with \describe{
+\item{eq}{the result of the call to \code{\link{all.equal}}}
+\item{x1}{The object \code{x1}}
+\item{x2}{The object \code{x2}}
+}}
 }
 \description{
 Recursive comparisons for equality which also works for nested lists

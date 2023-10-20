@@ -59,9 +59,9 @@ interest.}
 }
 \value{
 A two-dimensional object of means across all subsets
-  where rows represent the estimator(s) of quality assessment,
-  i.e., the output of \code{fun_metric}, and the columns represent the
-  the estimator(s) of interest, i.e., the output of \code{fun_estimator}.
+where rows represent the estimator(s) of quality assessment,
+i.e., the output of \code{fun_metric}, and the columns represent the
+the estimator(s) of interest, i.e., the output of \code{fun_estimator}.
 }
 \description{
 Bag of little bootstrap as described by Kleiner et al. 2014 implemented
@@ -97,10 +97,10 @@ blb(
 }
 \references{
 Kleiner, A., A. Talwalkar, P. Sarkar, and M. I. Jordan. 2014.
-  A scalable bootstrap for massive data. Journal of the Royal Statistical
-  Society: Series B (Statistical Methodology) 76:795–816.
+A scalable bootstrap for massive data. Journal of the Royal Statistical
+Society: Series B (Statistical Methodology) 76:795–816.
 }
 \seealso{
 Function \code{drBLB} of package
-  \url{https://github.com/delta-rho/datadr}.
+\url{https://github.com/delta-rho/datadr}.
 }

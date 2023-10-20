@@ -19,8 +19,8 @@ contiguous sections and each is checked for the presence of a root}
 }
 \value{
 A list where each element is an object
-  returned from \code{\link[stats]{uniroot}} or of
-  class \code{"try-error"} (see \code{\link[base]{try}}), or \code{NULL}.
+returned from \code{\link[stats]{uniroot}} or of
+class \code{"try-error"} (see \code{\link[base]{try}}), or \code{NULL}.
 }
 \description{
 Find the x-axis values where \code{f(x) = 0}. This can also be used to
@@ -66,5 +66,5 @@ for (i in seq_along(r)) {
 }
 \seealso{
 \code{\link[stats]{uniroot}} and
-  \code{\link[rootSolve]{uniroot.all}}.
+\code{\link[rootSolve]{uniroot.all}}.
 }

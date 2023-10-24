@@ -21,7 +21,7 @@
 
 #' Impute missing values in a data frame by columns
 #'
-#' @param x A [`data.frame`] with numerical columns. Imputation
+#' @param x A [`data.frame`] or [`matrix`] with numerical columns. Imputation
 #' works on each column separately.
 #' @param imputation_type A character string describing the imputation method;
 #' currently, one of three values:
@@ -153,7 +153,7 @@ impute_df <- function(
           nnext <- length(irows_next)
         }
 
-        xy0 <- c(x = xtmpx, y = x[xtmpr, k1])
+        xy0 <- c(x = xtmpx, y = unname(x[xtmpr, k1]))
 
         # Identify second point
         if (nnext > 0L) {
@@ -169,7 +169,7 @@ impute_df <- function(
           }
         }
 
-        xy1 <- c(x = xtmpx, y = x[xtmpr, k1])
+        xy1 <- c(x = xtmpx, y = unname(x[xtmpr, k1]))
 
         finterp <- function(x, p0 = xy0, p1 = xy1) {
           a <- p0[["y"]] * (p1[["x"]] - x) + p1[["y"]] * (x - p0[["x"]])

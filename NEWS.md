@@ -1,7 +1,8 @@
 # rSW2utils v0.2.1-9000
 * New `calc_runs()` returns a list with integer sequences of the position(s) of
   runs (sequences) of `TRUE` values.
-* `impute_df()` gains imputation type `"interp"` which replaces missing values
+* `impute_df()` now works on matrices and data frames. It also gains
+  imputation type `"interp"` which replaces missing values
   (for each run of missing values separately) by linear interpolation
   (or extrapolation if at the start or end of a sequence) using the
   two closest neighbors assuming that rows represent equidistant steps.

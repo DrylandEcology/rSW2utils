@@ -12,7 +12,7 @@ impute_df(
 )
 }
 \arguments{
-\item{x}{A \code{\link{data.frame}} with numerical columns. Imputation
+\item{x}{A \code{\link{data.frame}} or \code{\link{matrix}} with numerical columns. Imputation
 works on each column separately.}
 
 \item{imputation_type}{A character string describing the imputation method;

@@ -8,7 +8,8 @@ impute_df(
   x,
   imputation_type = c("none", "mean", "locf", "interp"),
   imputation_span = 5L,
-  cyclic = FALSE
+  cyclic = FALSE,
+  nmax_run = Inf
 )
 }
 \arguments{
@@ -39,6 +40,10 @@ considered if \code{imputation_type = "mean"}.}
 \item{cyclic}{A logical value. If \code{TRUE}, then the last row of \code{x}
 is considered to be a direct neighbor of the first row, e.g., rows of
 \code{x} represent day of year for an average year.}
+
+\item{nmax_run}{An integer value. Runs (sets of consecutive missing values)
+that are equal or shorter to \code{nmax_run} are imputed;
+longer runs remain unchanged. Any non-finite value is treated as infinity.}
 }
 \value{
 An updated version of \code{x} where missing values have been imputed
@@ -49,7 +54,7 @@ Impute missing values in a data frame by columns
 }
 \examples{
 n <- 30
-ids_missing <- c(1:2, 10:12, 20:22, (n-1):n)
+ids_missing <- c(1:2, 10:13, 20:22, (n-1):n)
 x0 <- x <- data.frame(
   linear = seq_len(n),
   all_missing = NA,
@@ -60,7 +65,7 @@ x[ids_missing, ] <- NA
 
 res <- list()
 for (it in c("mean", "locf", "interp")) {
-  res[[it]] <- impute_df(x, imputation_type = it)
+  res[[it]] <- impute_df(x, imputation_type = it, nmax_run = 3L)
   print(cbind(orig = x0[ids_missing, ], res[[it]][ids_missing, ]))
 }
 

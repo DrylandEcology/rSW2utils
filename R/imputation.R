@@ -43,13 +43,16 @@
 #' @param cyclic A logical value. If `TRUE`, then the last row of `x`
 #' is considered to be a direct neighbor of the first row, e.g., rows of
 #' `x` represent day of year for an average year.
+#' @param nmax_run An integer value. Runs (sets of consecutive missing values)
+#' that are equal or shorter to `nmax_run` are imputed;
+#' longer runs remain unchanged. Any non-finite value is treated as infinity.
 #'
 #' @return An updated version of `x` where missing values have been imputed
 #' for each column separately.
 #'
 #' @examples
 #' n <- 30
-#' ids_missing <- c(1:2, 10:12, 20:22, (n-1):n)
+#' ids_missing <- c(1:2, 10:13, 20:22, (n-1):n)
 #' x0 <- x <- data.frame(
 #'   linear = seq_len(n),
 #'   all_missing = NA,
@@ -60,7 +63,7 @@
 #'
 #' res <- list()
 #' for (it in c("mean", "locf", "interp")) {
-#'   res[[it]] <- impute_df(x, imputation_type = it)
+#'   res[[it]] <- impute_df(x, imputation_type = it, nmax_run = 3L)
 #'   print(cbind(orig = x0[ids_missing, ], res[[it]][ids_missing, ]))
 #' }
 #'
@@ -96,15 +99,24 @@ impute_df <- function(
   x,
   imputation_type = c("none", "mean", "locf", "interp"),
   imputation_span = 5L,
-  cyclic = FALSE
+  cyclic = FALSE,
+  nmax_run = Inf
 ) {
 
   imputation_type <- match.arg(imputation_type)
   if (imputation_type == "mean") {
-    imputation_span <- round(imputation_span)
+    imputation_span <- as.integer(round(imputation_span))
   }
 
-  if (imputation_type == "none") {
+  if (isTRUE(!is.finite(nmax_run))) {
+    nmax_run <- Inf
+  }
+
+  if (
+    imputation_type == "none" ||
+      (imputation_type == "mean" && imputation_span <= 0L) ||
+      nmax_run <= 0L
+  ) {
     return(x)
   }
 
@@ -114,131 +126,37 @@ impute_df <- function(
   #--- imputations
   icols_withNAs <- which(apply(x, 2, anyNA))
 
+  #--- Loop over columns / variables
   for (k1 in icols_withNAs) {
 
-    if (imputation_type == "interp") {
-      #--- imputation by linear interpolation ------
-      rowsets_withNA <- calc_runs(is.na(x[, k1]))
-      irows_withNA <- unlist(rowsets_withNA)
-      irows_has <- setdiff(irows, irows_withNA)
+    rowsets_withNA <- calc_runs(is.na(x[, k1, drop = TRUE]))
+    irows_withNA <- unlist(rowsets_withNA)
+    irows_has0 <- setdiff(irows, irows_withNA)
 
-      for (k2 in seq_along(rowsets_withNA)) {
-        ids <- rowsets_withNA[[k2]]
-        irows_prev <- irows_has[irows_has < ids[[1L]]]
-        irows_next <- irows_has[irows_has > ids[[length(ids)]]]
-        nprev <- length(irows_prev)
-        nnext <- length(irows_next)
+    #--- Loop over sets of missing
+    for (k2 in seq_along(rowsets_withNA)) {
 
-        if (nprev == 0L && nnext == 0L) next
+      if (length(rowsets_withNA[[k2]]) > nmax_run) next
 
-        # Identify first point
-        #   - last previous point (if cyclic grab last "next" point);
-        #   - otherwise, first next point (if not cyclic, i.e., extrapolation)
-        if (nprev > 0L) {
-          xtmpx <- xtmpr <- irows_prev[[nprev]]
-          # update previous (to avoid that second point grabs the same)
-          irows_prev <- irows_prev[-nprev]
-          nprev <- length(irows_prev)
+      res <- do.call(
+        what = switch(
+          EXPR = imputation_type,
+          interp = impute_run_interp,
+          mean = impute_run_mean,
+          locf = impute_run_locf
+        ),
+        args = list(
+          v = x[, k1, drop = TRUE],
+          rna = rowsets_withNA[[k2]],
+          iv = irows_has0,
+          cyclic = cyclic,
+          span = imputation_span
+        )
+      )
 
-        } else if (nnext > 0L) {
-          tmp <- if (cyclic) length(irows_next) else 1L
-          xtmpr <- irows_next[[tmp]]
-          xtmpx <- if (cyclic) {
-            1L + round(circ_minus(xtmpr, ids[[1L]], int = cycle))
-          } else {
-            xtmpr
-          }
-          # update next (to avoid that second point grabs the same)
-          irows_next <- irows_next[-tmp]
-          nnext <- length(irows_next)
-        }
+      if (is.null(res)) next
 
-        xy0 <- c(x = xtmpx, y = unname(x[xtmpr, k1]))
-
-        # Identify second point
-        if (nnext > 0L) {
-          xtmpx <- xtmpr <- irows_next[[1L]]
-
-        } else if (nprev > 0L) {
-          tmp <- if (cyclic) 1L else length(irows_prev)
-          xtmpr <- irows_prev[[tmp]]
-          xtmpx <- if (cyclic) {
-            round(circ_add(ids[[length(ids)]], xtmpr, int = cycle))
-          } else {
-            xtmpr
-          }
-        }
-
-        xy1 <- c(x = xtmpx, y = unname(x[xtmpr, k1]))
-
-        finterp <- function(x, p0 = xy0, p1 = xy1) {
-          a <- p0[["y"]] * (p1[["x"]] - x) + p1[["y"]] * (x - p0[["x"]])
-          b <- p1[["x"]] - p0[["x"]]
-          a / b
-        }
-
-        x[ids, k1] <- finterp(ids)
-      }
-
-    } else {
-      # method is "mean" or "locf"
-      irows_withNA <- which(is.na(x[, k1]))
-
-      for (k2 in irows_withNA) {
-        if (imputation_type == "mean" && imputation_span > 0) {
-          #--- imputation by mean of neighbor values ------
-          spank <- imputation_span
-
-          # locate a sufficient number of non-missing neighbors
-          repeat {
-            tmp <- seq(k2 - spank, k2 + spank)
-            if (cyclic) {
-              tmp <- 1 + (tmp - 1) %% cycle
-            } else {
-              tmp <- tmp[tmp %in% irows]
-            }
-            # Exclude values that were imputed in a previous step
-            ids_source <- tmp[!(tmp %in% irows_withNA)]
-
-            if (length(ids_source) < 2 * imputation_span && spank < cycle) {
-              spank <- spank + 1
-            } else {
-              break
-            }
-          }
-
-          # impute mean of neighbors
-          if (length(ids_source) > 0 && all(is.finite(ids_source))) {
-            x[k2, k1] <- mean(x[ids_source, k1])
-          }
-
-        } else if (imputation_type == "locf") {
-          #--- imputation by last-observation carried forward ------
-          dlast <- 1
-
-          # locate last non-missing value
-          repeat {
-            tmp <- k2 - dlast
-            if (cyclic) {
-              tmp <- 1 + (tmp - 1) %% cycle
-            } else {
-              tmp <- tmp[tmp %in% irows]
-            }
-            ids_source <- tmp[!(tmp %in% irows_withNA)]
-
-            if (length(ids_source) == 1 || dlast >= cycle) {
-              break
-            } else {
-              dlast <- dlast + 1
-            }
-          }
-
-          # impute locf
-          if (length(ids_source) > 0 && all(is.finite(ids_source))) {
-            x[k2, k1] <- x[ids_source, k1]
-          }
-        }
-      }
+      x[rowsets_withNA[[k2]], k1] <- res
     }
   }
 
@@ -247,4 +165,178 @@ impute_df <- function(
   }
 
   x
+}
+
+#' @param v A numeric vector of all values including missing.
+#' @param rna An integer vector of positions in `v` for
+#' one sequence of missing values that is to be imputed by interpolation.
+#' @param iv An integer vector of positions in `v` with non-missing values.
+#' @param ... Additional arguments are silently ignores.
+#' @inheritParams impute_df
+#'
+#' @return Imputed values at positions `rna` or `NULL` if `v` does not carry
+#' sufficient information for imputation.
+#'
+#' @name impute_runs
+#' @noRd
+NULL
+
+#' Impute a run of missing values with linear interpolation
+#' @rdname impute_runs
+#' @noRd
+impute_run_interp <- function(
+  v,
+  rna,
+  iv,
+  cyclic,
+  ...
+) {
+
+  irows_prev <- iv[iv < rna[[1L]]]
+  irows_next <- iv[iv > rna[[length(rna)]]]
+  nprev <- length(irows_prev)
+  nnext <- length(irows_next)
+
+  if (nprev == 0L && nnext == 0L) return(NULL)
+
+  cycle <- if (cyclic) length(v)
+
+  # Identify first point
+  #   - last previous point (if cyclic grab last "next" point);
+  #   - otherwise, first next point (if not cyclic, i.e., extrapolation)
+  if (nprev > 0L) {
+    xtmpx <- xtmpr <- irows_prev[[nprev]]
+    # update previous (to avoid that second point grabs the same)
+    irows_prev <- irows_prev[-nprev]
+    nprev <- length(irows_prev)
+
+  } else if (nnext > 0L) {
+    tmp <- if (cyclic) length(irows_next) else 1L
+    xtmpr <- irows_next[[tmp]]
+    xtmpx <- if (cyclic) {
+      1L + round(circ_minus(xtmpr, rna[[1L]], int = cycle))
+    } else {
+      xtmpr
+    }
+    # update next (to avoid that second point grabs the same)
+    irows_next <- irows_next[-tmp]
+    nnext <- length(irows_next)
+  }
+
+  p0 <- c(x = xtmpx, y = unname(v[[xtmpr]]))
+
+  # Identify second point
+  if (nnext > 0L) {
+    xtmpx <- xtmpr <- irows_next[[1L]]
+
+  } else if (nprev > 0L) {
+    tmp <- if (cyclic) 1L else length(irows_prev)
+    xtmpr <- irows_prev[[tmp]]
+    xtmpx <- if (cyclic) {
+      round(circ_add(rna[[length(rna)]], xtmpr, int = cycle))
+    } else {
+      xtmpr
+    }
+  }
+
+  p1 <- c(x = xtmpx, y = unname(v[[xtmpr]]))
+
+  # Linear interpolation
+  a <- p0[["y"]] * (p1[["x"]] - rna) + p1[["y"]] * (rna - p0[["x"]])
+  b <- p1[["x"]] - p0[["x"]]
+  a / b
+}
+
+
+#' Impute a run of missing values by the mean across adjacent values
+#' @rdname impute_runs
+#' @noRd
+impute_run_mean <- function(
+  v,
+  rna,
+  iv,
+  cyclic,
+  span,
+  ...
+) {
+  cycle <- length(v)
+  ids <- seq_len(cycle)
+  res <- rep(NA, length = length(rna))
+
+  for (k2 in seq_along(rna)) {
+    # locate a sufficient number of non-missing neighbors
+    spank <- span
+
+    repeat {
+      tmp <- seq(rna[[k2]] - spank, rna[[k2]] + spank)
+      if (cyclic) {
+        tmp <- 1L + (tmp - 1L) %% cycle
+      } else {
+        tmp <- intersect(tmp, ids)
+      }
+      # Exclude values that were imputed in a previous step
+      ids_source <- intersect(tmp, iv)
+
+      if (length(ids_source) < 2L * span && spank < cycle) {
+        spank <- spank + 1L
+      } else {
+        break
+      }
+    }
+
+    # impute mean of neighbors
+    if (length(ids_source) > 0L && all(is.finite(ids_source))) {
+      res[[k2]] <- mean(v[ids_source])
+    }
+  }
+
+  res
+}
+
+
+#' Impute a run of missing values by last observation carried forward
+#' @rdname impute_runs
+#' @noRd
+impute_run_locf <- function(
+  v,
+  rna,
+  iv,
+  cyclic,
+  ...
+) {
+  cycle <- length(v)
+  ids <- seq_len(cycle)
+
+  # locate last non-missing value
+  dlast <- 1L
+  repeat {
+    tmp <- rna[[1L]] - dlast
+    if (cyclic) {
+      tmp <- 1L + (tmp - 1L) %% cycle
+    } else {
+      tmp <- intersect(tmp, ids)
+    }
+    # Exclude values that were imputed in a previous step
+    ids_source <- intersect(tmp, iv)
+
+    if (length(ids_source) == 1L || dlast >= cycle) {
+      break
+    } else {
+      dlast <- dlast + 1L
+    }
+  }
+
+  # impute locf
+  if (
+    length(ids_source) == 1L &&
+      all(is.finite(ids_source)) &&
+      dlast < cycle
+  ) {
+    rep(v[[ids_source]], length(rna))
+
+  } else {
+    res <- vector(mode = typeof(v), length = length(rna))
+    res[] <- NA # nolint: extraction_operator_linter.
+    res
+  }
 }

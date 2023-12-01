@@ -56,8 +56,10 @@ test_that("finite01", {
   expect_identical(finite01(NA), 0)
   expect_identical(finite01(-1), 0)
   expect_identical(finite01(0 - rSW2_glovars[["tol"]]), 0)
-  expect_identical(finite01(tmp <- 0 + rSW2_glovars[["tol"]]), tmp)
-  expect_identical(finite01(tmp <- 1 - rSW2_glovars[["tol"]]), tmp)
+  tmp <- 0 + rSW2_glovars[["tol"]]
+  expect_identical(finite01(tmp), tmp)
+  tmp <- 1 - rSW2_glovars[["tol"]]
+  expect_identical(finite01(tmp), tmp)
   expect_identical(finite01(1 + rSW2_glovars[["tol"]]), 1)
   expect_identical(finite01(10), 1)
   expect_identical(finite01(0.5), 0.5)

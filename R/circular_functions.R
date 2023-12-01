@@ -176,9 +176,10 @@ circ_range <- function(x, int, na.rm = FALSE) {
 #'
 #' @export
 circ_sd <- function(x, int, na.rm = FALSE) {
-  if (length(x) - sum(is.na(x)) > 1 && requireNamespace("circular",
-    quietly = TRUE
-  )) {
+  if (
+    length(x) - sum(is.na(x)) > 1 &&
+      requireNamespace("circular", quietly = TRUE)
+  ) {
     if (sd(x, na.rm = TRUE) > 0) {
       circ <- 2 * pi / int
       x_circ <- circular::circular(

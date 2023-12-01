@@ -95,7 +95,7 @@ test_that("Circular subtraction", {
   # Matrix examples
   x <- matrix(c(260, 240, 10, 360, 0, 360), nrow = 3, ncol = 2)
   y <- matrix(c(240, 260, 360, 10, 360, 0), nrow = 3, ncol = 2)
-  tmp <- structure(c(20, -20, 15, -15, 5, -5), .Dim = 3:2)
+  tmp <- matrix(c(20, -20, 15, -15, 5, -5), nrow = 3, ncol = 2)
 
   expect_equal(
     circ_minus(x, y, int = 365),
@@ -121,13 +121,13 @@ test_that("Circular addition", {
 
   expect_equal(
     circ_add(x, y, int = 365),
-    structure(c(135, 135, 5, 5, -5, -5), .Dim = 3:2),
+    matrix(c(135, 135, 5, 5, -5, -5), nrow = 3, ncol = 2),
     tolerance = tol
   )
 
   expect_equal(
     circ_add(x, y, int = 365, type = "ZeroPlus2Pi"),
-    structure(c(135, 135, 5, 5, 360, 360), .Dim = 3:2),
+    matrix(c(135, 135, 5, 5, 360, 360), nrow = 3, ncol = 2),
     tolerance = tol
   )
 

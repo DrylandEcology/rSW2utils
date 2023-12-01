@@ -15,10 +15,10 @@ max_duration(x, target_val = 1L, return_doys = FALSE)
 }
 \value{
 A numeric vector with one or three elements including
-  the length of the longest run of value \code{target_val}
-  (the first if multiple runs are of equally the longest) and,
-  if \code{return_doys == TRUE}, then the start and end
-  position of that longest run.
+the length of the longest run of value \code{target_val}
+(the first if multiple runs are of equally the longest) and,
+if \code{return_doys == TRUE}, then the start and end
+position of that longest run.
 }
 \description{
 Determine the length of the (first) longest run

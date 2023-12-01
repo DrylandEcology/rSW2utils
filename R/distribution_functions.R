@@ -57,7 +57,10 @@ test_sigmaGamma <- function(data, sigmaN = 6) {
     gscale <- tmpM / gshape
     stopifnot(
       data < stats::qgamma(
-        erf(sigmaN / sqrt(2)), shape = gshape, scale = gscale)
+        erf(sigmaN / sqrt(2)),
+        shape = gshape,
+        scale = gscale
+      )
     )
   }
 }

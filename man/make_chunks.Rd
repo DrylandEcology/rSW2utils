@@ -15,17 +15,17 @@ make_chunks(nx, n_chunks, chunk_size = 1000L)
 }
 \value{
 A list of integer vectors (chunks) that contain indices of
-  all \code{nx} tasks; either, the number of chunks is \code{<= n_chunks},
-  or the number of tasks/indices per chunk is \code{<= chunk_size}.
+all \code{nx} tasks; either, the number of chunks is \code{<= n_chunks},
+or the number of tasks/indices per chunk is \code{<= chunk_size}.
 }
 \description{
 Create a list that contains chunks of indices
 (that reference tasks by position) of either \itemize{
-  \item a specified number of chunks \code{n_chunks},
-    useful, e.g., if we have a fixed number of processing units, or
-  \item a specified number of tasks per chunk \code{chunk_size},
-    useful, e.g., if we have a (upper) fixed number of elements than can be
-    processed at a time.
+\item a specified number of chunks \code{n_chunks},
+useful, e.g., if we have a fixed number of processing units, or
+\item a specified number of tasks per chunk \code{chunk_size},
+useful, e.g., if we have a (upper) fixed number of elements than can be
+processed at a time.
 }
 The
 }

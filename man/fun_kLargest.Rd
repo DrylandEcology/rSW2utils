@@ -26,13 +26,13 @@ stripped before the computation proceeds.}
 }
 \value{
 A vector of length \code{k}, \itemize{
-  \item if \code{is.null(fun)}, then a vector with the \code{k}-largest
-    (if \code{largest = TRUE}) or \code{k}-smallest
-    (if \code{largest = FALSE}) values of \code{x};
-  \item if \code{fun = "index"}, then a vector with indices of the
-    \code{k}-largest/smallest values (NOTE: this is truncated to the
-    \code{k}-first indices!). } Otherwise, the result of applying \code{fun}
-    to the \code{k}-largest/smallest values.
+\item if \code{is.null(fun)}, then a vector with the \code{k}-largest
+(if \code{largest = TRUE}) or \code{k}-smallest
+(if \code{largest = FALSE}) values of \code{x};
+\item if \code{fun = "index"}, then a vector with indices of the
+\code{k}-largest/smallest values (NOTE: this is truncated to the
+\code{k}-first indices!). } Otherwise, the result of applying \code{fun}
+to the \code{k}-largest/smallest values.
 }
 \description{
 Find the \code{k}-largest/smallest values (and apply a function to these

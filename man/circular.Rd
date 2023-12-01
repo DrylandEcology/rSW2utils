@@ -69,6 +69,6 @@ circ_mean_weighted(x, w, int = 12, type = "ZeroPlus2Pi") ## expected 11
 }
 \seealso{
 \code{\link[circular]{mean.circular}},
-  \code{\link[circular]{range.circular}},
-  \code{\link[circular]{sd.circular}}
+\code{\link[circular]{range.circular}},
+\code{\link[circular]{sd.circular}}
 }

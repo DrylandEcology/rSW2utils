@@ -27,7 +27,7 @@ respectively "cm/day", "cm/month".}
 }
 \value{
 A numeric object of the same size as \code{x} in units of
-  \code{unit_to}.
+\code{unit_to}.
 }
 \description{
 Converts units of precipitation data
